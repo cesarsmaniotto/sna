@@ -1,7 +1,5 @@
 <?php
 
-use \comunic\social_network_analyzer\model\entity\format\IObjectFormatter;
-use \comunic\social_network_analyzer\model\entity\parse\IObjectParser;
 
 namespace comunic\social_network_analyzer\model\facade{
 /**
@@ -21,8 +19,8 @@ class UsersFacade
   /**
    *
    *
-   * @param string user_text
-   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser parser
+   * @param string $user_text
+   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser $parser
    * @return void
    * @access public
    */
@@ -32,8 +30,8 @@ class UsersFacade
   /**
    *
    *
-   * @param string user_text
-   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser parser
+   * @param string $user_text
+   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser $parser
    * @return void
    * @access public
    */
@@ -43,8 +41,8 @@ class UsersFacade
   /**
    *
    *
-   * @param int id
-   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter fmt
+   * @param int $id
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter $fmt
    * @return string
    * @access public
    */
@@ -54,7 +52,7 @@ class UsersFacade
   /**
    *
    *
-   * @param int id
+   * @param int $id
    * @return void
    * @access public
    */
@@ -64,7 +62,7 @@ class UsersFacade
   /**
    *
    *
-   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter fmt
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter $fmt
    * @return string
    * @access public
    */
