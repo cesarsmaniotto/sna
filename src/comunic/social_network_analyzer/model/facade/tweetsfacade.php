@@ -21,8 +21,8 @@ class TweetsFacade
   /**
    *
    *
-   * @param string text
-   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser parse
+   * @param string $text
+   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser $parse
    * @return void
    * @access public
    */
@@ -32,8 +32,8 @@ class TweetsFacade
   /**
    *
    *
-   * @param int id
-   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter fmt
+   * @param int $id
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter $fmt
    * @return string
    * @access public
    */
@@ -44,9 +44,9 @@ class TweetsFacade
    *
    *
    * @param string text_cat
-   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser parse
-   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatterfmt
-   * @return void
+   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser $parse
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter $fmt
+   * @return string
    * @access public
    */
   public function listByCategory( $text_cat,  $parse,  $fmt) {
@@ -55,7 +55,7 @@ class TweetsFacade
   /**
    *
    *
-   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter fmt
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter $fmt
    * @return string
    * @access public
    */
