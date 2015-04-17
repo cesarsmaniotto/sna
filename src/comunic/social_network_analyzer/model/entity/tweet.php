@@ -1,9 +1,9 @@
 <?php
 
-
+namespace comunic\social_network_analyzer\model\entity{
 /**
  * class Tweet
- * 
+ *
  */
 class Tweet
 {
@@ -17,7 +17,7 @@ class Tweet
 
 
 
-
+}
 
 } // end of Tweet
 ?>

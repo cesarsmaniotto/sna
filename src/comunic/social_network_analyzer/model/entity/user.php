@@ -1,9 +1,9 @@
 <?php
 
-
+namespace comunic\social_network_analyzer\model\entity{
 /**
  * class User
- * 
+ *
  */
 class User
 {
@@ -17,7 +17,7 @@ class User
 
 
 
-
+}
 
 } // end of User
 ?>
