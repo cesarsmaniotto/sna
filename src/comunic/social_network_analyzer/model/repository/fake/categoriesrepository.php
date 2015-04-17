@@ -19,7 +19,7 @@ namespace comunic\social_network_analyzer\model\repository\fake {
 
         private $dados;
 
-        public function __construct() {
+        function __construct() {
             $this->dados = new CommunFakeBehavior();
         }
 
@@ -39,16 +39,15 @@ namespace comunic\social_network_analyzer\model\repository\fake {
          * @access public
          */
         public function insert($category) {
-
-            $this->dados->insert($id, $entity);
+            $this->dados->insert($category->getId(),$category);
         }
 
         public function listAll() {
-            
+            return $this->dados->listAll();
         }
 
         public function update($category) {
-            
+            $this->dados->update($category->getId(),$category);
         }
 
 //put your code here

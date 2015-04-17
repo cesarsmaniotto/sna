@@ -13,8 +13,12 @@ namespace comunic\social_network_analyzer\model\repository\fake {
     class TweetsRepository implements ITweetsRepository {
 
         static private $DADOS = array();
+        
+        function __construct() {
+            
+        }
 
-        public function findById($id) {
+                public function findById($id) {
 
             \array_key_exists($id, TweetsRepository::$DADOS);
 

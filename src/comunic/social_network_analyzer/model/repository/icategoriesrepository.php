@@ -13,7 +13,7 @@ namespace comunic\social_network_analyzer\model\repository {
         /**
          *
          *
-         * @param  $category \comunic\social_network_analyzer\model\entity\Category
+         * @param  \comunic\social_network_analyzer\model\entity\Category $category
          * @return void
          * @access public
          */
@@ -22,7 +22,7 @@ namespace comunic\social_network_analyzer\model\repository {
         /**
          *
          *
-         * @param  $category \comunic\social_network_analyzer\model\entity\Category
+         * @param   \comunic\social_network_analyzer\model\entity\Category $category
          * @return void
          * @access public
          */
@@ -40,7 +40,7 @@ namespace comunic\social_network_analyzer\model\repository {
         /**
          *
          *
-         * @param $id int
+         * @param  int $id
          * @return \comunic\social_network_analyzer\model\entity\Category
          * @access public
          */

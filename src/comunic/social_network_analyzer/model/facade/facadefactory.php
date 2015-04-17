@@ -1,10 +1,9 @@
 <?php
-
-use \comunic\social_network_analyzer\model\facade\TweetsFacade;
-use \comunic\social_network_analyzer\model\facade\CategoriesFacade;
-use \comunic\social_network_analyzer\model\facade\UsersFacade;
-
 namespace comunic\social_network_analyzer\model\facade {
+
+    use \comunic\social_network_analyzer\model\facade\TweetsFacade;
+    use \comunic\social_network_analyzer\model\facade\CategoriesFacade;
+    use \comunic\social_network_analyzer\model\facade\UsersFacade;
 
     /**
      * class FacadeFactory
@@ -14,8 +13,8 @@ namespace comunic\social_network_analyzer\model\facade {
 
         private $repositoryFactory;
 
-        /*
-         * @param \comunic\social_network_analyzer\model\repository\IRepositoryFactory $repositoryFactory   
+        /**
+         * @param \comunic\social_network_analyzer\model\repository\IRepositoryFactory $repositoryFactory
          *
          *  */
 
