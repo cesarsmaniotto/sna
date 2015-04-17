@@ -1,9 +1,9 @@
 <?php
 
-
+namespace comunic\social_network_analyzer\model\repository\{
 /**
  * class ICategoriesRepository
- * 
+ *
  */
 interface ICategoriesRepository
 {
@@ -13,47 +13,43 @@ interface ICategoriesRepository
   /** Compositions: */
 
   /**
-   * 
    *
-   * @param  category 
-
+   *
+   * @param  category
    * @return void
    * @access public
    */
   public function insert( $category);
 
   /**
-   * 
    *
-   * @param  category 
-
+   *
+   * @param  category
    * @return void
    * @access public
    */
   public function update( $category);
 
   /**
-   * 
    *
-   * @param int id 
-
+   *
+   * @param int id
    * @return void
    * @access public
    */
   public function delete( $id);
 
   /**
-   * 
    *
-   * @param int id 
-
+   *
+   * @param int id
    * @return void
    * @access public
    */
   public function findById( $id);
 
   /**
-   * 
+   *
    *
    * @return void
    * @access public
@@ -62,7 +58,7 @@ interface ICategoriesRepository
 
 
 
-
+}
 
 } // end of ICategoriesRepository
 ?>

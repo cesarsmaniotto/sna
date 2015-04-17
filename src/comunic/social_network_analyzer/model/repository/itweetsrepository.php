@@ -1,9 +1,9 @@
 <?php
 
-
+namespace comunic\social_network_analyzer\model\repository\{
 /**
  * class ITweetsRepository
- * 
+ *
  */
 interface ITweetsRepository
 {
@@ -13,17 +13,16 @@ interface ITweetsRepository
   /** Compositions: */
 
   /**
-   * 
    *
-   * @param  tweet 
-
+   *
+   * @param  tweet
    * @return void
    * @access public
    */
   public function insert( $tweet);
 
   /**
-   * 
+   *
    *
    * @return void
    * @access public
@@ -31,20 +30,18 @@ interface ITweetsRepository
   public function listAll();
 
   /**
-   * 
    *
-   * @param  id 
-
+   *
+   * @param  id
    * @return void
    * @access public
    */
   public function findById( $id);
 
   /**
-   * 
    *
-   * @param  category 
-
+   *
+   * @param  category
    * @return void
    * @access public
    */
@@ -52,7 +49,7 @@ interface ITweetsRepository
 
 
 
-
+}
 
 } // end of ITweetsRepository
 ?>
