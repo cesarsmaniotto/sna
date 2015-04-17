@@ -1,11 +1,7 @@
 <?php
 
-use \comunic\social_network_analyzer\model\repository\ITweetsRepository;
-use \comunic\social_network_analyzer\model\repository\IUserRepository;
-use \comunic\social_network_analyzer\model\repository\ICategoriesRepository;
 
-
-namespace comunic\social_network_analyzer\model\repository\{
+namespace comunic\social_network_analyzer\model\repository{
 /**
  * class IRepositoryFactory
  *
@@ -28,7 +24,7 @@ interface IRepositoryFactory
   /**
    *
    *
-   * @return \comunic\social_network_analyzer\model\repository\IUserRepository
+   * @return \comunic\social_network_analyzer\model\repository\IUsersRepository
    * @access public
    */
   public function instantiateUser();

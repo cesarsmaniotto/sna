@@ -1,6 +1,6 @@
 <?php
 
-namespace comunic\social_network_analyzer\model\repository\{
+namespace comunic\social_network_analyzer\model\repository{
 /**
  * class IUsersRepository
  *
@@ -15,7 +15,7 @@ interface IUsersRepository
   /**
    *
    *
-   * @param  user
+   * @param  $user \comunic\social_network_analyzer\entity\User
    * @return void
    * @access public
    */
@@ -24,7 +24,7 @@ interface IUsersRepository
   /**
    *
    *
-   * @param  user
+   * @param  $user \comunic\social_network_analyzer\entity\User
    * @return void
    * @access public
    */
@@ -33,7 +33,7 @@ interface IUsersRepository
   /**
    *
    *
-   * @param int id
+   * @param $id int
    * @return void
    * @access public
    */
@@ -42,8 +42,8 @@ interface IUsersRepository
   /**
    *
    *
-   * @param int id
-   * @return void
+   * @param $id int
+   * @return \comunic\social_network_analyzer\entity\User
    * @access public
    */
   public function findById( $id);
@@ -51,7 +51,8 @@ interface IUsersRepository
   /**
    *
    *
-   * @return void
+   * @return array An array of User instances
+   * @see \comunic\social_network_analyzer\entity\User
    * @access public
    */
   public function listAll();

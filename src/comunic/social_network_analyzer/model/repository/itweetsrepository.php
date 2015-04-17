@@ -1,6 +1,6 @@
 <?php
 
-namespace comunic\social_network_analyzer\model\repository\{
+namespace comunic\social_network_analyzer\model\repository{
 /**
  * class ITweetsRepository
  *
@@ -15,7 +15,7 @@ interface ITweetsRepository
   /**
    *
    *
-   * @param  tweet
+   * @param  $tweet \comunic\social_network_analyzer\model\entity\Tweet
    * @return void
    * @access public
    */
@@ -24,7 +24,8 @@ interface ITweetsRepository
   /**
    *
    *
-   * @return void
+   * @return array An array of Tweet's instances
+   * @see \comunic\social_network_analyzer\model\entity\Tweet
    * @access public
    */
   public function listAll();
@@ -32,17 +33,17 @@ interface ITweetsRepository
   /**
    *
    *
-   * @param  id
-   * @return void
+   * @param  $id
+   * @return \comunic\social_network_analyzer\model\entity\Tweet
    * @access public
    */
   public function findById( $id);
 
   /**
    *
-   *
-   * @param  category
-   * @return void
+   * @param  $category \comunic\social_network_analyzer\model\entity\Category 
+   * @return array An array of Tweet's instances
+   * @see \comunic\social_network_analyzer\model\entity\Tweet
    * @access public
    */
   public function listByCategory( $category);
