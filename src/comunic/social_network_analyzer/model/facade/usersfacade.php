@@ -24,8 +24,8 @@ class UsersFacade
    * @return void
    * @access public
    */
-  public function insert( $user_text,  $parser) {
-  } // end of member function insert
+  public function insert( $user_text,  $parser) {     
+  }
 
   /**
    *
