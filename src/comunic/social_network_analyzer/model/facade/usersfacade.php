@@ -1,11 +1,12 @@
 <?php
-require_once 'comunic/social_network_analyzer/model/entity/parse/IObjectParser.php';
-require_once 'comunic/social_network_analyzer/model/entity/format/IObjectFormatter.php';
 
+use \comunic\social_network_analyzer\model\entity\format\IObjectFormatter;
+use \comunic\social_network_analyzer\model\entity\parse\IObjectParser;
 
+namespace comunic\social_network_analyzer\model\facade{
 /**
  * class UsersFacade
- * 
+ *
  */
 class UsersFacade
 {
@@ -18,12 +19,10 @@ class UsersFacade
 
 
   /**
-   * 
    *
-   * @param string user_text 
-
-   * @param comunic::social_network_analyzer::model::entity::parse::IObjectParser parser 
-
+   *
+   * @param string user_text
+   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser parser
    * @return void
    * @access public
    */
@@ -31,12 +30,10 @@ class UsersFacade
   } // end of member function insert
 
   /**
-   * 
    *
-   * @param string user_text 
-
-   * @param comunic::social_network_analyzer::model::entity::parse::IObjectParser parser 
-
+   *
+   * @param string user_text
+   * @param \comunic\social_network_analyzer\model\entity\parse\IObjectParser parser
    * @return void
    * @access public
    */
@@ -44,23 +41,20 @@ class UsersFacade
   } // end of member function update
 
   /**
-   * 
    *
-   * @param int id 
-
-   * @param comunic::social_network_analyzer::model::entity::format::IObjectFormatter fmt 
-
-   * @return void
+   *
+   * @param int id
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter fmt
+   * @return string
    * @access public
    */
   public function findById( $id,  $fmt) {
   } // end of member function findById
 
   /**
-   * 
    *
-   * @param int id 
-
+   *
+   * @param int id
    * @return void
    * @access public
    */
@@ -68,18 +62,17 @@ class UsersFacade
   } // end of member function delete
 
   /**
-   * 
    *
-   * @param comunic::social_network_analyzer::model::entity::format::IObjectFormatter fmt 
-
-   * @return void
+   *
+   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter fmt
+   * @return string
    * @access public
    */
   public function listAll( $fmt) {
   } // end of member function listAll
 
 
-
+}
 
 
 } // end of UsersFacade

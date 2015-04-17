@@ -1,13 +1,14 @@
 <?php
-require_once 'comunic/social_network_analyzer/model/facade/TweetsFacade.php';
-require_once 'comunic/social_network_analyzer/model/facade/CategoriesFacade.php';
-require_once 'comunic/social_network_analyzer/model/facade/UsersFacade.php';
-require_once 'comunic/social_network_analyzer/model/repository/IRepositoryFactory.php';
 
+use \comunic\social_network_analyzer\model\repository\IRepositoryFactory;
+use \comunic\social_network_analyzer\model\facade\TweetsFacade;
+use \comunic\social_network_analyzer\model\facade\CategoriesFacade;
+use \comunic\social_network_analyzer\model\facade\UsersFacade;
 
+namespace comunic\social_network_analyzer\model\facade{
 /**
  * class FacadeFactory
- * 
+ *
  */
 class FacadeFactory
 {
@@ -19,34 +20,34 @@ class FacadeFactory
    /*** Attributes: ***/
 
   /**
-   * 
+   *
    * @access private
    */
   private $repositoryFactory;
 
 
   /**
-   * 
    *
-   * @return comunic::social_network_analyzer::model::facade::TweetsFacade
+   *
+   * @return \comunic\social_network_analyzer\model\facade\TweetsFacade
    * @access public
    */
   public function instantiateTweets() {
   } // end of member function instantiateTweets
 
   /**
-   * 
    *
-   * @return comunic::social_network_analyzer::model::facade::CategoriesFacade
+   *
+   * @return \comunic\social_network_analyzer\model\facade\CategoriesFacade
    * @access public
    */
   public function instantiateCategories() {
   } // end of member function instantiateCategories
 
   /**
-   * 
    *
-   * @return comunic::social_network_analyzer::model::facade::UsersFacade
+   *
+   * @return \comunic\social_network_analyzer\model\facade\UsersFacade
    * @access public
    */
   public function instantiateUsers() {
@@ -54,7 +55,7 @@ class FacadeFactory
 
 
 
-
+}
 
 } // end of FacadeFactory
 ?>
