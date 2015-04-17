@@ -2,7 +2,7 @@
 
 /**
  * class IObjectParser
- * 
+ *
  */
 
 namespace comunic\social_network_analyzer\model\entity\parse {
@@ -12,10 +12,9 @@ namespace comunic\social_network_analyzer\model\entity\parse {
         /** Compositions: */
 
         /**
-         * 
          *
-         * @param string text 
-
+         *
+         * @param string text
          * @return void
          * @access public
          */

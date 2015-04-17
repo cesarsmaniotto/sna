@@ -2,7 +2,7 @@
 
 /**
  * class IObjectFormatter
- * 
+ *
  */
 
 namespace comunic\social_network_analyzer\model\entity\format {
@@ -12,10 +12,9 @@ namespace comunic\social_network_analyzer\model\entity\format {
         /** Compositions: */
 
         /**
-         * 
          *
-         * @param  obj 
-
+         *
+         * @param  obj
          * @return string
          * @access public
          */
