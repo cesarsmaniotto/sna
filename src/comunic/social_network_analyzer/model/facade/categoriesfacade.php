@@ -34,7 +34,7 @@ namespace comunic\social_network_analyzer\model\facade {
          */
         public function insert($categorie_text, $parser) {
             $category = $parser->parse($categorie_text);
-            $repository->insert($category);
+            $this->repository->insert($category);
         }
 
 // end of member function insert
@@ -49,7 +49,7 @@ namespace comunic\social_network_analyzer\model\facade {
          */
         public function update($categorie_text, $parser) {
             $category = $parser->parse($categorie_text);
-            $repository->update($category);
+            $this->repository->update($category);
         }
 
 // end of member function update
@@ -63,7 +63,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function findById($id, $fmt) {
-            return $fmt->format($repository->findById($id));
+            return $fmt->format($this->repository->findById($id));
         }
 
 // end of member function findById
@@ -76,7 +76,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function delete($id) {
-            $repository->delete($id);
+           $this->repository->delete($id);
         }
 
 // end of member function delete
@@ -89,7 +89,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function listAll($fmt) {
-            return $fmt->format($repository->listAll());
+            return $fmt->format($this->repository->listAll());
         }
 
 // end of member function listAll
