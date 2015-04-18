@@ -4,7 +4,6 @@
 
 namespace comunic\social_network_analyzer\model\facade{
 
-  use \comunic\social_network_analyzer\model\repository\ITweetsRepository;
 /**
  * class TweetsFacade
  *
@@ -40,7 +39,7 @@ function __construct($repository){
   public function insertAll( $text,  $parser) {
     $tweets = $parser->parse($text);
     foreach ($tweets as $tweet) {
-      $repository->insert($tweet);
+      $this->repository->insert($tweet);
     }
   } // end of member function insertAll
 
@@ -53,7 +52,7 @@ function __construct($repository){
    * @access public
    */
   public function findById( $id,  $fmt) {
-    return $fmt->format($repository->findById($id));
+    return $fmt->format($this->repository->findById($id));
   } // end of member function findById
 
   /**
@@ -67,7 +66,8 @@ function __construct($repository){
    */
   public function listByCategory( $text_cat,  $parser,  $fmt) {
     $category = $parser->parse($text_cat);
-    return $fmt->format($category);
+    $tweets=$this->repository->listByCategory($category);
+    return $fmt->format($tweets);
   } // end of member function listByCategory
 
   /**
@@ -78,7 +78,7 @@ function __construct($repository){
    * @access public
    */
   public function listAll( $fmt) {
-    return $fmt->format($repository->listAll());
+    return $fmt->format($this->repository->listAll());
   } // end of member function listAll
 
 
