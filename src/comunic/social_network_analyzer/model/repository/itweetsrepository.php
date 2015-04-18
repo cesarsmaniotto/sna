@@ -15,7 +15,7 @@ interface ITweetsRepository
   /**
    *
    *
-   * @param  $tweet \comunic\social_network_analyzer\model\entity\Tweet
+   * @param  \comunic\social_network_analyzer\model\entity\Tweet $tweet 
    * @return void
    * @access public
    */
@@ -41,7 +41,7 @@ interface ITweetsRepository
 
   /**
    *
-   * @param  $category \comunic\social_network_analyzer\model\entity\Category 
+   * @param \comunic\social_network_analyzer\model\entity\Category  $category  
    * @return array An array of Tweet's instances
    * @see \comunic\social_network_analyzer\model\entity\Tweet
    * @access public

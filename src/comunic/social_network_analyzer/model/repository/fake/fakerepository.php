@@ -11,19 +11,17 @@ namespace comunic\social_network_analyzer\model\repository\fake {
      */
     class FakeRepository implements IRepositoryFactory {
 
-        
         public function instantiateCategory() {
-            
+            return new CategoriesRepository();
         }
 
         public function instantiateTweet() {
-            
+            return new TweetsRepository();
         }
 
         public function instantiateUser() {
-            
+            return new UserRepository();
         }
-        
 
 //put your code here
     }
