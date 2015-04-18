@@ -1,9 +1,7 @@
 <?php
 namespace comunic\social_network_analyzer\model\facade {
 
-    use \comunic\social_network_analyzer\model\facade\TweetsFacade;
-    use \comunic\social_network_analyzer\model\facade\CategoriesFacade;
-    use \comunic\social_network_analyzer\model\facade\UsersFacade;
+  
 
     /**
      * class FacadeFactory
@@ -18,7 +16,7 @@ namespace comunic\social_network_analyzer\model\facade {
          *
          *  */
 
-        public function __construct($repositoryFactory=null/*retirar valor null*/) {
+        public function __construct($repositoryFactory) {
             $this->repositoryFactory = $repositoryFactory;
         }
 
@@ -29,7 +27,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function instantiateTweets() {
-            return new TweetsFacade();
+            return new TweetsFacade($this->repositoryFactory->instantiateTweet());
         }
 
 // end of member function instantiateTweets
@@ -41,7 +39,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function instantiateCategories() {
-            return new CategoriesFacade();
+            return new CategoriesFacade($this->repositoryFactory->instantiateCategory());
         }
 
 // end of member function instantiateCategories
@@ -53,7 +51,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function instantiateUsers() {
-            return new UsersFacade();
+            return new UsersFacade($this->repositoryFactory->instantiateUser());
         }
 
 // end of member function instantiateUsers
