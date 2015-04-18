@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace comunic\social_network_analyzer\model\repository\fake {
 
@@ -18,11 +13,13 @@ namespace comunic\social_network_analyzer\model\repository\fake {
     class CategoriesRepository implements ICategoriesRepository {
 
         private $dados;
+     
 
         function __construct() {
-            $this->dados = new CommunFakeBehavior();
+                $this->dados = new DiskRepository('catagories.fakedata');
         }
 
+        
         public function delete($id) {
             $this->dados->delete($id);
         }
@@ -31,15 +28,9 @@ namespace comunic\social_network_analyzer\model\repository\fake {
             return $this->dados->findById($id);
         }
 
-        /**
-         *
-         *
-         * @param  $category \comunic\social_network_analyzer\model\entity\Category
-         * @return void
-         * @access public
-         */
+        
         public function insert($category) {
-            $this->dados->insert($category->getId(),$category);
+            $this->dados->insert( $category);
         }
 
         public function listAll() {
@@ -47,10 +38,9 @@ namespace comunic\social_network_analyzer\model\repository\fake {
         }
 
         public function update($category) {
-            $this->dados->update($category->getId(),$category);
+            $this->dados->update($category);
         }
 
-//put your code here
     }
 
 }
