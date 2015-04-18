@@ -13,7 +13,7 @@ namespace comunic\social_network_analyzer\model\facade {
 
         private $repositoryFactory;
 
-        /*
+        /**
          * @param \comunic\social_network_analyzer\model\repository\IRepositoryFactory $repositoryFactory
          *
          *  */
