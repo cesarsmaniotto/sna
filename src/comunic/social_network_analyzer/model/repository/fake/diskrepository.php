@@ -9,7 +9,7 @@ namespace comunic\social_network_analyzer\model\repository\fake {
         private $dataFile;
 
         public function __construct($dataFile) {
-            $this->dataFile = __DIR__ . DIRECTORY_SEPARATOR . 'dados' . DIRECTORY_SEPARATOR . $dataFile;
+            $this->dataFile = __DIR__ . DIRECTORY_SEPARATOR . $dataFile;
         }
 
         public function delete($id) {
