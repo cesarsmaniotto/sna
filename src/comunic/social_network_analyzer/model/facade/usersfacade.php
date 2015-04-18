@@ -3,7 +3,7 @@
 
 namespace comunic\social_network_analyzer\model\facade{
 
-  use \comunic\social_network_analyzer\model\repository\IUserRepository;
+    
 /**
  * class UsersFacade
  *
@@ -20,7 +20,7 @@ class UsersFacade
   private $repository;
 
 /**
-* @param \comunic\social_network_analyzer\model\repository\IUserRepository $repository
+* @param \comunic\social_network_analyzer\model\repository\IUsersRepository $repository
 * @access public
 */
 
@@ -40,7 +40,7 @@ public function __construct($repository){
 
   public function insert( $user_text,  $parser) {
     $user = $parser->parse($user_text);
-    $repository->insert($user);
+    $this->repository->insert($user);
 
 
   } // end of member function insert
@@ -55,7 +55,7 @@ public function __construct($repository){
    */
   public function update( $user_text,  $parser) {
     $user = $parser->parse($user_text);
-    $repository->update($user);
+    $this->repository->update($user);
   } // end of member function update
 
   /**
@@ -67,7 +67,7 @@ public function __construct($repository){
    * @access public
    */
   public function findById( $id,  $fmt) {
-    return $fmt->format($repository->findById($id));
+    return $fmt->format($this->repository->findById($id));
   } // end of member function findById
 
   /**
@@ -78,7 +78,7 @@ public function __construct($repository){
    * @access public
    */
   public function delete( $id) {
-    $repository->delete($id);
+    $this->repository->delete($id);
   } // end of member function delete
 
   /**
@@ -89,7 +89,7 @@ public function __construct($repository){
    * @access public
    */
   public function listAll( $fmt) {
-    return $fmt->format($repository->listAll());
+    return $fmt->format($this->repository->listAll());
   } // end of member function listAll
 
 
