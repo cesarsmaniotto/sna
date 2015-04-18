@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -13,6 +9,22 @@ and open the template in the editor.
         <?php
         require_once './src/autoload.php';
 
+        use comunic\social_network_analyzer\model\facade\FacadeFactory;
+        use comunic\social_network_analyzer\model\repository\fake\FakeRepository;
+
+        $repositoryFactory = new FakeRepository();
+        $ffact = new FacadeFactory($repositoryFactory);
+
+        $catF = $ffact->instantiateCategories();
+        $twF = $ffact->instantiateTweets();
+        $usF = $ffact->instantiateUsers();
+
+        echo var_dump($catF);
+        echo var_dump($twF);
+        echo var_dump($usF);
+      
+
+        echo "fim <br>";
         ?>
     </body>
 </html>
