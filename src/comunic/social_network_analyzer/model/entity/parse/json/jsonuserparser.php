@@ -17,8 +17,13 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
             $jsonUser = \json_decode($text);
             $user = new User();
 
-            $user->setId($jsonUser->id);
-            $user->setName($jsonUser->name);
+            if (isset($jsonUser->id)) {
+                $user->setId($jsonUser->id);
+            }
+
+            if (isset($jsonUser->name)) {
+                $user->setName($jsonUser->name);
+            }
 
 
             return $user;
