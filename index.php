@@ -1,30 +1,28 @@
-<!DOCTYPE html>
+<?php
 
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <?php
-        require_once './src/autoload.php';
+require_once './src/autoload.php';
 
-        use comunic\social_network_analyzer\model\facade\FacadeFactory;
-        use comunic\social_network_analyzer\model\repository\fake\FakeRepository;
+use comunic\social_network_analyzer\model\facade\FacadeFactory;
+use comunic\social_network_analyzer\model\repository\fake\FakeRepository;
+use comunic\social_network_analyzer\model\entity\parse\json\JsonUserParser;
+use comunic\social_network_analyzer\model\entity\format\json\JsonUserFormatter;
 
-        $repositoryFactory = new FakeRepository();
-        $ffact = new FacadeFactory($repositoryFactory);
+$repositoryFactory = new FakeRepository();
+$ffact = new FacadeFactory($repositoryFactory);
 
-        $catF = $ffact->instantiateCategories();
-        $twF = $ffact->instantiateTweets();
-        $usF = $ffact->instantiateUsers();
 
-        echo var_dump($catF);
-        echo var_dump($twF);
-        echo var_dump($usF);
-      
+$usF = $ffact->instantiateUsers();
 
-        echo "fim <br>";
-        ?>
-    </body>
-</html>
+
+$parser = new JsonUserParser();
+$fmt = new JsonUserFormatter();
+
+
+$usF->insert(\json_encode(array("name"=>"jean carlos")), $parser);
+
+echo $usF->findById(0, $fmt);
+echo "<br>";
+echo $usF->listAll($fmt);
+echo "<br>";
+echo "fim <br>";
+?>
