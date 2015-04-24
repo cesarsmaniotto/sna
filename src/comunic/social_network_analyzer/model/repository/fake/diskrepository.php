@@ -14,6 +14,7 @@ namespace comunic\social_network_analyzer\model\repository\fake {
 
         public function delete($id) {
             $this->loadData();
+            $this->findById($id);
             unset($this->data[$id]);
             $this->storeData();
         }
