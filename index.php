@@ -16,6 +16,7 @@ use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatt
 
 
 use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
+use comunic\social_network_analyzer\model\entity\format\json\BasicObjectFormatter;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 
 $restapp = new Slim();
@@ -31,17 +32,38 @@ $restapp->get('/tudo', function()  {
 });
 
 $restapp->get('/user/json/:id', function($id) use($usF) {
-    echo $usF->findById($id, new JsonUserFormatter());
+    echo $usF->findById($id, new BasicObjectFormatter(function($obj) {
+
+            return
+                    array(
+                        "id" => $obj->getId(),
+                        "name" => $obj->getName()
+            );
+        }));
 });
 
 $restapp->get('/user/json', function() use($usF) {
-    echo $usF->listAll(new JsonUserFormatter());
+    echo $usF->listAll(new BasicObjectFormatter(function($obj) {
+
+            return
+                    array(
+                        "id" => $obj->getId(),
+                        "name" => $obj->getName()
+            );
+        }));
 });
 
 
 $restapp->post('/user/json', function() use($usF, $restapp) {
 
-    $usF->insert($restapp->request()->getBody(), new JsonUserParser());
+    $usF->insert($restapp->request()->getBody(),new BasicObjectFormatter(function($obj) {
+
+            return
+                    array(
+                        "id" => $obj->getId(),
+                        "name" => $obj->getName()
+            );
+        }));
 });
 
 

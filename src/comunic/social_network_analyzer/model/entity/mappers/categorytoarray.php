@@ -1,6 +1,6 @@
 <?php
 
-namespace comunic\social_network_analyzer\model\repository\mongo\mappers{
+namespace comunic\social_network_analyzer\model\entity\mappers{
 
     class CategoryToArray{
 

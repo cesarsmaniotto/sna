@@ -4,8 +4,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
 use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
 use \comunic\social_network_analyzer\model\repository\ICategoriesRepository;
-use \comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayToCategory;
-use \comunic\social_network_analyzer\model\repository\mongo\mappers\CategoryToArray;
+use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
+use comunic\social_network_analyzer\model\entity\mappers\CategoryToArray;
 
 class CategoriesRepository implements ICategoriesRepository{
 
