@@ -32,8 +32,8 @@ namespace comunic\social_network_analyzer\model\facade {
          * @return void
          * @access public
          */
-        public function insert($categorie_text, $parser) {
-            $category = $parser->parse($categorie_text);
+        public function insert($category_text, $parser) {
+            $category = $parser->parse($category_text);
             $this->repository->insert($category);
         }
 
@@ -47,8 +47,8 @@ namespace comunic\social_network_analyzer\model\facade {
          * @return void
          * @access public
          */
-        public function update($categorie_text, $parser) {
-            $category = $parser->parse($categorie_text);
+        public function update($category_text, $parser) {
+            $category = $parser->parse($category_text);
             $this->repository->update($category);
         }
 

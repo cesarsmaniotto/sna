@@ -16,6 +16,7 @@ class Category
 
   private $id;
   private $name;
+  private $category;
 
 /**
 * @return $id
@@ -24,7 +25,7 @@ class Category
 
 
 public function getId(){
-    return $this->id;
+  return $this->id;
 }
 
    /**
@@ -33,7 +34,17 @@ public function getId(){
 */
 
 public function getName(){
-    return $this->name;
+  return $this->name;
+}
+
+
+/**
+* @return $keywords
+* @access public
+*/
+
+public function getKeywords(){
+  return $this->keywords;
 }
 
    /**
@@ -43,18 +54,29 @@ public function getName(){
 */
 
 public function setId($id){
-    $this->id = $id;
+  $this->id = $id;
 }
 
    /**
-* @param $id
+* @param $name
 * @return void
 * @access public
 */
 
 public function setName($name){
-    $this->name = $name;
+  $this->name = $name;
 }
+
+   /**
+* @param $keywords
+* @return void
+* @access public
+*/
+
+public function setKeywords($keywords){
+  $this->keywords = $keywords;
+}
+
 
 }
 
