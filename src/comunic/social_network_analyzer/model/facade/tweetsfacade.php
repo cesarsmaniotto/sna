@@ -17,7 +17,7 @@ class TweetsFacade
 
   /*** Attributes: ***/
 
-  private $repository, $categoryRep;
+  private $repositoryTweet, $categoryRep;
 
 /**
 * @param \comunic\social_network_analyzer\model\repository\ITweetsRepository $repository
@@ -25,8 +25,8 @@ class TweetsFacade
 */
 
 
-function __construct($repository, categoryRep){
-  $this->repository = $repository;
+function __construct($repository, $categoryRep){
+  $this->repositoryTweet = $repository;
   $this->categoryRep = $categoryRep;
 }
   /**
@@ -40,7 +40,7 @@ function __construct($repository, categoryRep){
   public function insertAll( $text,  $parser) {
     $tweets = $parser->parse($text);
     foreach ($tweets as $tweet) {
-      $this->repository->insert($tweet);
+      $this->repositoryTweet->insert($tweet);
     }
   } // end of member function insertAll
 
@@ -53,7 +53,7 @@ function __construct($repository, categoryRep){
    * @access public
    */
   public function findById( $id,  $fmt) {
-    return $fmt->format($this->repository->findById($id));
+    return $fmt->format($this->repositoryTweet->findById($id));
   } // end of member function findById
 
   /**
@@ -67,7 +67,7 @@ function __construct($repository, categoryRep){
    */
   public function listByCategory($id_cat, $fmt) {
     $category = $this->categoryRep->findById($id_cat);
-    $tweets=$this->repository->listByCategory($category);
+    $tweets=$this->repositoryTweet->listByCategory($category);
     return $fmt->format($tweets);
   } // end of member function listByCategory
 
@@ -79,7 +79,7 @@ function __construct($repository, categoryRep){
    * @access public
    */
   public function listAll( $fmt) {
-    return $fmt->format($this->repository->listAll());
+    return $fmt->format($this->repositoryTweet->listAll());
   } // end of member function listAll
 
 

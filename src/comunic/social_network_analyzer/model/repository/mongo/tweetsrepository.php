@@ -29,16 +29,9 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             return $this->mongoch->findOne(new ArrayToTweet(), array('_id' => new \MongoId($id)));
         }
 
-<<<<<<< HEAD
-        public function listByCategory($keywords) {
-
-            return $this->mongoch->find(array('text' => array('$in' => $keywords)));
-=======
-        public function listByCategory($category){
+        public function listByCategory($category) {
 
             return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $category->getKeywords())));
-
->>>>>>> inclusao de findByCategory no index
         }
 
     }
