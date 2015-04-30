@@ -3,7 +3,7 @@
 
 namespace comunic\social_network_analyzer\model\repository\mongo\mappers{
 
-    class TweetToArray(){
+    class TweetToArray{
 
         public function __invoke($obj){
 

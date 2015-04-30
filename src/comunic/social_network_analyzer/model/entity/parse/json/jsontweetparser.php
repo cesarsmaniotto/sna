@@ -3,7 +3,7 @@
 namespace comunic\social_network_analyzer\model\entity\parse\json{
 
     use \comunic\social_network_analyzer\model\entity\Tweet;
-    use \comunic\social_network_analyzer\model\entity\parse\IObjectParser.php
+    use \comunic\social_network_analyzer\model\entity\parse\IObjectParser;
 
     class JsonTweetParser implements IObjectParser{
 

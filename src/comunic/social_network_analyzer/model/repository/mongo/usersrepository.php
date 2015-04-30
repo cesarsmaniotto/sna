@@ -1,6 +1,6 @@
 <?php
 
-namespace \comunic\social_network_analyzer\model\repository\mongo{
+namespace comunic\social_network_analyzer\model\repository\mongo{
 
     use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
     use \comunic\social_network_analyzer\model\repository\IUsersRepository;
