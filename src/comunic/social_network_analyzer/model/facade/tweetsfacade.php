@@ -17,7 +17,7 @@ class TweetsFacade
 
   /*** Attributes: ***/
 
-  private $repository;
+  private $repository, $categoryRep;
 
 /**
 * @param \comunic\social_network_analyzer\model\repository\ITweetsRepository $repository
@@ -25,8 +25,9 @@ class TweetsFacade
 */
 
 
-function __construct($repository){
+function __construct($repository, categoryRep){
   $this->repository = $repository;
+  $this->categoryRep = $categoryRep;
 }
   /**
    *
@@ -64,8 +65,8 @@ function __construct($repository){
    * @return string
    * @access public
    */
-  public function listByCategory( $text_cat,  $parser,  $fmt) {
-    $category = $parser->parse($text_cat);
+  public function listByCategory($id_cat, $fmt) {
+    $category = $this->categoryRep->findById($id_cat);
     $tweets=$this->repository->listByCategory($category);
     return $fmt->format($tweets);
   } // end of member function listByCategory

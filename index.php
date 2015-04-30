@@ -5,6 +5,7 @@ ini_set('display_errors', true);
 require_once './autoload.php';
 
 use Slim\Slim;
+
 use comunic\social_network_analyzer\model\facade\FacadeFactory;
 use comunic\social_network_analyzer\model\repository\fake\FakeRepository;
 use comunic\social_network_analyzer\model\entity\parse\json\JsonUserParser;
@@ -14,100 +15,55 @@ use comunic\social_network_analyzer\model\repository\mongo\MongoRepository;
 use comunic\social_network_analyzer\model\entity\parse\json\JsonCategoryParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatter;
 
-
 use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\BasicObjectFormatter;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 
 $restapp = new Slim();
 
-$repositoryFactory = new FakeRepository();
-$ffact = new FacadeFactory($repositoryFactory);
-
-$usF = $ffact->instantiateUsers();
-
-
-$restapp->get('/tudo', function()  {
-    require_once 'teste.php';
-});
-
-$restapp->get('/user/json/:id', function($id) use($usF) {
-    echo $usF->findById($id, new BasicObjectFormatter(function($obj) {
-
-            return
-                    array(
-                        "id" => $obj->getId(),
-                        "name" => $obj->getName()
-            );
-        }));
-});
-
-$restapp->get('/user/json', function() use($usF) {
-    echo $usF->listAll(new BasicObjectFormatter(function($obj) {
-
-            return
-                    array(
-                        "id" => $obj->getId(),
-                        "name" => $obj->getName()
-            );
-        }));
-});
-
-
-$restapp->post('/user/json', function() use($usF, $restapp) {
-
-    $usF->insert($restapp->request()->getBody(),new BasicObjectFormatter(function($obj) {
-
-            return
-                    array(
-                        "id" => $obj->getId(),
-                        "name" => $obj->getName()
-            );
-        }));
-});
-
-
-
-
 
  $mongo = new MongoRepository();
  $mfact = new FacadeFactory($mongo);
 
- $cat_mongo = $mfact->instantiateCategories();
+ $categoryFacade = $mfact->instantiateCategories();
 
-$restapp->get('/categories/json', function() use ($cat_mongo){
+$restapp->get('/categories/json', function() use ($categoryFacade){
 
-    echo $cat_mongo->listAll(new JsonCategoryFormatter());
+    echo $categoryFacade->listAll(new JsonCategoryFormatter());
 });
 
-$restapp->get('/categories/:id/json', function($id) use ($cat_mongo){
+$restapp->get('/categories/json/:id', function($id) use ($categoryFacade){
 
-    echo $cat_mongo->findById($id,new JsonCategoryFormatter());
+    echo $categoryFacade->findById($id,new JsonCategoryFormatter());
 });
 
-$restapp->post('/categories/json', function() use ($cat_mongo,$restapp){
+$restapp->post('/categories/json', function() use ($categoryFacade,$restapp){
 
-    echo $cat_mongo->insert($restapp->request()->getBody(),new JsonCategoryParser());
+    echo $categoryFacade->insert($restapp->request()->getBody(),new JsonCategoryParser());
 });
 
-$restapp->put('/categories/json', function() use ($cat_mongo,$restapp){
+$restapp->put('/categories/json', function() use ($categoryFacade,$restapp){
 
-    echo $cat_mongo->update($restapp->request()->getBody(),new JsonCategoryParser());
+    echo $categoryFacade->update($restapp->request()->getBody(),new JsonCategoryParser());
 });
 
-$restapp->delete('/categories/:id/json', function($id) use ($cat_mongo){
+$restapp->delete('/categories/json/:id', function($id) use ($categoryFacade){
 
-    echo $cat_mongo->delete($id);
+    echo $categoryFacade->delete($id);
 });
 
-$twt_mongo = $mfact->instantiateTweets();
+$tweetFacade = $mfact->instantiateTweets();
 
-$restapp->get('/tweets/json' , function() use($twt_mongo){
-    echo $twt_mongo->listAll(new JsonTweetFormatter());
+$restapp->get('/tweets/json' , function() use($tweetFacade){
+    echo $tweetFacade->listAll(new JsonTweetFormatter());
 });
 
-$restapp->get('/tweets/:id/json' , function($id) use($twt_mongo){
-    echo $twt_mongo->findById($id,new JsonTweetFormatter());
+$restapp->get('/tweets/json/:id' , function($id) use($tweetFacade){
+    echo $tweetFacade->findById($id,new JsonTweetFormatter());
+});
+
+$restapp->get('/tweets/json/find_by_category/:idCat' , function($idCat) use($tweetFacade){
+    echo $tweetFacade->findByCategory($idCat,new JsonTweetFormatter());
 });
 
 $restapp->run();

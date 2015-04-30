@@ -15,7 +15,7 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
             $tweet->setText($arrayData['text']);
             $tweet->setToUserId($arrayData['toUserId']);
             $tweet->setFromUser($arrayData['fromUser']);
-            $tweet->setIdTweet($arrayData['fromUserId']);
+            $tweet->setIdTweet($arrayData['idTweet']);
             $tweet->setFromUserId($arrayData['fromUserId']);
             $tweet->setIsoLanguageCode($arrayData['isoLanguageCode']);
             $tweet->setSource($arrayData['source']);
