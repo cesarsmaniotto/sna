@@ -9,28 +9,72 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
 
         public function parse($text){
 
-            $arrayData = \json_decode($text,true);
+            $data = \json_decode($text);
+
+            $tweets = array();
+
+            foreach ($data as $item) {
+                $tweets[]=$this->createObject($item);
+            }
+
+           return $tweets;
+
+
+
+        }
+
+        private function createObject($jsonObj){
 
             $tweet = new Tweet();
 
-            $tweet->setId($arrayData['id']);
-            $tweet->setText($arrayData['text']);
-            $tweet->setToUserId($arrayData['toUserId']);
-            $tweet->setFromUser($arrayData['fromUser']);
-            $tweet->setIdTweet($arrayData['idTweet']);
-            $tweet->setFromUserId($arrayData['fromUserId']);
-            $tweet->setIsoLanguageCode($arrayData['isoLanguageCode']);
-            $tweet->setSource($arrayData['source']);
-            $tweet->setProfileImageUrl($arrayData['profileImageUrl']);
-            $tweet->setGeoType($arrayData['geoType']);
-            $tweet->setGeoCoordinates0($arrayData['geoCoordinates0']);
-            $tweet->setGeoCoordinates1($arrayData['geoCoordinates1']);
-            $tweet->setCreatedAt($arrayData['createdAt']);
-            $tweet->setTime($arrayData['time']);
+
+            if(isset($jsonObj->id)){
+                $tweet->setId($jsonObj->id); 
+            }
+            if(isset($jsonObj->text)){
+                $tweet->setText($jsonObj->text);    
+            }
+            if(isset($jsonObj->toUserId)){
+                $tweet->setToUserId($jsonObj->toUserId);  
+            }
+            if(isset($jsonObj->fromUser)){
+                $tweet->setFromUser($jsonObj->fromUser);
+            }
+            if(isset($jsonObj->idTweet)){
+               $tweet->setIdTweet($jsonObj->idTweet); 
+            }
+            if(isset($jsonObj->fromUserId)){
+                $tweet->setFromUserId($jsonObj->fromUserId);
+            }
+            if(isset($jsonObj->isoLanguageCode)){
+                $tweet->setIsoLanguageCode($jsonObj->isoLanguageCode);
+            }
+            if(isset($jsonObj->source)){
+                $tweet->setSource($jsonObj->source);
+            }
+            if(isset($jsonObj->profileImageUrl)){
+               $tweet->setProfileImageUrl($jsonObj->profileImageUrl); 
+            }
+            if(isset($jsonObj->geoType)){
+                $tweet->setGeoType($jsonObj->geoType);
+            }
+            if(isset($jsonObj->geoCoordinates0)){
+                $tweet->setGeoCoordinates0($jsonObj->geoCoordinates0);
+            }
+            if(isset($jsonObj->geoCoordinates1)){
+                $tweet->setGeoCoordinates0($jsonObj->geoCoordinates1);
+            }
+            if(isset($jsonObj->createdAt)){
+               $tweet->setCreatedAt($jsonObj->createdAt); 
+            }
+            if(isset($jsonObj->time)){
+                $tweet->setTime($jsonObj->time);
+            }
+            
+            
+            
 
             return $tweet;
-
-
 
         }
 

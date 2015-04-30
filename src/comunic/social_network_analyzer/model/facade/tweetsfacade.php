@@ -17,7 +17,8 @@ class TweetsFacade
 
   /*** Attributes: ***/
 
-  private $repositoryTweet, $categoryRep;
+  private $repositoryTweet;
+  private $categoryRep;
 
 /**
 * @param \comunic\social_network_analyzer\model\repository\ITweetsRepository $repository

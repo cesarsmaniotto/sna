@@ -11,9 +11,9 @@ namespace comunic\social_network_analyzer\model\entity\format\json{
 
             if(\is_array($obj)){
 
-                foreach ($obj as $item) {
+                $data = array();
 
-                    $data = array();
+                foreach ($obj as $item) {                 
 
                     $data[]=$this->toMap($item);
 

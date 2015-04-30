@@ -16,6 +16,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
         }
 
         public function insert($tweet) {
+
+            return $this->mongoch->save($tweet ,new TweetToArray());
             
         }
 

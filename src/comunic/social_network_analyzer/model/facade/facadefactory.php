@@ -27,7 +27,7 @@ namespace comunic\social_network_analyzer\model\facade {
          * @access public
          */
         public function instantiateTweets() {
-            return new TweetsFacade($this->repositoryFactory->instantiateTweet());
+            return new TweetsFacade($this->repositoryFactory->instantiateTweet(), $this->repositoryFactory->instantiateCategory());
         }
 
 // end of member function instantiateTweets

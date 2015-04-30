@@ -66,6 +66,10 @@ $restapp->get('/tweets/json/find_by_category/:idCat' , function($idCat) use($twe
     echo $tweetFacade->findByCategory($idCat,new JsonTweetFormatter());
 });
 
+$restapp->post('/tweets/json' , function() use($tweetFacade, $restapp){
+    echo $tweetFacade->insertAll($restapp->request()->getBody(),new JsonTweetParser());
+});
+
 $restapp->run();
 
 
