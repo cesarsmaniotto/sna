@@ -14,6 +14,10 @@ use comunic\social_network_analyzer\model\repository\mongo\MongoRepository;
 use comunic\social_network_analyzer\model\entity\parse\json\JsonCategoryParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatter;
 
+
+use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
+use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
+
 $restapp = new Slim();
 
 $repositoryFactory = new FakeRepository();
@@ -56,7 +60,7 @@ $restapp->get('/categories/json', function() use ($cat_mongo){
 
 $restapp->get('/categories/:id/json', function($id) use ($cat_mongo){
 
-    echo $cat_mongo->findById(new JsonCategoryFormatter());
+    echo $cat_mongo->findById($id,new JsonCategoryFormatter());
 });
 
 $restapp->post('/categories/json', function() use ($cat_mongo,$restapp){
@@ -72,6 +76,16 @@ $restapp->put('/categories/json', function() use ($cat_mongo,$restapp){
 $restapp->delete('/categories/:id/json', function($id) use ($cat_mongo){
 
     echo $cat_mongo->delete($id);
+});
+
+$twt_mongo = $mfact->instantiateTweets();
+
+$restapp->get('/tweets/json' , function() use($twt_mongo){
+    echo $twt_mongo->listAll(new JsonTweetFormatter());
+});
+
+$restapp->get('/tweets/:id/json' , function($id) use($twt_mongo){
+    echo $twt_mongo->findById($id,new JsonTweetFormatter());
 });
 
 $restapp->run();

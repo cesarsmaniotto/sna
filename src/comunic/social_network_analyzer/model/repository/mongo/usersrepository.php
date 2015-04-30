@@ -2,7 +2,7 @@
 
 namespace \comunic\social_network_analyzer\model\repository\mongo{
 
-    use \comunic\social_network_analyzer\model\repository\mongo\MongoConnectionHandler;
+    use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
     use \comunic\social_network_analyzer\model\repository\IUsersRepository;
 
 
@@ -11,7 +11,7 @@ namespace \comunic\social_network_analyzer\model\repository\mongo{
         private $mongoch;
 
         function __construct(){
-            $this->mongoch = new MongoConnectionHandler('users');
+            $this->mongoch = new MongoCollectionHandler('users');
         }
 
         public function insert($user){
