@@ -18,7 +18,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
         public function insert($tweet) {
 
             return $this->mongoch->save($tweet ,new TweetToArray());
-            
+
         }
 
         public function listAll() {
@@ -31,9 +31,16 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             return $this->mongoch->findOne(new ArrayToTweet(), array('_id' => new \MongoId($id)));
         }
 
-        public function listByCategory($category) {
+        public function findByCategory($category) {
+            $keywords = $category->getKeywords();
+            $keywordsAsRegex = array();
 
-            return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $category->getKeywords())));
+            foreach ($keywords as $keyword) {
+                $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/');
+            }
+
+            return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $keywordsAsRegex)));
+
         }
 
     }

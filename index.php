@@ -70,6 +70,12 @@ $restapp->post('/tweets/json' , function() use($tweetFacade, $restapp){
     echo $tweetFacade->insertAll($restapp->request()->getBody(),new JsonTweetParser());
 });
 
+
+$restapp->get('/testte/' , function(){
+    require_once 'teste.php';
+});
+
+
 $restapp->run();
 
 

@@ -29,7 +29,9 @@ namespace comunic\social_network_analyzer\model\entity\format\json{
 
                 'id' => $obj->getId(),
                 'name' => $obj->getName(),
-                'keywords' => $obj->getKeywords()
+                'keywords' => $obj->getKeywords(),
+                'included' => $obj->getIncluded(),
+                'excluded' => $obj->getExcluded()
 
                 );
 

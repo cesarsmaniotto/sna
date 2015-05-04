@@ -15,7 +15,7 @@ interface ITweetsRepository
   /**
    *
    *
-   * @param  \comunic\social_network_analyzer\model\entity\Tweet $tweet 
+   * @param  \comunic\social_network_analyzer\model\entity\Tweet $tweet
    * @return void
    * @access public
    */
@@ -41,12 +41,12 @@ interface ITweetsRepository
 
   /**
    *
-   * @param \comunic\social_network_analyzer\model\entity\Category  $category  
+   * @param \comunic\social_network_analyzer\model\entity\Category  $category
    * @return array An array of Tweet's instances
    * @see \comunic\social_network_analyzer\model\entity\Tweet
    * @access public
    */
-  public function listByCategory( $category);
+  public function findByCategory( $category);
 
 
 

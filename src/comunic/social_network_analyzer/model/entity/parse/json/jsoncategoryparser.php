@@ -24,6 +24,14 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
                 $category->setKeywords($jsonCat->keywords);
             }
 
+            if(isset($jsonCat->included)){
+                $category->setIncluded($jsonCat->included);
+            }
+
+            if(isset($jsonCat->excluded)){
+                $category->setExcluded($jsonCat->excluded);
+            }
+
             return $category;
 
         }
