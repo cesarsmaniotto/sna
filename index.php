@@ -5,79 +5,81 @@ ini_set('display_errors', true);
 require_once './autoload.php';
 
 use Slim\Slim;
-
 use comunic\social_network_analyzer\model\facade\FacadeFactory;
-use comunic\social_network_analyzer\model\repository\fake\FakeRepository;
-use comunic\social_network_analyzer\model\entity\parse\json\JsonUserParser;
-use comunic\social_network_analyzer\model\entity\format\json\JsonUserFormatter;
-
 use comunic\social_network_analyzer\model\repository\mongo\MongoRepository;
 use comunic\social_network_analyzer\model\entity\parse\json\JsonCategoryParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatter;
-
 use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
-use comunic\social_network_analyzer\model\entity\format\json\BasicObjectFormatter;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
+use comunic\social_network_analyzer\model\entity\parse\csv\CSVTweetParser;
 
 $restapp = new Slim();
 
 
- $mongo = new MongoRepository();
- $mfact = new FacadeFactory($mongo);
+$mongo = new MongoRepository();
+$mfact = new FacadeFactory($mongo);
 
- $categoryFacade = $mfact->instantiateCategories();
+$categoryFacade = $mfact->instantiateCategories();
 
-$restapp->get('/categories/json', function() use ($categoryFacade){
+$restapp->get('/categories/json', function() use ($categoryFacade) {
 
     echo $categoryFacade->listAll(new JsonCategoryFormatter());
 });
 
-$restapp->get('/categories/json/:id', function($id) use ($categoryFacade){
+$restapp->get('/categories/json/:id', function($id) use ($categoryFacade) {
 
-    echo $categoryFacade->findById($id,new JsonCategoryFormatter());
+    echo $categoryFacade->findById($id, new JsonCategoryFormatter());
 });
 
-$restapp->post('/categories/json', function() use ($categoryFacade,$restapp){
+$restapp->post('/categories/json', function() use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->insert($restapp->request()->getBody(),new JsonCategoryParser());
+    echo $categoryFacade->insert($restapp->request()->getBody(), new JsonCategoryParser());
 });
 
-$restapp->put('/categories/json', function() use ($categoryFacade,$restapp){
+$restapp->put('/categories/json', function() use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->update($restapp->request()->getBody(),new JsonCategoryParser());
+    echo $categoryFacade->update($restapp->request()->getBody(), new JsonCategoryParser());
 });
 
-$restapp->delete('/categories/json/:id', function($id) use ($categoryFacade){
+$restapp->delete('/categories/json/:id', function($id) use ($categoryFacade) {
 
     echo $categoryFacade->delete($id);
 });
 
 $tweetFacade = $mfact->instantiateTweets();
 
-$restapp->get('/tweets/json' , function() use($tweetFacade){
+$restapp->get('/tweets/json', function() use($tweetFacade) {
     echo $tweetFacade->listAll(new JsonTweetFormatter());
 });
 
-$restapp->get('/tweets/json/:id' , function($id) use($tweetFacade){
-    echo $tweetFacade->findById($id,new JsonTweetFormatter());
+$restapp->get('/tweets/json/:id', function($id) use($tweetFacade) {
+    echo $tweetFacade->findById($id, new JsonTweetFormatter());
 });
 
-$restapp->get('/tweets/json/find_by_category/:idCat' , function($idCat) use($tweetFacade){
-    echo $tweetFacade->findByCategory($idCat,new JsonTweetFormatter());
+$restapp->get('/tweets/json/find_by_category/:idCat', function($idCat) use($tweetFacade) {
+    echo $tweetFacade->findByCategory($idCat, new JsonTweetFormatter());
 });
 
-$restapp->post('/tweets/json' , function() use($tweetFacade, $restapp){
-    echo $tweetFacade->insertAll($restapp->request()->getBody(),new JsonTweetParser());
+$restapp->post('/tweets/json', function() use($tweetFacade, $restapp) {
+    echo $tweetFacade->insertAll($restapp->request()->getBody(), new JsonTweetParser());
 });
 
 
-$restapp->get('/testte/' , function(){
+$restapp->post('/tweets/csv_to_json', function()use($restapp) {
+    $parserT = new CSVTweetParser();
+    $formatter=new JsonTweetFormatter();
+    
+    $tweets = $parserT->parse($restapp->request()->getBody());
+    echo $formatter->format($tweets);
+});
+
+
+$restapp->get('/testte/', function() {
     require_once 'teste.php';
 });
 
 
+
+
 $restapp->run();
-
-
-
 ?>
