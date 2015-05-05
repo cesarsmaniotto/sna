@@ -33,7 +33,8 @@ $restapp->get('/categories/json/:id', function($id) use ($categoryFacade) {
 
 $restapp->post('/categories/json', function() use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->insert($restapp->request()->getBody(), new JsonCategoryParser());
+    $categoryFacade->insert($restapp->request()->getBody(), new JsonCategoryParser());
+    echo "Categoria adicionada com sucesso.";
 });
 
 $restapp->put('/categories/json', function() use ($categoryFacade, $restapp) {
