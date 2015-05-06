@@ -44,7 +44,8 @@ $restapp->put('/categories/json', function() use ($categoryFacade, $restapp) {
 
 $restapp->delete('/categories/json/:id', function($id) use ($categoryFacade) {
 
-    echo $categoryFacade->delete($id);
+    $categoryFacade->delete($id);
+    echo "Categoria removida com sucesso.";
 });
 
 $tweetFacade = $mfact->instantiateTweets();
@@ -62,16 +63,18 @@ $restapp->get('/tweets/json/find_by_category/:idCat', function($idCat) use($twee
 });
 
 $restapp->post('/tweets/json', function() use($tweetFacade, $restapp) {
-    echo $tweetFacade->insertAll($restapp->request()->getBody(), new JsonTweetParser());
+   $tweetFacade->insertAll($restapp->request()->getBody(), new JsonTweetParser());
+   echo "Tweets importados com sucesso.";
 });
 
 
 $restapp->post('/tweets/csv_to_json', function()use($restapp) {
     $parserT = new CSVTweetParser();
-    $formatter=new JsonTweetFormatter();
-    
+    $formatter = new JsonTweetFormatter();
+
     $tweets = $parserT->parse($restapp->request()->getBody());
-    echo $formatter->format($tweets);
+    
+    $restapp->response()->setBody($formatter->format($tweets));
 });
 
 

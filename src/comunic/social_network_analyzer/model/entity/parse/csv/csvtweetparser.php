@@ -35,6 +35,7 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv {
             $cvsDataArray = \explode("\n", $cvsData);
 
             $fieldNames = \str_getcsv(\trim($cvsDataArray[0]), "|");
+
             unset($cvsDataArray[0]);
 
             $csvData = array();
@@ -43,16 +44,27 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv {
 
                 $csvRowArray = \str_getcsv(\trim($csvRow), "|");
 
-
                 $rowDataMap = array();
-                for ($i = 0; $i < \count($fieldNames); $i++) {
-                    $f_name = $fieldNames[$i];
-                    $csv_fd_data = $csvRowArray[$i];
-                    $rowDataMap[$f_name] = $csv_fd_data;
-                }
+//                try {
 
-                $csvData[] = parseTeste($rowDataMap);
+                    if (\count($fieldNames) == \count($csvRowArray)) {
+
+
+
+                        for ($i = 0; $i < \count($fieldNames); $i++) {
+                            $f_name = $fieldNames[$i];
+                            $csv_fd_data = $csvRowArray[$i];
+                            $rowDataMap[$f_name] = $csv_fd_data;
+                        }
+
+                        $csvData[] = parseTeste($rowDataMap);
+                    }
+//                } catch (\Exception $err) {
+//                    echo \var_dump($csvRowArray);
+//                    throw $err;
+//                }
             }
+
 
 
             return $csvData;
