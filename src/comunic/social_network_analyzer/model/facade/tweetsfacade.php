@@ -84,6 +84,16 @@ function __construct($repository, $categoryRep){
   } // end of member function listAll
 
 
+  public function listInAnInterval($fmt, $initial, $final){
+    return $fmt->format($this->repositoryTweet->listInAnInterval($initial, $final));
+  }
+
+public function findbyCategoryInAnInterval($id_cat, $fmt, $initial, $final){
+    $category = $this->categoryRep->findById($id_cat);
+    $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($category, $initial, $final);
+    return $fmt->format($tweets);
+}
+
 }
 
 

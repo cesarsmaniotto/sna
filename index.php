@@ -73,8 +73,16 @@ $restapp->post('/tweets/csv_to_json', function()use($restapp) {
     $formatter = new JsonTweetFormatter();
 
     $tweets = $parserT->parse($restapp->request()->getBody());
-    
+
     $restapp->response()->setBody($formatter->format($tweets));
+});
+
+$restapp->get('/tweets/json/:initial/:final', function($initial, $final) use($tweetFacade) {
+    echo $tweetFacade->listInAnInterval(new JsonTweetFormatter(), $initial, $final);
+});
+
+$restapp->get('/tweets/json/find_by_category/:idCat/:initial/:final', function($initial, $final) use($tweetFacade) {
+    echo $tweetFacade->findByCategoryInAnInterval($idCat, new JsonTweetFormatter(), $initial, $final);
 });
 
 

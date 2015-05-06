@@ -39,7 +39,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
         }
 
-        public function findInAInterval($toObjectFunction,$query = array(), $fields=array(), $initial, $final){
+        public function findInAnInterval($initial, $final, $toObjectFunction,$query = array(), $fields=array()){
             $cursor = $this->collection->find($query,$fields);
             $cursor = $cursor->skip($initial);
             $cur=$cursor->limit($final);

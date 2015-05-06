@@ -54,6 +54,8 @@ namespace comunic\social_network_analyzer\model\repository {
          * @access public
          */
         public function listAll();
+
+
     }
 
 } // end of ICategoriesRepository

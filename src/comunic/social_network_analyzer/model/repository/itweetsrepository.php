@@ -49,8 +49,14 @@ interface ITweetsRepository
   public function findByCategory( $category);
 
 
+public function listInAnInterval($initial, $final);
+
+public function findbyCategoryInAnInterval($category, $initial, $final);
+
 
 }
+
+
 
 } // end of ITweetsRepository
 ?>

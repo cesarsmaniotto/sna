@@ -26,6 +26,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             return $this->mongoch->find(new ArrayToTweet());
         }
 
+        public function listInAnInterval($initial, $final){
+            return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet());
+        }
+
         public function findById($id) {
 
             return $this->mongoch->findOne(new ArrayToTweet(), array('_id' => new \MongoId($id)));
@@ -42,6 +46,21 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $keywordsAsRegex)));
 
         }
+
+        public function findbyCategoryInAnInterval($category, $initial, $final){
+
+            $keywords = $category->getKeywords();
+            $keywordsAsRegex = array();
+
+            foreach ($keywords as $keyword) {
+                $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/');
+            }
+
+            return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $keywordsAsRegex)));
+
+        }
+
+
 
     }
 
