@@ -13,6 +13,8 @@ use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 use comunic\social_network_analyzer\model\entity\parse\csv\CSVTweetParser;
 
+use comunic\social_network_analyzer\model\entity\resource\JsonLayout;
+
 $restapp = new Slim();
 
 
@@ -90,7 +92,13 @@ $restapp->get('/testte/', function() {
     require_once 'teste.php';
 });
 
+$layout = new JsonLayout();
 
+$restapp->get('/tweets/layout', function() use($tweetFacade, $layout) {
+
+    echo $layout($tweetFacade->listAll(new JsonTweetFormatter()), 3426,5,20);
+  //  echo $tweetFacade->listAll(new JsonTweetFormatter());
+});
 
 
 $restapp->run();
