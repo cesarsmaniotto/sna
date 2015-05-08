@@ -90,8 +90,8 @@ $restapp->get('/tweets/json/:page/:amount', function($page, $amount) use($tweetF
 
 
 
-$restapp->get('/tweets/json/find_by_category/:idCat/:initial/:final', function($initial, $final) use($tweetFacade) {
-    echo $tweetFacade->findByCategoryInAnInterval($idCat, new JsonTweetFormatter(), $initial, $final);
+$restapp->get('/tweets/json/find_by_category/:idCat/:page/:amount', function($idCat, $page, $amount) use($tweetFacade) {
+   echo $tweetFacade->findbyCategoryInAnInterval($idCat, new JsonPaginator(new TweetToArray()), $page, $amount);
 });
 
 

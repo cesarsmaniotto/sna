@@ -35,7 +35,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             return $this->mongoch->findOne(new ArrayToTweet(), array('_id' => new \MongoId($id)));
         }
 
-        public function findByCategory($category) {
+        private function filterByCategory($category){
             $keywords = $category->getKeywords();
             $keywordsAsRegex = array();
 
@@ -43,20 +43,18 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
                 $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/');
             }
 
-            return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $keywordsAsRegex)));
+            return $keywordsAsRegex;
+        }
+
+        public function findByCategory($category) {
+
+            return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
 
         }
 
         public function findbyCategoryInAnInterval($category, $initial, $final){
 
-            $keywords = $category->getKeywords();
-            $keywordsAsRegex = array();
-
-            foreach ($keywords as $keyword) {
-                $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/');
-            }
-
-            return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $keywordsAsRegex)));
+            return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
 
         }
 
