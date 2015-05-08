@@ -2,50 +2,21 @@
 
 namespace comunic\social_network_analyzer\model\entity\format\json{
 
-    use \comunic\social_network_analyzer\model\entity\format\IObjectFormatter;
+    use \comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
 
+    class JsonTweetFormatter extends BasicObjectFormatter{
 
-    class JsonTweetFormatter implements IObjectFormatter{
+    public function toMap($obj){
 
-        public function format($obj){
+        $funcCategoryToArray = new TweetToArray();
 
-            if(\is_array($obj)){
+            $dados=$funcCategoryToArray($obj);
+            unset($dados['_id']);
+            $dados["id"] = $obj->getId();
+            return $dados;
 
-                $data = array();
+        return $funcTweetToArray($obj);
 
-                foreach ($obj as $item) {                 
-
-                    $data[]=$this->toMap($item);
-
-                }
-
-                return \json_encode($data);
-
-            }
-
-            return \json_encode($this->toMap($obj));
-
-        }
-
-    private function toMap($obj){
-
-        return array(
-                'id' => $obj->getId(),
-                'text' => $obj->getText(),
-                'toUserId' => $obj->getToUserId(),
-                'fromUser' => $obj->getFromUser(),
-                'idTweet' => $obj->getIdTweet(),
-                'fromUserId' => $obj->getFromUserId(),
-                'isoLanguageCode' => $obj->getIsoLanguageCode(),
-                'source' => $obj->getSource(),
-                'profileImageUrl' => $obj->getProfileImageUrl(),
-                'geoType' => $obj->getGeoType(),
-                'geoCoordinates0' => $obj->getGeoCoordinates0(),
-                'geoCoordinates1' => $obj->getGeoCoordinates1(),
-                'createdAt' => $obj->getCreatedAt(),
-                'time' => $obj->getTime()
-
-                );
     }
 }
 

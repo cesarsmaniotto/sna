@@ -2,7 +2,7 @@
 
 namespace comunic\social_network_analyzer\model\repository\mongo{
 
-
+use \comunic\social_network_analyzer\model\entity\Paginator;
 
     class MongoCollectionHandler{
 
@@ -18,9 +18,6 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
         }
 
-        /**
-        * Retorna um cursor para o resultado da consulta, inicialmente retorna apenas 20 documentos
-        */
         public function find($toObjectFunction,$query = array(), $fields=array()){
             $cur=$this->collection->find($query,$fields);
             $outputObject=$this->cursorToObjectArray($toObjectFunction,$cur);
@@ -39,12 +36,19 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
         }
 
-        public function findInAnInterval($initial, $final, $toObjectFunction,$query = array(), $fields=array()){
+        public function findInAnInterval($indPage, $amount, $toObjectFunction,$query = array(), $fields=array()){
+            // $cursor = $this->collection->find($query,$fields);
+            // $cursor = $cursor->skip($initial);
+            // $cur=$cursor->limit($final);
+            // $outputObject=$this->cursorToObjectArray($toObjectFunction,$cur);
+            // return $outputObject;
             $cursor = $this->collection->find($query,$fields);
-            $cursor = $cursor->skip($initial);
-            $cur=$cursor->limit($final);
-            $outputObject=$this->cursorToObjectArray($toObjectFunction,$cur);
-            return $outputObject;
+            $count = $cursor->count();
+            $cursor->skip(($indPage-1 ) * $amount);
+            $cursor->limit($amount);
+            $outputObject = $this->cursorToObjectArray($toObjectFunction, $cursor);
+
+            return new Paginator($outputObject, $count, $indPage, $amount);
         }
 
         //retorna um array com os dados de um documento
@@ -53,6 +57,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
             return $toObjectFunction($arrayData);
 
         }
+
+
 
         public function save($obj, $toArrayDataFunction,$options=array()){
 

@@ -2,38 +2,18 @@
 
 namespace comunic\social_network_analyzer\model\entity\format\json{
 
-    use \comunic\social_network_analyzer\model\entity\format\IObjectFormatter;
+    use \comunic\social_network_analyzer\model\entity\mappers\CategoryToArray;
 
-    class JsonCategoryFormatter implements IObjectFormatter{
+    class JsonCategoryFormatter extends BasicObjectFormatter{
 
-        public function format($obj){
+        public function toMap($obj){
 
-            if(\is_array($obj)){
+            $funcCategoryToArray = new CategoryToArray();
 
-                $data = array();
-
-                foreach ($obj as $item) {
-                    $data[] = $this->toMap($item);
-                }
-
-                return \json_encode($data);
-            }
-
-            return \json_encode($this->toMap($obj));
-        }
-
-
-        private function toMap($obj){
-
-            return array(
-
-                'id' => $obj->getId(),
-                'name' => $obj->getName(),
-                'keywords' => $obj->getKeywords(),
-                'included' => $obj->getIncluded(),
-                'excluded' => $obj->getExcluded()
-
-                );
+            $dados=$funcCategoryToArray($obj);
+            unset($dados['_id']);
+            $dados["id"] = $obj->getId();
+            return $dados;
 
         }
 
