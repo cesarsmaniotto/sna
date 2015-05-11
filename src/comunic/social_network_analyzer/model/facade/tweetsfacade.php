@@ -85,6 +85,8 @@ function __construct($repository, $categoryRep){
 
 
   public function listInAnInterval($fmt, $page, $amount){
+      $page=  \intval($page);
+      $amount=  \intval($amount);
     return $fmt->format($this->repositoryTweet->listInAnInterval($page, $amount));
   }
 
