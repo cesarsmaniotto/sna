@@ -6,6 +6,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
     use \comunic\social_network_analyzer\model\repository\ITweetsRepository;
     use \comunic\social_network_analyzer\model\entity\mappers\ArrayToTweet;
     use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
+    use comunic\social_network_analyzer\model\util\StringUtil;
 
     class TweetsRepository implements ITweetsRepository {
 
@@ -39,8 +40,30 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             $keywords = $category->getKeywords();
             $keywordsAsRegex = array();
 
+            /*
+            Todas as consultas são case insensitive e ignoram caracteres acentuados
+            caso 1: <termo>*
+            caso 2: *<termo>
+            caso 3: caso padrão *<termo>*
+            */
             foreach ($keywords as $keyword) {
-                $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/');
+
+                $keyword = StringUtil::accentToRegex($keyword);
+
+                if(\substr_count($keyword, "*") >= 1){
+
+                    $keywordsAsRegex[] = new \MongoRegex('/.*'.$keyword.'\b/i');
+
+                }elseif (\substr_count($keyword, "\?") >= 1) {
+
+                    $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'/i');
+
+                }else{
+
+                     $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'\b/i');
+
+                 }
+
             }
 
             return $keywordsAsRegex;
