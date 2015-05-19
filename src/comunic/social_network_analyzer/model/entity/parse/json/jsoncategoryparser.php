@@ -10,32 +10,47 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
         public function parse($text){
 
             $jsonCat = \json_decode($text);
-            $category = new Category();
 
-            if(isset($jsonCat->id)){
-                $category->setId($jsonCat->id);
+
+            $categories = array();
+
+            foreach ($jsonCat as $cat) {
+
+                $categories[] = $this->createObject($cat);
             }
 
-            if(isset($jsonCat->name)){
-                $category->setName($jsonCat->name);
-            }
 
-            if(isset($jsonCat->keywords)){
-                $category->setKeywords($jsonCat->keywords);
-            }
+            return $categories;
 
-            if(isset($jsonCat->included)){
-                $category->setIncluded($jsonCat->included);
-            }
 
-            if(isset($jsonCat->excluded)){
-                $category->setExcluded($jsonCat->excluded);
-            }
-
-            return $category;
 
         }
 
+        private function createObject($jsonObj){
+            $category = new Category();
+
+            if(isset($jsonObj->id)){
+                $category->setId($jsonObj->id);
+            }
+
+            if(isset($jsonObj->name)){
+                $category->setName($jsonObj->name);
+            }
+
+            if(isset($jsonObj->keywords)){
+                $category->setKeywords($jsonObj->keywords);
+            }
+
+            if(isset($jsonObj->included)){
+                $category->setIncluded($jsonObj->included);
+            }
+
+            if(isset($jsonObj->excluded)){
+                $category->setExcluded($jsonObj->excluded);
+            }
+
+            return $category;
+        }
 
 
     }

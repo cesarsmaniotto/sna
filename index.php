@@ -12,6 +12,8 @@ use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatt
 use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 use comunic\social_network_analyzer\model\entity\parse\csv\CSVTweetParser;
+use comunic\social_network_analyzer\model\entity\parse\csv\CSVCategoryParser;
+
 
 use comunic\social_network_analyzer\model\entity\format\json\JsonPaginator;
 use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
@@ -77,6 +79,26 @@ $restapp->post('/tweets/csv_to_json', function()use($restapp) {
     $tweets = $parserT->parse($restapp->request()->getBody());
 
     $restapp->response()->setBody($formatter->format($tweets));
+
+});
+
+$restapp->post('/categories/import_csv', function() use ($restapp, $categoryFacade){
+    $parseC = new CSVCategoryParser();
+    $formatter = new JsonCategoryFormatter();
+
+
+    $categories = $parseC->parse($restapp->request()->getBody());
+
+    echo $restapp->request()->getBody();
+    echo var_dump($restapp->request()->getBody());
+
+    //echo $categories;
+    echo var_dump($categories);
+
+    $jsonCat = $formatter->format($categories);
+
+    $categoryFacade->insertAll($jsonCat, new JsonCategoryParser());
+
 });
 
 

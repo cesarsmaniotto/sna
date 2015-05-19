@@ -6,61 +6,33 @@ require_once 'autoload.php';
 
 ini_set('display_errors', true);
 
-use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
+use \comunic\social_network_analyzer\model\entity\parse\csv\CSVCategoryParser;
+use comunic\social_network_analyzer\model\entity\parse\json\JsonCategoryParser;
+use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatter;
+use comunic\social_network_analyzer\model\facade\FacadeFactory;
+use comunic\social_network_analyzer\model\repository\mongo\MongoRepository;
+
+$mongo = new MongoRepository();
+$mfact = new FacadeFactory($mongo);
+$categoryFacade = $mfact->instantiateCategories();
+
+$filename = "/home/cesar/Área de Trabalho/categories.csv";
+$arquivo = fopen($filename, "r");
+$arquivolido = fread($arquivo, filesize($filename));
+
+$csvparser = new CSVCategoryParser();
+$csv = $csvparser->parse($arquivolido);
 
 
 
-class Pessoa{
-    public $id;
-    public $nome;
-    public $idade;
-}
+$formatter = new JsonCategoryFormatter();
 
-$ps=new Pessoa();
-
-// $ps->id="553fe53056f6e189158b4567";
-$ps->nome="Dilminha";
-$ps->idade=60;
-
-$mongoch = new MongoCollectionHandler('t');
-
-class ToArray{
-
-    public function __invoke($obj){
+$catJson = $formatter->format($csv);
 
 
 
-      $arrData=array();
-      $arrData['_id']=new \MongoId($obj->id);
-      $arrData['nome']=$obj->nome;
-      $arrData['idade']=$obj->idade;
-      return  $arrData;
+$categoryFacade->insertAll($catJson, new JsonCategoryParser());
 
 
-  }
-}
-
-
-class ToObject{
-
-    public function __invoke($arrData){
-
-        $obj=new Pessoa();
-       // $mId=$arrData["_id"];
-
-        $obj->id=$arrData["_id"]->{'$id'};
-        $obj->nome=$arrData['nome'];
-        $obj->idade=$arrData['idade'];
-        return  $obj;
-
-    }
-}
-
-
-$mongoch->save($ps,new ToArray());
-$lista=$mongoch->find(new ToObject());
-
-
-echo var_dump($lista);
 ?>
 

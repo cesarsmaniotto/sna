@@ -39,6 +39,15 @@ namespace comunic\social_network_analyzer\model\facade {
 
 // end of member function insert
 
+        public function insertAll($category_text, $parser){
+            $categories = $parser->parse($category_text);
+
+            foreach ($categories as $category) {
+               $this->repository->insert($category);
+            }
+
+        }
+
         /**
          *
          *
