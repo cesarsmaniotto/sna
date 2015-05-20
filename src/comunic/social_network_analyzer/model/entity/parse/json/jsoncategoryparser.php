@@ -12,17 +12,20 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
             $jsonCat = \json_decode($text);
 
 
-            $categories = array();
+            if(is_array($jsonCat)){
+
+                $categories = array();
 
             foreach ($jsonCat as $cat) {
 
                 $categories[] = $this->createObject($cat);
             }
 
-
             return $categories;
 
+            }
 
+            return $this->createObject($jsonCat);
 
         }
 

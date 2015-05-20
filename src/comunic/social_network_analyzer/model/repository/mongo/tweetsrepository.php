@@ -50,12 +50,14 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
 
                 $keyword = StringUtil::accentToRegex($keyword);
 
-                if(\substr_count($keyword, "*") >= 1){
+                if(\preg_match("/^\*/", $keyword)){
 
+                    $keyword = \preg_replace("/^\*/",'', $keyword);
                     $keywordsAsRegex[] = new \MongoRegex('/.*'.$keyword.'\b/i');
 
-                }elseif (\substr_count($keyword, "\?") >= 1) {
+                }elseif(\preg_match("/\*$/", $keyword)){
 
+                    $keyword = preg_replace("/\*$/",'', $keyword);
                     $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'/i');
 
                 }else{
