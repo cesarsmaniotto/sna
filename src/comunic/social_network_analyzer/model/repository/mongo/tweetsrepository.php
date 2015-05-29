@@ -8,6 +8,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
     use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
     use comunic\social_network_analyzer\model\util\StringUtil;
 
+
+
     class TweetsRepository implements ITweetsRepository {
 
         private $mongoch;
@@ -40,52 +42,75 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             $keywords = $category->getKeywords();
             $keywordsAsRegex = array();
 
+
+            //TODO criar uma interface CategoryToExpReg e uma classe CategoryToExpRegMongo que implemente esta classe e monte as expressões
+            //regulares das categorias conforme convencionado para busca no mongo
+
             /*
             Todas as consultas são case insensitive e ignoram caracteres acentuados
-            caso 1: <termo>*
-            caso 2: *<termo>
+            caso 1: <termo>* ou *<termo>
+            caso 2: <termo>? ou ?<termo>
             caso 3: caso padrão *<termo>*
             */
             foreach ($keywords as $keyword) {
 
                 $keyword = StringUtil::accentToRegex($keyword);
 
-                if(\preg_match("/^\*/", $keyword)){
+                if(\substr_count($keyword, "*")>=1){
 
-                    $keyword = \preg_replace("/^\*/",'', $keyword);
-                    $keywordsAsRegex[] = new \MongoRegex('/.*'.$keyword.'\b/i');
+                    $keyword = \str_replace("*", ".*", $keyword);
 
-                }elseif(\preg_match("/\*$/", $keyword)){
+                    if(\strpos($keyword, "*")==0){
+                        $keyword = $keyword."\b" ;
+                    }else{
+                        $keyword = "\b".$keyword;
+                    }
 
-                    $keyword = preg_replace("/\*$/",'', $keyword);
-                    $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'/i');
+                    $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/i');
+
+                }elseif(\substr_count($keyword, "?")>=1 and $keyword != "?"){
+
+                    if(\strpos($keyword, "?")==0){
+                        $keyword = \str_replace("?", "", $keyword);
+                        $keywordsAsRegex[] = new \MongoRegex('/\b?'.$keyword.'?/i');
+                    }else{
+                        $keyword = \str_replace("?", "", $keyword);
+                        $keywordsAsRegex[] = new \MongoRegex('/\b'.$keyword.'?/i');
+                    }
 
                 }else{
 
-                     $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'\b/i');
+                 $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'\b/i');
 
-                 }
+             }
+         }
 
-            }
+          //  $keywordsAsRegex[]= new\MongoRegex('/\bmund?/i');
 
-            return $keywordsAsRegex;
-        }
-
-        public function findByCategory($category) {
-
-            return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
-
-        }
-
-        public function findbyCategoryInAnInterval($category, $initial, $final){
-
-            return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
-
-        }
+             //       $termo = "mund?";
+             // if(\substr_count($termo, "?")>=1){
+             //     $keywordsAsRegex[] = new \MongoRegex('/\b'.$termo.'/i');
+             // }
 
 
+         return $keywordsAsRegex;
+     }
+
+     public function findByCategory($category) {
+
+        return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
 
     }
+
+    public function findbyCategoryInAnInterval($category, $initial, $final){
+
+        return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
+
+    }
+
+
+
+}
 
 }
 

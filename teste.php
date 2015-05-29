@@ -16,7 +16,7 @@ $mongo = new MongoRepository();
 $mfact = new FacadeFactory($mongo);
 $categoryFacade = $mfact->instantiateCategories();
 
-$filename = "/home/cesar/Área de Trabalho/categories.csv";
+$filename = "/home/cesar/Área de Trabalho/biblioteca_termos.csv";
 $arquivo = fopen($filename, "r");
 $arquivolido = fread($arquivo, filesize($filename));
 
@@ -32,6 +32,7 @@ $catJson = $formatter->format($csv);
 
 
 $categoryFacade->insertAll($catJson, new JsonCategoryParser());
+
 
 
 ?>

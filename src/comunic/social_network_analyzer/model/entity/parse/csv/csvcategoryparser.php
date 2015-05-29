@@ -13,7 +13,7 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv{
             $category = new Category();
 
             $category->setName($arrayData['name']);
-            $category->setKeywords(\explode(",", $arrayData['keywords']));
+            $category->setKeywords(\explode(";", $arrayData['keywords']));
 
             return $category;
         }

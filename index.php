@@ -121,6 +121,14 @@ $restapp->get('/testte/', function() {
     require_once 'teste.php';
 });
 
+$restapp->get("/query/", function() use($restapp){
+
+if (!is_null($restapp->request()->get('plau'))){
+    echo "existe";
+}else{
+    echo "não existe";
+}
+});
 
 
 
