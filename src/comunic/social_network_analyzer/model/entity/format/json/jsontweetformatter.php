@@ -15,8 +15,6 @@ namespace comunic\social_network_analyzer\model\entity\format\json{
             $dados["id"] = $obj->getId();
             return $dados;
 
-        return $funcTweetToArray($obj);
-
     }
 }
 

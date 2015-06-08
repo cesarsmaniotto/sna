@@ -33,7 +33,5 @@ $catJson = $formatter->format($csv);
 
 $categoryFacade->insertAll($catJson, new JsonCategoryParser());
 
-
-
 ?>
 

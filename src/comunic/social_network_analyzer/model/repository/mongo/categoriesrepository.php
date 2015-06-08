@@ -7,6 +7,7 @@ use \comunic\social_network_analyzer\model\repository\ICategoriesRepository;
 use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
 use comunic\social_network_analyzer\model\entity\mappers\CategoryToArray;
 
+
 class CategoriesRepository implements ICategoriesRepository{
 
     private $mongoch;

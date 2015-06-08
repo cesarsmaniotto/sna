@@ -4,39 +4,31 @@ namespace comunic\social_network_analyzer\model\entity{
 
 	class Project{
 
+
 		private $id;
 		private $name;
-		private $datasets;
 
 		public function getId()
 		{
-		    return $this->id;
+			return $this->id;
 		}
-		 
+
 		public function setId($id)
 		{
-		    return $this->id = $id;
+			return $this->id = $id;
 		}
 
 		public function getName()
 		{
-		    return $this->name;
-		}
-		 
-		public function setName($name)
-		{
-		    return $this->name = $name;
+			return $this->name;
 		}
 
-		public function getDatasets()
+		public function setName($name)
 		{
-		    return $this->datasets;
+			return $this->name = $name;
 		}
-		 
-		public function setDatasets($datasets)
-		{
-		    return $this->datasets = $datasets;
-		}
+
+
 
 
 
