@@ -1,0 +1,38 @@
+{
+    "name": "zumba/mongounit",
+    "description": "PHPUnit extension that supports mongodb",
+    "type": "library",
+    "keywords": [
+        "database",
+        "testing",
+        "mongodb",
+        "mongoclient"
+    ],
+    "homepage": "https://github.com/zumba/mongounit",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Saylor",
+            "email": "christopher.saylor@zumba.com",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/zumba/mongounit/issues"
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "ext-mongo": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.6.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zumba\\PHPUnit\\Extensions\\Mongo\\": "src/"
+        }
+    }
+}

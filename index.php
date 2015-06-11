@@ -2,7 +2,8 @@
 
 ini_set('display_errors', true);
 
-require_once './autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
 
 use Slim\Slim;
 use comunic\social_network_analyzer\model\facade\FacadeFactory;

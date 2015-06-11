@@ -1,0 +1,15 @@
+{
+    "require": {
+        "slim/slim": "~2.0",
+         "phpunit/phpunit": "4.7.*",
+        "zumba/mongounit": "2.0.0"
+    },
+
+    "autoload":{
+        "psr-0" : {
+            "comunic\\" : "src/",
+            "sna\\tests" : "tests/"
+
+        }
+    }
+}
