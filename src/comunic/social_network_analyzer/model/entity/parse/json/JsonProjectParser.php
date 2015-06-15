@@ -10,12 +10,12 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
      *
      * @author jean
      */
-    class JsonprojectParser implements IObjectParser {
+    class JsonProjectParser implements IObjectParser {
 
         public function parse($text) {
 
             $jsonproject = \json_decode($text);
-            $project = new project();
+            $project = new Project();
 
             if (isset($jsonproject->id)) {
                 $project->setId($jsonproject->id);
