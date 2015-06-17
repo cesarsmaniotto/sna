@@ -25,6 +25,10 @@ use \comunic\social_network_analyzer\model\entity\Paginator;
 
         }
 
+        public function count($query){
+            return $this->collection->count($query);
+        }
+
         private function cursorToObjectArray($toObjectFunction,$cursor){
             $outputObjects=array();
 
