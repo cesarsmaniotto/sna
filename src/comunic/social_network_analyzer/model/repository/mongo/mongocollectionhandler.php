@@ -1,111 +1,98 @@
 <?php
 
-namespace comunic\social_network_analyzer\model\repository\mongo {
+namespace comunic\social_network_analyzer\model\repository\mongo{
 
-    use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
-    use \comunic\social_network_analyzer\model\repository\ITweetsRepository;
-    use \comunic\social_network_analyzer\model\entity\mappers\ArrayToTweet;
-    use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
-    use comunic\social_network_analyzer\model\util\StringUtil;
+use \comunic\social_network_analyzer\model\entity\Paginator;
 
+    class MongoCollectionHandler{
 
+        private $collection;
 
-    class TweetsRepository implements ITweetsRepository {
+        function __construct($collectionName){
 
-        private $mongoch;
+            $conn = new ConnectionMongo();
+            $conn = $conn->getConnection();
+            $this->collection = $conn->selectCollection($collectionName);
 
-        function __construct() {
-            $this->mongoch = new MongoCollectionHandler('tweets');
         }
 
-        public function insert($tweet) {
-            if($this->mongoch->count(array("text" => $tweet->getText())) == 0){
-                return $this->mongoch->save($tweet ,new TweetToArray());
+        public function find($toObjectFunction,$query = array(), $fields=array()){
+            $cur=$this->collection->find($query,$fields);
+            $outputObject=$this->cursorToObjectArray($toObjectFunction,$cur);
+            return  $outputObject;
+
+        }
+
+        public function count($query){
+            return $this->collection->count($query);
+        }
+
+        private function cursorToObjectArray($toObjectFunction,$cursor){
+            $outputObjects=array();
+
+            foreach ($cursor as $item) {
+                $outputObjects[]=$toObjectFunction($item);
             }
 
+            return $outputObjects;
+
         }
 
-        public function listAll() {
+        public function findInAnInterval($indPage, $amount, $toObjectFunction,$query = array(), $fields=array()){
+            // $cursor = $this->collection->find($query,$fields);
+            // $cursor = $cursor->skip($initial);
+            // $cur=$cursor->limit($final);
+            // $outputObject=$this->cursorToObjectArray($toObjectFunction,$cur);
+            // return $outputObject;
+            $cursor = $this->collection->find($query,$fields);
+            $count = $cursor->count();
+            $cursor->skip(($indPage-1 ) * $amount);
+            $cursor->limit($amount);
+            $outputObject = $this->cursorToObjectArray($toObjectFunction, $cursor);
 
-            return $this->mongoch->find(new ArrayToTweet());
+            return new Paginator($outputObject, $count, $indPage, $amount);
         }
 
-        public function listInAnInterval($initial, $final){
-            return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet());
+        //retorna um array com os dados de um documento
+        public function findOne($toObjectFunction,$query = array(), $fields=array()){
+            $arrayData=$this->collection->findOne($query,$fields);
+            return $toObjectFunction($arrayData);
+
         }
 
-        public function findById($id) {
+        public function save($obj, $toArrayDataFunction,$options=array()){
 
-            return $this->mongoch->findOne(new ArrayToTweet(), array('_id' => new \MongoId($id)));
+            try {
+
+
+               $arrayData=$toArrayDataFunction($obj);
+
+                return $this->collection->save($arrayData, $options);
+
+            } catch (\MongoCursorException $e) {
+
+                echo $e->getMessage();
+
+            }catch (\MongoException $e) {
+
+                echo $e->getMessage();
+            }
         }
 
-        private function filterByCategory($category){
-            $keywords = $category->getKeywords();
-            $keywordsAsRegex = array();
 
 
-            //TODO criar uma interface CategoryToExpReg e uma classe CategoryToExpRegMongo que implemente esta classe e monte as expressões
-            //regulares das categorias conforme convencionado para busca no mongo
+        public function delete($criteria=array(), $options=array()){
 
-            /*
+            try {
 
-            =============AINDA FALTA TESTAR ISSO MELHOR============
+                return $this->collection->remove($criteria, $options);
 
-            Todas as consultas são case insensitive e ignoram caracteres acentuados
-            caso 1: <termo>* ou *<termo>
-            caso 2: <termo>? ou ?<termo>
-            caso 3: caso padrão *<termo>*
-            */
-            foreach ($keywords as $keyword) {
+            } catch (\MongoCursorException $e) {
 
-               // $keyword = StringUtil::accentToRegex($keyword);
-
-                if(\substr_count($keyword, "*")>=1){
-                    $keyword = StringUtil::accentToRegex($keyword);
-                 if(\strpos($keyword, "*")==0){
-                         $keywordsAsRegex[] = new \MongoRegex("/$keywork\b/i");
-                    }else{
-                        $keywordsAsRegex[] = new \MongoRegex("/\b$keywork/i");
-                    }
-
-                }elseif(\substr_count($keyword, "?")>=1 and $keyword != "?"){
-
-                    if(\strpos($keyword, "?")==0){
-                       // $keyword = \str_replace("?", "", $keyword);
-                      $keywordsAsRegex[] = new \MongoRegex("/$keyword\b/i");
-                    }else{
-                       // $keyword = \str_replace("?", "", $keyword);
-                       $keyword = StringUtil::accentToRegex($keyword);
-                        //$keywordsAsRegex[] = new \MongoRegex("/\b$keyword?/i");
-                    }
-
-                }else{
-                    $keyword = StringUtil::accentToRegex($keyword);
-                 $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'\b/i');
-
-             }
-         }
-         return $keywordsAsRegex;
-     }
-
-     public function findByCategory($category) {
-
-        return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
-
+                echo $e->getMessage();
+            }
+        }
     }
-
-    public function findbyCategoryInAnInterval($category, $initial, $final){
-
-        return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
-
-    }
-
-
-
 }
-
-}
-
-
 
 ?>

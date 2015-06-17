@@ -19,8 +19,9 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
         }
 
         public function insert($tweet) {
-
-            return $this->mongoch->save($tweet ,new TweetToArray());
+            if($this->mongoch->count(array("text" => $tweet->getText())) == 0){
+                return $this->mongoch->save($tweet ,new TweetToArray());
+            }
 
         }
 
@@ -47,6 +48,9 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             //regulares das categorias conforme convencionado para busca no mongo
 
             /*
+
+            =============AINDA FALTA TESTAR ISSO MELHOR============
+
             Todas as consultas são case insensitive e ignoram caracteres acentuados
             caso 1: <termo>* ou *<termo>
             caso 2: <termo>? ou ?<termo>
@@ -54,45 +58,33 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             */
             foreach ($keywords as $keyword) {
 
-                $keyword = StringUtil::accentToRegex($keyword);
+               // $keyword = StringUtil::accentToRegex($keyword);
 
                 if(\substr_count($keyword, "*")>=1){
-
-                    $keyword = \str_replace("*", ".*", $keyword);
-
-                    if(\strpos($keyword, "*")==0){
-                        $keyword = $keyword."\b" ;
+                    $keyword = StringUtil::accentToRegex($keyword);
+                 if(\strpos($keyword, "*")==0){
+                         $keywordsAsRegex[] = new \MongoRegex("/$keywork\b/i");
                     }else{
-                        $keyword = "\b".$keyword;
+                        $keywordsAsRegex[] = new \MongoRegex("/\b$keywork/i");
                     }
-
-                    $keywordsAsRegex[] = new \MongoRegex('/'.$keyword.'/i');
 
                 }elseif(\substr_count($keyword, "?")>=1 and $keyword != "?"){
 
                     if(\strpos($keyword, "?")==0){
-                        $keyword = \str_replace("?", "", $keyword);
-                        $keywordsAsRegex[] = new \MongoRegex('/\b?'.$keyword.'?/i');
+                       // $keyword = \str_replace("?", "", $keyword);
+                      $keywordsAsRegex[] = new \MongoRegex("/$keyword\b/i");
                     }else{
-                        $keyword = \str_replace("?", "", $keyword);
-                        $keywordsAsRegex[] = new \MongoRegex('/\b'.$keyword.'?/i');
+                       // $keyword = \str_replace("?", "", $keyword);
+                       $keyword = StringUtil::accentToRegex($keyword);
+                        //$keywordsAsRegex[] = new \MongoRegex("/\b$keyword?/i");
                     }
 
                 }else{
-
+                    $keyword = StringUtil::accentToRegex($keyword);
                  $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'\b/i');
 
              }
          }
-
-          //  $keywordsAsRegex[]= new\MongoRegex('/\bmund?/i');
-
-             //       $termo = "mund?";
-             // if(\substr_count($termo, "?")>=1){
-             //     $keywordsAsRegex[] = new \MongoRegex('/\b'.$termo.'/i');
-             // }
-
-
          return $keywordsAsRegex;
      }
 
