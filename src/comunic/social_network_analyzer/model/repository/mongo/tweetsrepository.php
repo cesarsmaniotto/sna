@@ -63,8 +63,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
                 if(\substr_count($keyword, "*")>=1){
                     $keyword = StringUtil::accentToRegex($keyword);
                  if(\strpos($keyword, "*")==0){
+                    $keyword = StringUtil::accentToRegex($keyword);
                          $keywordsAsRegex[] = new \MongoRegex("/$keywork\b/i");
                     }else{
+                        $keyword = StringUtil::accentToRegex($keyword);
                         $keywordsAsRegex[] = new \MongoRegex("/\b$keywork/i");
                     }
 
@@ -72,16 +74,17 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
 
                     if(\strpos($keyword, "?")==0){
                        // $keyword = \str_replace("?", "", $keyword);
+                       $keyword = StringUtil::accentToRegex($keyword);
                       $keywordsAsRegex[] = new \MongoRegex("/$keyword\b/i");
                     }else{
                        // $keyword = \str_replace("?", "", $keyword);
                        $keyword = StringUtil::accentToRegex($keyword);
-                        //$keywordsAsRegex[] = new \MongoRegex("/\b$keyword?/i");
+                        $keywordsAsRegex[] = new \MongoRegex("/\b$keyword?/i");
                     }
 
                 }else{
                     $keyword = StringUtil::accentToRegex($keyword);
-                 $keywordsAsRegex[] = new \MongoRegex('/.*\b'.$keyword.'\b/i');
+                 $keywordsAsRegex[] = new \MongoRegex('/\b'.$keyword.'\b/i');
 
              }
          }
