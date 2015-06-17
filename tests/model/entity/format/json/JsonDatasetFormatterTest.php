@@ -4,7 +4,7 @@ namespace sna\tests\model\entity\format\json\JsonDatasetFormatterTest{
 
 use PHPUnit_Framework_TestCase;
 use comunic\social_network_analyzer\model\entity\Dataset;
-use comunic\social_network_analyzer\model\entity\format\JsonDatasetFormatter;
+use comunic\social_network_analyzer\model\entity\format\json\JsonDatasetFormatter;
 
 class JsonDatasetFormatterTest extends PHPUnit_Framework_TestCase{
 
@@ -18,9 +18,9 @@ class JsonDatasetFormatterTest extends PHPUnit_Framework_TestCase{
 
         $formatter = new JsonDatasetFormatter();
 
-        $resultJson = $formatter->format($stringDataset);
+        $resultJson = $formatter->format($dataset);
 
-        $this->assertEquals($expectJson, $dataset->getId());
+        $this->assertEquals($expectJson, $resultJson);
 
 
     }

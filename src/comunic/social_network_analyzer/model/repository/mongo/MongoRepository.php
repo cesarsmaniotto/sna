@@ -23,6 +23,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
             return new ProjectsRepository();
         }
 
+        public function instantiateDataset() {
+            return new DatasetsRepository();
+        }
+
 
 
     }

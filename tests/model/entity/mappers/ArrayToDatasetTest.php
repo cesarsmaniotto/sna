@@ -9,14 +9,16 @@ use comunic\social_network_analyzer\model\entity\Dataset;
 class ArrayToDatasetTest extends PHPUnit_Framework_TestCase{
 
 
-    public function invokeTest(){
+    public function testInvoke(){
 
-        $fArrayToDatasetTest = new ArrayToDataset();
+
         $arrayData = array("_id" => new \MongoId("54202c79d1c82dc01a000032"),
                                         "name" => "FooDataset");
-        $dataset = $fArrayToDatasetTest($arrayData);
 
-        $this->assertEquals($arrayData['id'], $dataset->getId());
+        $fArrayToDataset = new ArrayToDataset();
+        $dataset = $fArrayToDataset($arrayData);
+
+        $this->assertEquals($arrayData['_id']->{'$id'}, $dataset->getId());
         $this->assertEquals($arrayData['name'], $dataset->getName());
 
     }

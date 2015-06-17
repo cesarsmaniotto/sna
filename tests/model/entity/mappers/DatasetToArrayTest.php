@@ -15,7 +15,7 @@ namespace sna\tests\model\entity\mappers{
                                         "name" => "FooDataset");
 
             $dataset->setId("54202c79d1c82dc01a000032");
-            $dataset->setName("BarProject");
+            $dataset->setName("FooDataset");
 
             $fDatasetToArray = new DatasetToArray();
 

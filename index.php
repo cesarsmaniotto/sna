@@ -119,7 +119,7 @@ $restapp->get('/tweets/json/find_by_category/:idCat/:page/:amount', function($id
 
 
 $restapp->get('/testte/', function() {
-    require_once 'teste.php';
+    require_once 'importcategories.php';
 });
 
 $restapp->get("/query/", function() use($restapp){

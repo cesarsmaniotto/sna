@@ -2,7 +2,7 @@
 
 
 <?php
-require_once 'autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 ini_set('display_errors', true);
 
@@ -16,7 +16,7 @@ $mongo = new MongoRepository();
 $mfact = new FacadeFactory($mongo);
 $categoryFacade = $mfact->instantiateCategories();
 
-$filename = "/home/cesar/Área de Trabalho/biblioteca_termos.csv";
+$filename = "/home/cesar/Downloads/Biblioteca-Novafiltragem(3).csv";
 $arquivo = fopen($filename, "r");
 $arquivolido = fread($arquivo, filesize($filename));
 
@@ -33,5 +33,5 @@ $catJson = $formatter->format($csv);
 
 $categoryFacade->insertAll($catJson, new JsonCategoryParser());
 
-?>
 
+?>

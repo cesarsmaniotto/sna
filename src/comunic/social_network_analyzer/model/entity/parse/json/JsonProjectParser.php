@@ -5,11 +5,7 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
     use comunic\social_network_analyzer\model\entity\parse\IObjectParser;
     use comunic\social_network_analyzer\model\entity\Project;
 
-    /**
-     * Description of jsonobjectprojectpaser
-     *
-     * @author jean
-     */
+
     class JsonProjectParser implements IObjectParser {
 
         public function parse($text) {

@@ -2,8 +2,12 @@
 
 namespace sna\tests\model\repository\mongo{
 
+use Zumba\PHPUnit\Extensions\Mongo\Client\Connector;
+use Zumba\PHPUnit\Extensions\Mongo\DataSet\DataSet;
+
 use PHPUnit_Framework_TestCase;
 use comunic\social_network_analyzer\model\repository\mongo\DatasetsRepository;
+use comunic\social_network_analyzer\model\entity\Dataset as DatasetModel;
 
 class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
 
@@ -56,59 +60,57 @@ class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
         }
 
     public function testInsert(){
-        $datasetObj = new Dataset();
+        $datasetObj = new DatasetModel();
         $datasetObj->setName("aDataset");
 
         $this->repository->insert($datasetObj);
 
-        $result = $this->dataset->collection("datasets")->findOne(array("name" => "aDataset"));
+        $result = $this->connection->collection("datasets")->findOne(array("name" => "aDataset"));
 
         $this->assertEquals($datasetObj->getName(), $result['name']);
 
     }
 
     public function testUpdate(){
-        $datasetObj = new Dataset();
+        $datasetObj = new DatasetModel();
         $datasetObj->setId("54202c79d1c82dc01a000032");
         $datasetObj->setName("new name Dataset");
 
         $this->repository->update($datasetObj);
 
-        $result = $this->dataset->collection("datasets")->findOne(array("_id" => new \MongoId("54202c79d1c82dc01a000032")));
+        $result = $this->connection->collection("datasets")->findOne(array("_id" => new \MongoId("54202c79d1c82dc01a000032")));
 
-        $this->assertEquals($datasetObj->getId(), $result['_id']->{'id'});
+        $this->assertEquals($datasetObj->getId(), $result['_id']->{'$id'});
         $this->assertEquals($datasetObj->getName(), $result['name']);
 
     }
 
     public function testDelete(){
-        $this->assertEquals(2, $this->dataset->collection('datasets')->count());
-
+        $this->assertEquals(2, $this->connection->collection('datasets')->count());
         $this->repository->delete("54202c79d1c82dc01a000032");
 
-        $this->assertEquals(1, $this->dataset->collection('datasets')->count());
-        $this->assertNotEquals(0, $this->dataset->collection('datasets')->count());
-        $this->assertNotEquals(2, $this->dataset->collection('datasets')->count());
+        $this->assertEquals(1, $this->connection->collection('datasets')->count());
+        $this->assertNotEquals(0, $this->connection->collection('datasets')->count());
+        $this->assertNotEquals(2, $this->connection->collection('datasets')->count());
 
 
-    }
-
-    public function testFindOne(){
-
-        $datasetObj = $this->repository>findOne("54202c79d1c82dc01a000032");
-
-        $this->assertEquals("FooDataset", $datasetObj->getName());
-        $this->assertEquals("44202c79d1c82dc01a000032", $datasetObj->getProjectId());
     }
 
     public function testListAll(){
 
         $results = $this->repository->listAll();
 
-        $this->assertEquals(\count($results), $this->dataset->collection('datasets')->count());
-        $this->assertNotEquals(\count($results)-1, $this->dataset->collection('datasets')->count());
-        $this->assertNotEquals(\count($results)+1, $this->dataset->collection('datasets')->count());
+        $this->assertEquals(\count($results), $this->connection->collection('datasets')->count());
+        $this->assertNotEquals(\count($results)-1, $this->connection->collection('datasets')->count());
+        $this->assertNotEquals(\count($results)+1, $this->connection->collection('datasets')->count());
 
+    }
+
+    public function testFindById(){
+
+        $datasetObj = $this->repository->findById("54202c79d1c82dc01a000032");
+
+        $this->assertEquals("FooDataset", $datasetObj->getName());
     }
 
 
