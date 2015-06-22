@@ -10,13 +10,14 @@ namespace sna\tests\model\entity\parse\json{
 
         public function testParse(){
 
-            $jsonTextProject = '{"id":"54202c79d1c82dc01a000034","name":"FooProject"}';
+            $jsonTextProject = '{"id":"54202c79d1c82dc01a000034","name":"FooProject", "datasets":[{"id":"54202c79d1c82dc01a000032","name":"FooDataset"}]}';
             $jsonObjProject = \json_decode($jsonTextProject);
             $parser = new JsonProjectParser();
             $projectObj = $parser->parse($jsonTextProject);
 
             $this->assertEquals($jsonObjProject->{'id'}, $projectObj->getId());
             $this->assertEquals($jsonObjProject->{'name'}, $projectObj->getName());
+            $this->assertEquals($jsonObjProject->{'datasets'}[0]->id, $projectObj->getDatasets()[0]->getId());
         }
 
     }

@@ -92,6 +92,8 @@ use \comunic\social_network_analyzer\model\entity\Paginator;
                 echo $e->getMessage();
             }
         }
+
+
     }
 }
 

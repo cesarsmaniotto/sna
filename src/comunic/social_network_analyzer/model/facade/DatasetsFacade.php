@@ -2,7 +2,7 @@
 
 namespace comunic\social_network_analyzer\model\facade{
 
-use comunic\social_network_analyzer\model\repository\IDatasetsRepository;
+use comunic\social_network_analyzer\model\datasetsRepo\IDatasetsdatasetsRepo;
 /**
  * class DatasetsFactory
  *
@@ -16,10 +16,12 @@ class DatasetsFacade
 
    /*** Attributes: ***/
 
-   private $repository;
+   private $datasetsRepo;
+   private $projectsRepo;
 
-   function __construct($repository){
-    $this->repository = $repository;
+   function __construct($datasetsRepo, $projectsRepo){
+    $this->datasetsRepo = $datasetsRepo;
+    $this->projectsRepo = $projectsRepo;
    }
 
 
@@ -32,7 +34,7 @@ class DatasetsFacade
    */
   public function listAll( $format) {
 
-    $datasets = $this->repository->listAll();
+    $datasets = $this->datasetsRepo->listAll();
     return $format->format($datasets);
   } // end of member function listAll
 
@@ -45,7 +47,7 @@ class DatasetsFacade
    * @access public
    */
   public function findById( $id,  $format) {
-    $dataset = $this->repository->findById($id);
+    $dataset = $this->datasetsRepo->findById($id);
     return $format->format($dataset);
   } // end of member function findById
 
@@ -56,8 +58,12 @@ class DatasetsFacade
    * @return void
    * @access public
    */
-  public function delete( $id) {
-    $this->repository->delete($id);
+  public function delete( $datasetId, $projectId) {
+    $project = $this->projectsRepo->findById($projectId);
+    unset($project->getDatasetsId()[$dataset->getId()]);
+    $projectsRepo->update($project);
+
+    $this->datasetsRepo->delete($datasetId);
   } // end of member function delete
 
   /**
@@ -68,9 +74,13 @@ class DatasetsFacade
    * @return void
    * @access public
    */
-  public function insert( $datasetText,  $parser) {
-    $datasets = $parser->parse($datasetText);
-    return $this->repository->insert($datasets);
+  public function insert( $datasetText,  $projectId, $parser) {
+    $dataset = $parser->parse($datasetText);
+
+    $project = $this->projectsRepo->findById($projectId);
+    $project->setDatasetsId($project->getDatasetsId()[]=$dataset->getId());
+    $projectsRepo->update($project);
+    return $this->datasetsRepo->insert($dataset);
   } // end of member function insert
 
   /**
@@ -83,7 +93,7 @@ class DatasetsFacade
    */
   public function update( $parser,  $datasetText) {
     $datasets = $parser->parse($datasetText);
-    return $this->repository->insert($datasets);
+    return $this->datasetsRepo->insert($datasets);
   } // end of member function update
 
 

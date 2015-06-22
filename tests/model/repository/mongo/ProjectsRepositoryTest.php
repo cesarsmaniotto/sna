@@ -78,7 +78,7 @@ namespace sna\tests\model\repository\mongo{
             $project->setId("54202c79d1c82dc01a000034");
             $project->setName("umProjeto");
 
-            $this->repo->update($project);
+            $this->repo->insert($project);
 
             $result = $this->connection->collection('projects')->findOne(['_id' => new \MongoId('54202c79d1c82dc01a000034')]);
 

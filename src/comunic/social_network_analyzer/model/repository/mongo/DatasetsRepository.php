@@ -22,16 +22,25 @@ class DatasetsRepository implements IDatasetsRepository{
     public function update($object){
 
         return $this->mongoch->save($object, new DatasetToArray());
-
     }
 
-    public function delete($id){
+  public function delete($id){
 
         return $this->mongoch->delete(array("_id" => new \MongoId($id)));
 
     }
 
     public function findById($id){
+
+        if(is_array($id)){
+            $arrayObj = array();
+
+            foreach ($id as $item) {
+                $arrayObj[] = $this->mongoch->findOne(new ArrayToDataset(), array("_id" => new \MongoId($item)));
+            }
+
+            return $arrayObj;
+        }
 
         return $this->mongoch->findOne(new ArrayToDataset(), array("_id" => new \MongoId($id)));
 

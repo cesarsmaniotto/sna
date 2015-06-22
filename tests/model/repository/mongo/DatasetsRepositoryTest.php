@@ -48,7 +48,16 @@ class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
                         "_id" => new \MongoId("54202c79d1c82dc01a000033"),
                         "name" => "BarDataset",
                         )
+                    ),
+
+                "projects" => array(
+                    array(
+                    "_id" => new \MongoId("14202c79d1c82dc01a000032"),
+                    "name" => "FooProject",
+                    "datasets_id" => array("54202c79d1c82dc01a000032","54202c79d1c82dc01a000033")
                     )
+                    )
+
                 );
 
             $this->getMongoConnection();
@@ -76,7 +85,7 @@ class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
         $datasetObj->setId("54202c79d1c82dc01a000032");
         $datasetObj->setName("new name Dataset");
 
-        $this->repository->update($datasetObj);
+        $this->repository->insert($datasetObj);
 
         $result = $this->connection->collection("datasets")->findOne(array("_id" => new \MongoId("54202c79d1c82dc01a000032")));
 
@@ -111,7 +120,13 @@ class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
         $datasetObj = $this->repository->findById("54202c79d1c82dc01a000032");
 
         $this->assertEquals("FooDataset", $datasetObj->getName());
+
+        $datasetsArray =  $this->repository->findById(array("54202c79d1c82dc01a000032","54202c79d1c82dc01a000033"));
+
+        $this->assertEquals(2, \count($datasetsArray));
     }
+
+
 
 
 }

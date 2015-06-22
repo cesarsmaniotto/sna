@@ -64,10 +64,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
                     $keyword = StringUtil::accentToRegex($keyword);
                  if(\strpos($keyword, "*")==0){
                     $keyword = StringUtil::accentToRegex($keyword);
-                         $keywordsAsRegex[] = new \MongoRegex("/$keywork\b/i");
+                         $keywordsAsRegex[] = new \MongoRegex("/$keyword\b/i");
                     }else{
                         $keyword = StringUtil::accentToRegex($keyword);
-                        $keywordsAsRegex[] = new \MongoRegex("/\b$keywork/i");
+                        $keywordsAsRegex[] = new \MongoRegex("/\b$keyword/i");
                     }
 
                 }elseif(\substr_count($keyword, "?")>=1 and $keyword != "?"){

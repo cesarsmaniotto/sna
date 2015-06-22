@@ -1,7 +1,7 @@
 <?php
 namespace comunic\social_network_analyzer\model\facade {
 
-  
+
 
     /**
      * class FacadeFactory
@@ -53,6 +53,16 @@ namespace comunic\social_network_analyzer\model\facade {
         public function instantiateUsers() {
             return new UsersFacade($this->repositoryFactory->instantiateUser());
         }
+
+
+        public function instantiateProjects() {
+            return new UsersFacade($this->repositoryFactory->instantiateProject(), $this->repositoryFactory->instantiateDataset());
+        }
+
+        public function instantiateDatasets() {
+            return new UsersFacade($this->repositoryFactory->instantiateDataset());
+        }
+
 
 // end of member function instantiateUsers
     }
