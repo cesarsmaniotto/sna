@@ -21,15 +21,9 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
                 $project->setName($jsonproject->name);
             }
 
-            if (isset($jsonproject->datasets)) {
-                $jsonDatasetParser = new JsonDatasetParser();
+            if (isset($jsonproject->datasetsIds)) {
 
-                $arrayObj = array();
-
-                for ($i=0; $i < \count($jsonproject->datasets); $i++) {
-                    $arrayObj[]=$jsonDatasetParser->parse(\json_encode($jsonproject->datasets[$i]));
-                }
-                $project->setDatasets($arrayObj);
+                $project->setDatasetsIds($jsonproject->datasetsIds);
             }
 
             return $project;

@@ -13,20 +13,17 @@ namespace sna\tests\model\entity\mappers\ArrayToProjectTest{
             $projectArray = array(
                 "_id" => new \MongoId("54202c79d1c82dc01a000034"),
                 "name" => "FooProject",
-                "datasets" => array(
-                                        array("_id" => new \MongoId("54202c79d1c82dc01a000032"),
-                                        "name" => "FooDataset")
-                                        )
+                "datasetsIds" => "54202c79d1c82dc01a000032"
                 );
 
             $farrayToProject = new ArrayToProject();
-            $farrayToDataset = new ArrayToDataset();
-            $projectObj = $farrayToProject($projectArray);
-            $datasetObj = $farrayToDataset($projectArray['datasets'][0]);
 
-            $this->assertEquals("54202c79d1c82dc01a000034", $projectObj->getId());
-            $this->assertEquals("FooProject",$projectObj->getName());
-            $this->assertEquals($datasetObj,$projectObj->getDatasets()[0]);
+            $projectObj = $farrayToProject($projectArray);
+
+
+            $this->assertEquals($projectArray['_id']->{'$id'}, $projectObj->getId());
+            $this->assertEquals($projectArray['name'],$projectObj->getName());
+            $this->assertEquals($projectArray['datasetsIds'],$projectObj->getDatasetsIds());
         }
 
     }

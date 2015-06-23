@@ -6,21 +6,13 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 
 		public function __invoke($obj){
 
-                                $fDatasetToArray = new DatasetToArray();
-
-			$arrayData = array(
+			return array(
 				'_id' => new \MongoId($obj->getId()),
-				'name' => $obj->getName()
+				'name' => $obj->getName(),
+                                            'datasetsIds' => $obj->getDatasetsIds()
                                             );
 
-                                $datasets = array();
 
-                                foreach ($obj->getDatasets() as $dataset) {
-                                    $datasets[] = $fDatasetToArray($dataset);
-                                }
-
-                                $arrayData['datasets']=$datasets;
-                                return $arrayData;
 
 		}
 

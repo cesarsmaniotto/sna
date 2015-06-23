@@ -62,7 +62,7 @@ namespace sna\tests\model\facade{
                     array(
                         "_id" => new \MongoId("14202c79d1c82dc01a000032"),
                         "name" => "FooProject",
-                        "datasetsId" => array("54202c79d1c82dc01a000032","54202c79d1c82dc01a000033")
+                        "datasetsIds" => array("54202c79d1c82dc01a000032","54202c79d1c82dc01a000033")
                         )
                     )
 

@@ -86,11 +86,11 @@ namespace sna\tests\model\facade{
             $datasetObj->setId($datasetId->{'$id'});
 
             $this->datasetRepo->insert($datasetObj);
-            $project->setDatasetsId($project->getDatasetsId[]=$datasetId->{'$id'});
+            $project->setDatasetsIds($project->getDatasetsIds[]=$datasetId->{'$id'});
             $this->projectRepo->update($project);
 
 
-            $this->assertEquals($project->getDatasetsId(), $this->projectRepo->findById("14202c79d1c82dc01a000032")->getDatasetsId());
+            $this->assertEquals($project->getDatasetsIds(), $this->projectRepo->findById("14202c79d1c82dc01a000032")->getDatasetsIds());
             $datasetObjResult = $this->datasetRepo->findById($datasetId->{'$id'});
             $this->assertEquals($datasetObj->getName(), $datasetObjResult->getName());
         }

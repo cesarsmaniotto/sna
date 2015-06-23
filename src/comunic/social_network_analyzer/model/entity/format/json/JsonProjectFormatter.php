@@ -13,14 +13,6 @@ namespace comunic\social_network_analyzer\model\entity\format\json{
 			unset($dados['_id']);
 			$dados["id"] = $obj->getId();
 
-			for($i=0;$i < \count($dados['datasets']); $i++){
-
-				$dados['datasets'][$i]['id'] = $dados['datasets'][$i]['_id']->{'$id'};
-				unset($dados['datasets'][$i]['_id']);
-
-			}
-
-
 			return $dados;
 		}
 

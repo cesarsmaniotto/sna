@@ -1,0 +1,34 @@
+<?php
+
+namespace sna\tests\model\entity\mappers{
+
+use PHPUnit_Framework_TestCase;
+use comunic\social_network_analyzer\model\entity\Category;
+use comunic\social_network_analyzer\model\entity\parse\json\JsonCategoryParser;
+use comunic\social_network_analyzer\model\util\IdMongoGenerator;
+
+class JsonCategoryParserTest extends PHPUnit_Framework_TestCase{
+
+    public function testParse(){
+
+        $category = new Category();
+        $idMongo=new IdMongoGenerator();
+        $catId = $idMongo();
+        $category->setId($catId);
+        $category->setName("FooCategory");
+        $category->setKeywords(array("FooKw", "BarKw"));
+
+        $jsonCategory = '{"name":"FooCategory","keywords":["FooKw","BarKw"],"included":null,"excluded":null,"id":"'.$catId.'"}';
+
+        $parser = new JsonCategoryParser();
+
+        $this->assertEquals($category, $parser->parse($jsonCategory));
+
+
+    }
+
+}
+
+}
+
+?>

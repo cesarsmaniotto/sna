@@ -26,7 +26,7 @@ namespace comunic\social_network_analyzer\model\facade{
 
 		public function getDatasets($projectId, $datasetFormatter){
 			$project = $this->projectRepo->findById($projectId);
-			$datasets = $this->datasetsRepo->findById($project->getDatasetsId());
+			$datasets = $this->datasetsRepo->findById($project->getDatasetsIds());
 
 			return $datasetFormatter->format($datasets);
 		}
