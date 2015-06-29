@@ -1,5 +1,6 @@
 <?php
 
+
 namespace sna\tests\model\repository\mongo{
 
     use PHPUnit_Framework_TestCase;
@@ -7,9 +8,9 @@ namespace sna\tests\model\repository\mongo{
     use Zumba\PHPUnit\Extensions\Mongo\Client\Connector;
     use Zumba\PHPUnit\Extensions\Mongo\DataSet\DataSet;
 
-    use comunic\social_network_analyzer\model\repository\mongo\ProjectsRepository;
-    use comunic\social_network_analyzer\model\entity\Project;
-    use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
+    use comunic\social_network_analyzer\model\repository\mongo\CategoriesRepository;
+    use comunic\social_network_analyzer\model\entity\Category;
+    use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
 
     class ProjectsRepositoryTest extends PHPUnit_Framework_TestCase{
 
@@ -38,17 +39,23 @@ namespace sna\tests\model\repository\mongo{
         }
 
         public function setUp(){
-            $this->repo = new ProjectsRepository(static::DEFAULT_DATABASE);
+            $this->repo = new CategoriesRepository(static::DEFAULT_DATABASE);
 
             $this->fixture = array(
-                "projects" => array(
+                "categories" => array(
                     array(
                         "_id" => new \MongoId("54202c79d1c82dc01a000032"),
-                        "name" => "FooProject"
+                        "name" => "FooCategory",
+                        "keywords"=> array("FooKw", "BarKw"),
+                        "included"=>null,
+                        "excluded"=>null
                         ),
                     array(
                         "_id" => new \MongoId("54202c79d1c82dc01a000033"),
-                        "name" => "BarProject"
+                        "name" => "BarCategory",
+                        "keywords"=> array("FooKw", "BarKw"),
+                        "included"=>null,
+                        "excluded"=>null
                         )
                     )
                 );
@@ -63,55 +70,56 @@ namespace sna\tests\model\repository\mongo{
 
         public function testFindById(){
 
-            $project = $this->repo->findById("54202c79d1c82dc01a000032");
+            $category = $this->repo->findById("54202c79d1c82dc01a000032");
 
-            $this->assertEquals("54202c79d1c82dc01a000032", $project->getId());
-            $this->assertEquals("FooProject", $project->getName());
+            $this->assertEquals("54202c79d1c82dc01a000032", $category->getId());
+            $this->assertEquals("FooCategory", $category->getName());
 
-            $this->assertNotEquals("54202c79d1c82dc01a000031", $project->getId());
+            $this->assertNotEquals("54202c79d1c82dc01a000031", $category->getId());
 
         }
 
 
         public function testUpdate(){
-            $project = new Project();
-            $project->setId("54202c79d1c82dc01a000034");
-            $project->setName("umProjeto");
+            $category = new Category();
+            $category->setId("54202c79d1c82dc01a000034");
+            $category->setName("umaCategoria");
+            $category->setKeywords(array("umakw","duaskw"));
 
-            $this->repo->insert($project);
+            $this->repo->insert($category);
 
-            $result = $this->connection->collection('projects')->findOne(['_id' => new \MongoId('54202c79d1c82dc01a000034')]);
+            $result = $this->connection->collection('categories')->findOne(['_id' => new \MongoId('54202c79d1c82dc01a000034')]);
 
-            $this->assertEquals($project->getName(), $result['name']);
-            $this->assertEquals($project->getId(), $result['_id']->{'$id'});
+            $this->assertEquals($category->getName(), $result['name']);
+            $this->assertEquals($category->getId(), $result['_id']->{'$id'});
 
         }
 
         public function testInsert(){
-            $project = new Project();
-            $project->setName("BarProject");
+            $category = new Category();
+            $category->setName("umaCategoria");
+            $category->setKeywords(array("umakw","duaskw"));
+            $this->repo->insert($category);
+            $result = $this->connection->collection('categories')->findOne(['name' => "umaCategoria"]);
 
-            $this->repo->insert($project);
-            $result = $this->connection->collection('projects')->findOne(['name' => "BarProject"]);
-
-            $this->assertEquals($project->getName(), $result['name']);
+            $this->assertEquals($category->getName(), $result['name']);
 
         }
 
         public function testDelete(){
-            $count = $this->connection->collection('projects')->count();
+            $count = $this->connection->collection('categories')->count();
             $this->assertEquals(2, $count);
 
             $this->repo->delete("54202c79d1c82dc01a000032");
 
-            $count = $this->connection->collection('projects')->count();
+            $count = $this->connection->collection('categories')->count();
             $this->assertEquals(1, $count);
             $this->assertNotEquals(0, $count);
             $this->assertNotEquals(2, $count);
         }
 
         public function testListAll(){
-            $count = $this->connection->collection('projects')->count();
+            $count = $this->connection->collection('categories')->count();
             $this->assertEquals(2, $count);
 
             $this->assertEquals(2,count($this->repo->listAll()));

@@ -14,8 +14,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
 
         private $mongoch;
 
-        function __construct() {
-            $this->mongoch = new MongoCollectionHandler('tweets');
+        function __construct($connectionType) {
+            $this->mongoch = new MongoCollectionHandler('tweets',$connectionType);
         }
 
         public function insert($tweet) {

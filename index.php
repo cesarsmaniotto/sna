@@ -21,7 +21,7 @@ use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
 $restapp = new Slim();
 
 
-$mongo = new MongoRepository();
+$mongo = new MongoRepository("comunic");
 $mfact = new FacadeFactory($mongo);
 
 $categoryFacade = $mfact->instantiateCategories();

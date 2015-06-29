@@ -11,8 +11,8 @@ class ProjectsRepository implements IProjectsRepository{
 
 	private $mongoch;
 
-	public function __construct(){
-		$this->mongoch = new MongoCollectionHandler('projects');
+	public function __construct($connectionType){
+		$this->mongoch = new MongoCollectionHandler('projects',$connectionType);
 	}
 
 	public function insert($project){

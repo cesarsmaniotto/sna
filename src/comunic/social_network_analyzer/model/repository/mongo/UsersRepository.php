@@ -10,8 +10,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
         private $mongoch;
 
-        function __construct(){
-            $this->mongoch = new MongoCollectionHandler('users');
+        function __construct($connectionType){
+            $this->mongoch = new MongoCollectionHandler('users',$connectionType);
         }
 
         public function insert($user){

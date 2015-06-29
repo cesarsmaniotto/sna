@@ -1,6 +1,6 @@
 <?php
 
-namespace sna\tests\model\entity\mappers\ArrayToProjectTest{
+namespace sna\tests\model\entity\mappers{
 
     use PHPUnit_Framework_TestCase;
     use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;

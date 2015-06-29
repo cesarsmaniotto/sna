@@ -8,10 +8,10 @@ use \comunic\social_network_analyzer\model\entity\Paginator;
 
         private $collection;
 
-        function __construct($collectionName){
+        function __construct($collectionName, $connectionType){
 
             $conn = new ConnectionMongo();
-            $conn = $conn->getConnection();
+            $conn = $conn->getConnection($connectionType);
             $this->collection = $conn->selectCollection($collectionName);
 
         }

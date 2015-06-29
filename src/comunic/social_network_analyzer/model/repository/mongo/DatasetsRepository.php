@@ -10,8 +10,8 @@ class DatasetsRepository implements IDatasetsRepository{
 
     private $mongoch;
 
-    function __construct(){
-        $this->mongoch = new MongoCollectionHandler("datasets");
+    function __construct($connectionType){
+        $this->mongoch = new MongoCollectionHandler("datasets",$connectionType);
     }
 
     public function insert($object){

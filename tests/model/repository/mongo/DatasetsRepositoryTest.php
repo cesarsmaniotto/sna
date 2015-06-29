@@ -11,7 +11,7 @@ use comunic\social_network_analyzer\model\entity\Dataset as DatasetModel;
 
 class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
 
-     const DEFAULT_DATABASE = "teste";
+     const DEFAULT_DATABASE = "development";
 
         protected $connection;
         protected $dataset;
@@ -36,7 +36,7 @@ class DatasetsRepositoryTest extends PHPUnit_Framework_TestCase{
         }
 
         public function setUp(){
-            $this->repository = new DatasetsRepository();
+            $this->repository = new DatasetsRepository(static::DEFAULT_DATABASE);
 
             $this->fixture = array(
                 "datasets" => array(

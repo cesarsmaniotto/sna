@@ -60,8 +60,16 @@ class DatasetsFacade
    */
   public function delete( $datasetId, $projectId) {
     $project = $this->projectsRepo->findById($projectId);
-    unset($project->getDatasetsId()[$dataset->getId()]);
-    $projectsRepo->update($project);
+    $datasetsIds = $project->getDatasetsIds();
+
+    for($i=0 ; $i < \count($datasetsIds); $i++){
+      if($datasetsIds[$i]==$datasetId){
+        unset($datasetsIds[$i]);
+      }
+    }
+
+    $project->setDatasetsIds($datasetsIds);
+    $this->projectsRepo->update($project);
 
     $this->datasetsRepo->delete($datasetId);
   } // end of member function delete
@@ -91,7 +99,7 @@ class DatasetsFacade
    * @return void
    * @access public
    */
-  public function update( $parser,  $datasetText) {
+  public function update($datasetText, $parser) {
     $datasets = $parser->parse($datasetText);
     return $this->datasetsRepo->insert($datasets);
   } // end of member function update
