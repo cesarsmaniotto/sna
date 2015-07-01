@@ -14,7 +14,9 @@ namespace sna\tests\model\entity\parse\json{
             $jsonTextDataset = '{"id":"54202c79d1c82dc01a000032","name":"FooDataset"}';
             $jsonObjDataset = \json_decode($jsonTextDataset);
 
-            $parser = new JsonDatasetParser();
+            $idMongoGen = new IdMongoGenerator();
+
+            $parser = new JsonDatasetParser($idMongoGen());
             $objDataset = $parser->parse($jsonTextDataset);
 
             $this->assertEquals($jsonObjDataset->{'id'}, $objDataset->getId());
@@ -23,12 +25,10 @@ namespace sna\tests\model\entity\parse\json{
 
 
 
-
-
             $jsonTextDataset = '{"name":"BarDataset"}';
             $jsonObjDataset = \json_decode($jsonTextDataset);
 
-            $parser = new JsonDatasetParser();
+            $parser = new JsonDatasetParser($idMongoGen());
             $objDataset = $parser->parse($jsonTextDataset);
 
             $this->assertNotEquals("54202c79d1c82dc01a000032", $objDataset->getId());

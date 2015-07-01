@@ -4,8 +4,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
 use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
 use \comunic\social_network_analyzer\model\repository\IProjectsRepository;
-use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
-use comunic\social_network_analyzer\model\entity\mappers\ProjectToArray;
+use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayToProject;
+use comunic\social_network_analyzer\model\repository\mongo\mappers\ProjectToArray;
 
 class ProjectsRepository implements IProjectsRepository{
 

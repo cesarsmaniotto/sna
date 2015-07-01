@@ -14,7 +14,7 @@ use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 use comunic\social_network_analyzer\model\entity\parse\csv\CSVTweetParser;
 use comunic\social_network_analyzer\model\entity\parse\csv\CSVCategoryParser;
-
+use comunic\social_network_analyzer\model\util\IdMongoGenerator;
 
 use comunic\social_network_analyzer\model\entity\format\json\JsonPaginator;
 use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;

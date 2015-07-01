@@ -2,15 +2,13 @@
 
 namespace comunic\social_network_analyzer\model\entity\parse\json {
 
-    use comunic\social_network_analyzer\model\entity\parse\IObjectParser;
     use comunic\social_network_analyzer\model\entity\Project;
 
 
-    class JsonProjectParser implements IObjectParser {
+    class JsonProjectParser extends BasicObjectParser {
 
-        public function parse($text) {
 
-            $jsonproject = \json_decode($text);
+        protected function createObject($jsonproject){
             $project = new Project();
 
             if (isset($jsonproject->id)) {
@@ -28,7 +26,6 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
 
             return $project;
         }
-
     }
 
 }

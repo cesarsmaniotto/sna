@@ -12,7 +12,7 @@ namespace sna\tests\model\repository\mongo{
     use comunic\social_network_analyzer\model\entity\Category;
     use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
 
-    class ProjectsRepositoryTest extends PHPUnit_Framework_TestCase{
+    class CategoriesRepositoryTest extends PHPUnit_Framework_TestCase{
 
         const DEFAULT_DATABASE = "development";
 

@@ -2,30 +2,11 @@
 
 namespace comunic\social_network_analyzer\model\entity\parse\json{
 
-    use comunic\social_network_analyzer\model\entity\parse\IObjectParser;
     use comunic\social_network_analyzer\model\entity\Category;
 
-    class JsonCategoryParser implements IObjectParser{
+    class JsonCategoryParser extends BasicObjectParser{
 
-        public function parse($text){
-
-            $jsonCat = \json_decode($text);
-
-            if(is_array($jsonCat)){
-
-                $categories = array();
-
-            foreach ($jsonCat as $cat) {
-                $categories[] = $this->createObject($cat);
-            }
-                return $categories;
-            }
-
-            return $this->createObject($jsonCat);
-
-        }
-
-        private function createObject($jsonObj){
+        protected function createObject($jsonObj){
             $category = new Category();
 
             if(isset($jsonObj->id)){

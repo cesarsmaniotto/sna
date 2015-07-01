@@ -3,8 +3,8 @@
 namespace comunic\social_network_analyzer\model\repository\mongo{
 
 use comunic\social_network_analyzer\model\repository\IDatasetsRepository;
-use comunic\social_network_analyzer\model\entity\mappers\DatasetToArray;
-use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
+use comunic\social_network_analyzer\model\repository\mongo\mappers\DatasetToArray;
+use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayToDataset;
 
 class DatasetsRepository implements IDatasetsRepository{
 
