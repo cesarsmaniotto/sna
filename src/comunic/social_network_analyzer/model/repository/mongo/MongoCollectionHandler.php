@@ -3,6 +3,8 @@
 namespace comunic\social_network_analyzer\model\repository\mongo{
 
 use \comunic\social_network_analyzer\model\entity\Paginator;
+use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayWithMongoIdToObject;
+use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArrayWithMongoId;
 
     class MongoCollectionHandler{
 
@@ -30,8 +32,10 @@ use \comunic\social_network_analyzer\model\entity\Paginator;
         private function cursorToObjectArray($toObjectFunction,$cursor){
             $outputObjects=array();
 
+            $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+
             foreach ($cursor as $item) {
-                $outputObjects[]=$toObjectFunction($item);
+                $outputObjects[]=$fArrayWithMongoIdToObj($item, $toObjectFunction);
             }
 
             return $outputObjects;
@@ -56,16 +60,19 @@ use \comunic\social_network_analyzer\model\entity\Paginator;
         //retorna um array com os dados de um documento
         public function findOne($toObjectFunction,$query = array(), $fields=array()){
             $arrayData=$this->collection->findOne($query,$fields);
-            return $toObjectFunction($arrayData);
+
+            $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+
+            return $fArrayWithMongoIdToObj($arrayData, $toObjectFunction);
 
         }
 
         public function save($obj, $toArrayDataFunction,$options=array()){
 
             try {
+                $fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
 
-
-               $arrayData=$toArrayDataFunction($obj);
+               $arrayData=$fObjToArrayWithMongoId($obj, $toArrayDataFunction);
 
                 return $this->collection->save($arrayData, $options);
 

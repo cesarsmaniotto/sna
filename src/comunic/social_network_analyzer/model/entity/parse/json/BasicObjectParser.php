@@ -3,28 +3,34 @@
 namespace comunic\social_network_analyzer\model\entity\parse\json{
 
 use comunic\social_network_analyzer\model\entity\parse\IObjectParser;
+use comunic\social_network_analyzer\model\util\ArrayUtil;
 
 abstract class BasicObjectParser implements IObjectParser{
 
     public function parse($jsonText){
 
-        $jsonObj = \json_decode($jsonText);
+        $arrayData = \json_decode($jsonText, true);
 
-        if(\is_array($jsonObj)){
+        if(ArrayUtil::is_assoc_array($arrayData)){
+
+            return $this->createObject($arrayData);
+
+        }
+
+        if(\is_array($arrayData)){
 
             $listObjects = array();
 
-            foreach ($jsonObj as $item) {
+            foreach ($arrayData as $item) {
                 $listObjects[] = $this->createObject($item);
             }
 
             return $listObjects;
 
         }
-        return $this->createObject($jsonObj);
     }
 
-    protected abstract function createObject($jsonObj);
+    protected abstract function createObject($arrayData);
 
 
 }

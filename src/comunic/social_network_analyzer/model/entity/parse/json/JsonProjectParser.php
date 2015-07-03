@@ -8,20 +8,20 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
     class JsonProjectParser extends BasicObjectParser {
 
 
-        protected function createObject($jsonproject){
+        protected function createObject($arrayData){
             $project = new Project();
 
-            if (isset($jsonproject->id)) {
-                $project->setId($jsonproject->id);
+            if (isset($arrayData['id'])) {
+                $project->setId($arrayData['id']);
             }
 
-            if (isset($jsonproject->name)) {
-                $project->setName($jsonproject->name);
+            if (isset($arrayData['name'])) {
+                $project->setName($arrayData['name']);
             }
 
-            if (isset($jsonproject->datasetsIds)) {
+            if (isset($arrayData['datasetsIds'])) {
 
-                $project->setDatasetsIds($jsonproject->datasetsIds);
+                $project->setDatasetsIds($arrayData['datasetsIds']);
             }
 
             return $project;

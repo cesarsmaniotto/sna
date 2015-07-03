@@ -14,18 +14,18 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
             $this->idGenerator = $idGenerator;
         }
 
-        protected function createObject($jsonObj){
+        protected function createObject($arrayData){
             $dataset = new Dataset();
 
-             if (isset($jsonObj->id)) {
-                $dataset->setId($jsonObj->id);
+             if (isset($arrayData['id'])) {
+                $dataset->setId($arrayData['id']);
             }else{
 
                 $dataset->setId($this->idGenerator);
             }
 
-            if (isset($jsonObj->name)) {
-                $dataset->setName($jsonObj->name);
+            if (isset($arrayData['name'])) {
+                $dataset->setName($arrayData['name']);
             }
 
             return $dataset;

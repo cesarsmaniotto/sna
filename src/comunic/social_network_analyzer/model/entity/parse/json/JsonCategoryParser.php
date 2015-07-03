@@ -6,27 +6,27 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
 
     class JsonCategoryParser extends BasicObjectParser{
 
-        protected function createObject($jsonObj){
+        protected function createObject($arrayData){
             $category = new Category();
 
-            if(isset($jsonObj->id)){
-                $category->setId($jsonObj->id);
+            if(isset($arrayData['id'])){
+                $category->setId($arrayData['id']);
             }
 
-            if(isset($jsonObj->name)){
-                $category->setName($jsonObj->name);
+            if(isset($arrayData['name'])){
+                $category->setName($arrayData['name']);
             }
 
-            if(isset($jsonObj->keywords)){
-                $category->setKeywords($jsonObj->keywords);
+            if(isset($arrayData['keywords'])){
+                $category->setKeywords($arrayData['keywords']);
             }
 
-            if(isset($jsonObj->included)){
-                $category->setIncluded($jsonObj->included);
+            if(isset($arrayData['included'])){
+                $category->setIncluded($arrayData['included']);
             }
 
-            if(isset($jsonObj->excluded)){
-                $category->setExcluded($jsonObj->excluded);
+            if(isset($arrayData['excluded'])){
+                $category->setExcluded($arrayData['excluded']);
             }
 
             return $category;
@@ -37,8 +37,6 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
 
 
 }
-
-
 
 
 ?>

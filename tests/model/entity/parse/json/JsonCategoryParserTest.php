@@ -18,11 +18,17 @@ class JsonCategoryParserTest extends PHPUnit_Framework_TestCase{
         $category->setName("FooCategory");
         $category->setKeywords(array("FooKw", "BarKw"));
 
-        $jsonCategory = '{"name":"FooCategory","keywords":["FooKw","BarKw"],"included":null,"excluded":null,"id":"'.$catId.'"}';
+        $category2 = new Category();
+        $catId2 = $idMongo();
+        $category2->setId($catId2);
+        $category2->setName("FooCategory");
+        $category2->setKeywords(array("FooKw", "BarKw"));
+
+        $jsonCategory = '[{"name":"FooCategory","keywords":["FooKw","BarKw"],"included":null,"excluded":null,"id":"'.$catId.'"},{"name":"FooCategory","keywords":["FooKw","BarKw"],"included":null,"excluded":null,"id":"'.$catId2.'"}]';
 
         $parser = new JsonCategoryParser();
 
-        $this->assertEquals($category, $parser->parse($jsonCategory));
+        $this->assertEquals(array($category, $category2), $parser->parse($jsonCategory));
 
 
     }

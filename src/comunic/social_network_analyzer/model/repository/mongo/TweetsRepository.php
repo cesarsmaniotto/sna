@@ -4,8 +4,8 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
 
     use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
     use \comunic\social_network_analyzer\model\repository\ITweetsRepository;
-    use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayToTweet;
-    use comunic\social_network_analyzer\model\repository\mongo\mappers\TweetToArray;
+    use comunic\social_network_analyzer\model\entity\mappers\ArrayToTweet;
+    use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
     use comunic\social_network_analyzer\model\util\StringUtil;
 
 
