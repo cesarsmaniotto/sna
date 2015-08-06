@@ -10,8 +10,8 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 
 			$project = new Project();
 
-			if(isset($arrayData['_id']->{'$id'})){
-				$project->setId($arrayData['_id']->{'$id'});
+			if(isset($arrayData['id'])){
+				$project->setId($arrayData['id']);
 			}
 
 			if(isset($arrayData['name'])){

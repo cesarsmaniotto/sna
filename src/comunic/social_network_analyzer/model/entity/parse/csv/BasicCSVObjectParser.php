@@ -15,7 +15,7 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv{
 
             unset($csvDataArray[0]);
 
-            $csvData = array();
+            $objects = array();
 
             foreach ($csvDataArray as $csvRow) {
 
@@ -31,12 +31,12 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv{
                             $rowDataMap[$f_name] = $csv_fd_data;
                         }
 
-                        $csvData[] = $this->arrayToObject($rowDataMap);
+                        $objects[] = $this->arrayToObject($rowDataMap);
                     }
 
             }
 
-            return $csvData;
+            return $objects;
 
 
 

@@ -2,22 +2,31 @@
 
 namespace comunic\social_network_analyzer\model\entity\mappers{
 
-    use comunic\social_network_analyzer\model\entity\Dataset;
+	use comunic\social_network_analyzer\model\entity\Dataset;
 
-    class ArrayToDataset{
+	class ArrayToDataset{
 
-        function __invoke($arrayData){
+		function __invoke($arrayData){
 
-            $dataset = new Dataset();
+			$dataset = new Dataset();
 
-            $dataset->setId($arrayData["_id"]->{'$id'});
-            $dataset->setName($arrayData["name"]);
+			if(isset($arrayData['id'])){
+				$dataset->setId($arrayData['id']);
+			}
 
-            return $dataset;
+			if(isset($arrayData['name'])){
+				$dataset->setName($arrayData['name']);
+			}
 
-        }
+			if(isset($arrayData['hasTweets'])){
+				$dataset->setHasTweets($arrayData['hasTweets']);
+			}
 
-    }
+			return $dataset;
+
+		}
+
+	}
 
 }
 

@@ -45,6 +45,14 @@ interface IRepositoryFactory
    */
   public function instantiateProject();
 
+    /**
+   *
+   *
+   * @return  \comunic\social_network_analyzer\model\repository\IDatasetsRepository
+   * @access public
+   */
+  public function instantiateDataset();
+
 
 
 }

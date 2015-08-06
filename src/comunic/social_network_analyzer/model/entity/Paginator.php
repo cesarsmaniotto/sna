@@ -11,10 +11,10 @@ namespace comunic\social_network_analyzer\model\entity{
         private $amountPerPage;
         private $numberPages;
 
-        public function __construct($objectList, $count, $page, $amountPerPage){
+        public function __construct($objectList, $count, $skip, $amountPerPage){
             $this->objectList = $objectList;
             $this->count = $count;
-            $this->page = $page;
+            $this->page = ($skip/$amountPerPage) + 1;
             $this->amountPerPage = $amountPerPage;
             $this->numberPages = \ceil($count / $amountPerPage);
 

@@ -7,8 +7,9 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
         function __invoke($obj){
 
             return array(
-                "_id" => new \MongoId($obj->getId()),
-                "name" => $obj->getName()
+                "id" => $obj->getId(),
+                "name" => $obj->getName(),
+                "hasTweets" => $obj->getHasTweets()
                 );
         }
 

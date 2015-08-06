@@ -19,7 +19,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function insert( $project);
+  public function insert( $project, $projectId);
 
   /**
    *

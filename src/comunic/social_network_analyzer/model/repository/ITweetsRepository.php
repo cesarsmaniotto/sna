@@ -19,7 +19,7 @@ interface ITweetsRepository
    * @return void
    * @access public
    */
-  public function insert( $tweet);
+  public function insert( $tweet,$datasetId);
 
   /**
    *
@@ -46,12 +46,12 @@ interface ITweetsRepository
    * @see \comunic\social_network_analyzer\model\entity\Tweet
    * @access public
    */
-  public function findByCategory( $category);
+  public function findByCategory($datasetId, $category);
 
 
-public function listInAnInterval($initial, $final);
+public function listInAnInterval($datasetId, $initial, $final);
 
-public function findbyCategoryInAnInterval($category, $initial, $final);
+public function findbyCategoryInAnInterval($datasetId,$category, $initial, $final);
 
 
 }

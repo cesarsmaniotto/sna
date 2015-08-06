@@ -11,8 +11,7 @@ namespace comunic\social_network_analyzer\model\entity\format\json{
             $funcCategoryToArray = new CategoryToArray();
 
             $dados=$funcCategoryToArray($obj);
-            unset($dados['_id']);
-            $dados["id"] = $obj->getId();
+
             return $dados;
 
         }

@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Zumba\\PHPUnit\\Extensions\\Mongo\\' => array($vendorDir . '/zumba/mongounit/src'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
 );

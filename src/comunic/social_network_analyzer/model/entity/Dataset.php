@@ -18,12 +18,12 @@ class Dataset
    * @access private
    */
   private $id;
-
-  /**
-   *
-   * @access private
-   */
   private $name;
+  private $hasTweets;
+
+  function __construct(){
+    $this->hasTweets = false;
+  }
 
 
 public function getId()
@@ -46,6 +46,20 @@ public function setName($name)
     return $this->name = $name;
 }
 
-} // end of Dataset
+public function getHasTweets()
+{
+    return $this->hasTweets;
+}
+ 
+public function setHasTweets($hasTweets)
+{
+    return $this->hasTweets = $hasTweets;
+}
+
+}
+
+
+
+ // end of Dataset
 }
 ?>

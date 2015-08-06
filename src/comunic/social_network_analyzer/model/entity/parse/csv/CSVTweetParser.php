@@ -15,6 +15,7 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv {
        $tweet->setToUserId($arrayData['to_user_id']);
        $tweet->setFromUser($arrayData['from_user']);
        $tweet->setIdTweet($arrayData['id']);
+       // $tweet->setId($arrayData['id']);
        $tweet->setFromUserId($arrayData['from_user_id']);
        $tweet->setIsoLanguageCode($arrayData['iso_language_code']);
        $tweet->setSource($arrayData['source']);

@@ -10,6 +10,16 @@ namespace comunic\social_network_analyzer\model\util{
 
         }
 
+        public static function eliminates_repeated($array){
+        	$withoutRepeated = array();
+
+        	foreach ($array as $item) {
+        		$withoutRepeated[$item] = $item;
+        	}
+        	return array_values($withoutRepeated);
+
+        }
+
     }
 
 }

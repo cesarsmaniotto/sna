@@ -1,6 +1,8 @@
 <?php
 
 namespace comunic\social_network_analyzer\model\entity{
+
+  use comunic\social_network_analyzer\model\util\StringUtil;
 /**
  * class Category
  *
@@ -97,6 +99,19 @@ public function getExcluded()
 public function setExcluded($excluded)
 {
     return $this->excluded = $excluded;
+}
+
+public function toRegex(){
+  $kwAsRegex = array();
+
+  foreach ($this->keywords as $kw) {
+    $kw = str_replace('?', '', $kw);
+    $wordAsRegex = StringUtil::accentToRegex($kw);
+    $wordAsRegex = str_replace('.', '.?', $wordAsRegex);
+    $kwAsRegex[] = "/\b$wordAsRegex\b/iu";
+  }
+
+  return $kwAsRegex;
 }
 
 

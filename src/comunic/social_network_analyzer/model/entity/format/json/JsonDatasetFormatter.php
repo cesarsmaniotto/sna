@@ -12,8 +12,6 @@ use comunic\social_network_analyzer\model\entity\mappers\DatasetToArray;
             $fDatasetToArray = new DatasetToArray();
 
             $arrayData = $fDatasetToArray($dataset);
-            unset($arrayData["_id"]);
-            $arrayData["id"] = $dataset->getId();
 
             return $arrayData;
         }

@@ -1,8 +1,9 @@
 {
     "require": {
-        "slim/slim": "~2.0",
-         "phpunit/phpunit": "4.7.*",
-        "zumba/mongounit": "2.0.0"
+        "triagens/arangodb": "^2.6",
+        "slim/slim": "^2.6",
+        "phpunit/phpunit": "^4.7",
+        "zumba/mongounit": "^2.0"
     },
 
     "autoload":{

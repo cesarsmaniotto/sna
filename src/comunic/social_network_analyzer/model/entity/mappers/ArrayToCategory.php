@@ -10,8 +10,8 @@ use \comunic\social_network_analyzer\model\entity\Category;
         public function __invoke($arrayData){
             $category = new Category();
 
-            if (isset($arrayData['_id']->{'$id'})) {
-                  $category->setId($arrayData['_id']->{'$id'});
+            if (isset($arrayData['id'])) {
+                  $category->setId($arrayData['id']);
             }
 
             if (isset($arrayData['name'])) {

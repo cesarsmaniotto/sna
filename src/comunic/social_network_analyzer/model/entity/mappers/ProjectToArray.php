@@ -7,10 +7,10 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 		public function __invoke($obj){
 
 			return array(
-				'_id' => new \MongoId($obj->getId()),
+				'id' => $obj->getId(),
 				'name' => $obj->getName(),
-                                            'datasetsIds' => $obj->getDatasetsIds()
-                                            );
+                'datasetsIds' => $obj->getDatasetsIds()
+                );
 
 
 
