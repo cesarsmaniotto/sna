@@ -13,44 +13,28 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 	class TweetsRepository extends AbstractArangoRepository implements ITweetsRepository{
 		
+
 		function __construct(){
 			parent::__construct();
 
 			$this->entityName = "tweets";
 			$this->collHandler->setCollection($this->entityName);
-
+			
 		}
 
-		public function insert($tweets, $datasetId){
+		public function import($tweets, $datasetId){
 			
 			$idsTweets = $this->graphHandler->importDocuments($tweets, $this->entityName,new TweetToArray());
-			$datasetId = $this->mountId("datasets",$datasetId);
 			
+			$datasetId = $this->mountId("datasets",$datasetId);
 			$this->graphHandler->createEdgeToManyFrom($datasetId,$idsTweets,"datasets_tweets_belong");
 
 			$tweets = $this->graphHandler->getByIds($idsTweets, $this->entityName, new ArrayToTweet());
-
+			$wordsRepo = new WordsRepository();
 			foreach ($tweets as $tweet) {
-				$textWithoutPunctuation = StringUtil::removePunctuation($tweet->getText());
-				$words = ArrayUtil::eliminates_repeated(\explode(" ", $textWithoutPunctuation));
+
 				$tweetId = $this->mountId($this->entityName, $tweet->getId());	
-				$wordObjects=array();
-				$wordIds=array();
-				foreach($words as $word){
-					$wordObj=new Word($word);
-					$wordId=$this->mountId("words",$wordObj->getId());
-					$wordIds[]=$wordId;
-					$wordObjects[$wordId]= $wordObj;
-				}
-				$existingIds = $this->graphHandler->returnsExistingIds($wordIds,"words");
-
-				foreach ($existingIds as $id) {
-					unset($wordObjects[$id]);
-				}
-
-				$this->graphHandler->importDocuments(array_values($wordObjects),"words",new WordToArray());
-
-				$this->graphHandler->createEdgeToManyFrom($tweetId,$wordIds,"tweets_words_contains");
+				$wordsRepo->importFromTweet($tweet->getText(),$tweetId);	
 
 			}
 			
@@ -93,18 +77,11 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function findByCategory($datasetId, $category){
-			$words = $this->graphHandler->listVertex("words",new ArrayToWord());
-			$strWords = array();
+			$wordsRepo = new WordsRepository();
 
-			foreach ($words as $word) {
-				$strWords[]=$word->getWord();
-			}
-			$kwAsRegex=$category->toRegex();
+			$words = $wordsRepo->getWordsAsString();
 
-			$matchWords = array();
-			foreach ($kwAsRegex as $kw) {
-				$matchWords = \array_merge($matchWords, preg_grep($kw, $strWords));
-			}
+			$matchWords = $category->matchWithKeywords($words);
 
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
@@ -133,19 +110,12 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		public function findbyCategoryInAnInterval($datasetId, $category, $skip, $amount){
 
-			$words = $this->graphHandler->listVertex("words",new ArrayToWord());
-			$strWords = array();
+			$wordsRepo = new WordsRepository();
 
-			foreach ($words as $word) {
-				$strWords[]=$word->getWord();
-			}
+			$words = $wordsRepo->getWordsAsString();
 
-			$kwAsRegex=$category->toRegex();
+			$matchWords = $category->matchWithKeywords($words);
 
-			$matchWords = array();
-			foreach ($kwAsRegex as $kw) {
-				$matchWords = \array_merge($matchWords, preg_grep($kw, $strWords));
-			}
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
 				$wordsIds[] = array("_id" => $this->mountId("words", new Word($word)));

@@ -101,7 +101,7 @@ public function setExcluded($excluded)
     return $this->excluded = $excluded;
 }
 
-public function toRegex(){
+private function toRegex(){
   $kwAsRegex = array();
 
   foreach ($this->keywords as $kw) {
@@ -112,6 +112,17 @@ public function toRegex(){
   }
 
   return $kwAsRegex;
+}
+
+public function matchWithKeywords($words){
+  $kwAsRegex = $this->toRegex();
+  $matchWords=array();
+
+  foreach ($kwAsRegex as $kw) {
+    $matchWords = \array_merge($matchWords, preg_grep($kw, $words));
+  }
+
+  return $matchWords;
 }
 
 

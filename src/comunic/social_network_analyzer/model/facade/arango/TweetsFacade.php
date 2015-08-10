@@ -38,11 +38,11 @@ function __construct($repository, $categoryRep){
    * @return void
    * @access public
    */
-  public function insert( $text,  $datasetId, $parser) {
+  public function import( $text,  $datasetId, $parser) {
     $tweets = $parser->parse($text);
-    // foreach ($tweets as $tweet) {
-      $this->repositoryTweet->insert($tweets, $datasetId);
-    // }
+
+    $this->repositoryTweet->import($tweets, $datasetId);
+
   } // end of member function insertAll
 
   /**
@@ -85,16 +85,16 @@ function __construct($repository, $categoryRep){
 
 
   public function listInAnInterval($datasetId, $fmt, $page, $amount){
-      $page=  \intval($page);
-      $amount=  \intval($amount);
+    $page=  \intval($page);
+    $amount=  \intval($amount);
     return $fmt->format($this->repositoryTweet->listInAnInterval($datasetId, $page, $amount));
   }
 
-public function findbyCategoryInAnInterval($datasetId, $id_cat, $fmt, $skip, $amount){
+  public function findbyCategoryInAnInterval($datasetId, $id_cat, $fmt, $skip, $amount){
     $category = $this->categoryRep->findById($id_cat);
     $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($datasetId, $category, $skip, $amount);
     return $fmt->format($tweets);
-}
+  }
 
 }
 

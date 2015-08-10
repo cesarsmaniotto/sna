@@ -15,7 +15,7 @@ $restapp->post('/tweets/csv_to_json/:idDataset', function($idDataset) use($resta
 
     $jsonTweets = $formatter->format($tweets);
 
-    $tweetsFacade->insert($jsonTweets, $idDataset,new JsonTweetParser());
+    $tweetsFacade->import($jsonTweets, $idDataset,new JsonTweetParser());
 
 });
 
