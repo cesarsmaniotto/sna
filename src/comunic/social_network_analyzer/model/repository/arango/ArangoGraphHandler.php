@@ -11,6 +11,8 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 	use triagens\ArangoDb\Graph;
 	use triagens\ArangoDb\EdgeDefinition;
 	use triagens\ArangoDb\Statement;
+	use triagens\ArangoDb\Urls;
+	use triagens\ArangoDb\UrlHelper;
 	use comunic\social_network_analyzer\model\repository\arango\mappers\ArrayWithArangoKeyToObject;
 	use comunic\social_network_analyzer\model\repository\arango\mappers\ObjectToArrayWithArangoKey;
 	use comunic\social_network_analyzer\model\util\ArrayUtil;
@@ -47,10 +49,38 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			}
 			$this->setGraph("sna");
-
-
-			
+		
 		}
+
+		public function import($collection,$objects,$toArrayFunc){
+			$params = array(
+				"type"=>"list",
+				"collection"=>$collection,
+				"createCollection"=>false,
+				"overwrite"=>false,
+				"waitForSync"=>false,
+				"onDuplicate"=>"ignore",
+				"complete"=>false,
+				"details"=>true);
+
+			$fObjectToArray = new ObjectToArrayWithArangoKey();	
+
+			$arrayData = array();
+			foreach ($objects as $obj) {
+				$arrayData[] = $fObjectToArray($obj, $toArrayFunc);
+			}
+
+
+			$url      = UrlHelper::appendParamsUrl(Urls::URL_IMPORT, $params);
+			
+			$response = $this->connection->post($url, $this->connection->json_encode_wrapper($arrayData));
+			echo \count($objects);
+			echo '<br>';
+			echo var_dump($response->getJson());
+		}
+
+
+
 
 		public function setGraph($graphName){
 			$this->graph = $this->graphHandler->getGraph($graphName);

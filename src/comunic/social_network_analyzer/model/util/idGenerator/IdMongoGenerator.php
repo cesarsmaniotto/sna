@@ -1,6 +1,6 @@
 <?php
 
-namespace comunic\social_network_analyzer\model\util{
+namespace comunic\social_network_analyzer\model\util\idGenerator{
 
 class IdMongoGenerator implements IdGenerator{
 

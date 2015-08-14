@@ -13,9 +13,7 @@ $restapp->post('/tweets/csv_to_json/:idDataset', function($idDataset) use($resta
 
     $tweets = $parserCSV->parse(json_decode($restapp->request()->getBody(),true)["values"]);
 
-    $jsonTweets = $formatter->format($tweets);
-
-    $tweetsFacade->import($jsonTweets, $idDataset,new JsonTweetParser());
+    $tweetsFacade->import($tweets, $idDataset);
 
 });
 

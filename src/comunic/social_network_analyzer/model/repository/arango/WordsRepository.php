@@ -25,7 +25,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			$wordIds=array();
 			foreach($words as $word){
 				$wordObj=new Word($word);
-				$wordId=$this->mountId($this->entityName, $wordObj->getId());
+				$wordId=$this->buildId($this->entityName, $wordObj->getId());
 				$wordIds[]=$wordId;
 				$wordObjects[$wordId]= $wordObj;
 			}

@@ -10,6 +10,17 @@ namespace comunic\social_network_analyzer\model\entity\format\json {
         public function format($obj) {
             if (\is_array($obj)) {
 
+                // $json = "[";
+
+                // foreach ($obj as $item) {
+                //     $json .= \json_encode($this->toMap($item));
+                //     $json .= ',';
+                // }
+
+                // $json.="]";
+
+                // return $json;
+
                 $data = array();
 
                 foreach ($obj as $item) {

@@ -12,8 +12,6 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			parent::__construct();
 
 			$this->entityName = "projects";
-			$this->collHandler->setCollection($this->entityName);
-
 		}
 
 		public function insert($project){
@@ -21,12 +19,12 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function update($project){
-			$id = $this->mountId($this->entityName, $project->getId());
+			$id = $this->buildId($this->entityName, $project->getId());
 			return $this->graphHandler->updateVertex($id, $project, new ProjectToArray());
 		}
 
 		public function delete($id){
-			$id = $this->mountId($this->entityName, $id);
+			$id = $this->buildId($this->entityName, $id);
 			return $this->graphHandler->deleteVertex($id);
 		}
 
@@ -35,7 +33,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function findById($id){
-			$id = $this->mountId($this->entityName, $id);
+			$id = $this->buildId($this->entityName, $id);
 			return $this->graphHandler->getVertex($id, new ArrayToProject());
 
 		}

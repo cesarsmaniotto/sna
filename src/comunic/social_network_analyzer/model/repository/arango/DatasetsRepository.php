@@ -13,19 +13,18 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			parent::__construct();
 
 			$this->entityName = "datasets";
-			$this->collHandler->setCollection($this->entityName);
 		}
 
 		public function insert($dataset, $projectId){
 			$datasetVertex = $this->graphHandler->createVertex($dataset, new DatasetToArray(), $this->entityName);
 
-			$projectId = $this->mountId("projects", $projectId);
+			$projectId = $this->buildId("projects", $projectId);
 
 			return $this->graphHandler->createEdge($projectId, $datasetVertex, "projects_datasets_has","projects_datasets_has");
 		}
 
 		public function filterByProject($projectId){
-			$projectId = $this->mountId("projects", $projectId);
+			$projectId = $this->buildId("projects", $projectId);
 
 			$edges = $this->graphHandler->getConnectedEdges($projectId,"projects_datasets_has");
 
@@ -38,12 +37,12 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function update($dataset){
-			$id = $this->mountId($this->entityName, $dataset->getId());
+			$id = $this->buildId($this->entityName, $dataset->getId());
 			return $this->graphHandler->updateVertex($id, $dataset, new DatasetToArray());
 		}
 
 		public function delete($id){
-			$id = $this->mountId($this->entityName, $id);
+			$id = $this->buildId($this->entityName, $id);
 			return $this->graphHandler->deleteVertex($id);
 		}
 
@@ -53,7 +52,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function findById($id){
-			$id = $this->mountId($this->entityName, $id);
+			$id = $this->buildId($this->entityName, $id);
 			return $this->graphHandler->getVertex($id, new ArrayToDataset());
 
 		}

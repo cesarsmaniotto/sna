@@ -38,10 +38,22 @@ function __construct($repository, $categoryRep){
    * @return void
    * @access public
    */
-  public function import( $text,  $datasetId, $parser) {
-    $tweets = $parser->parse($text);
+  public function import( $tweets,  $datasetId) {
 
-    $this->repositoryTweet->import($tweets, $datasetId);
+    $slices = array();
+
+    $qttPerSlice = 500;
+    $nSlices = ceil(count($tweets) / $qttPerSlice);
+
+    for ($i=0; $i <$nSlices ; $i++) { 
+      $slices[] = \array_slice($tweets, $i*($qttPerSlice), $qttPerSlice);
+
+
+    }
+
+    foreach ($slices as $slice) {
+      $this->repositoryTweet->import($slice, $datasetId);
+    }
 
   } // end of member function insertAll
 
@@ -66,7 +78,7 @@ function __construct($repository, $categoryRep){
    * @return string
    * @access public
    */
-  public function findByCategory($id_cat, $fmt) {
+  public function findByCategory($id_cat, $datasetId, $fmt) {
     $category = $this->categoryRep->findById($id_cat);
     $tweets=$this->repositoryTweet->findByCategory($category);
     return $fmt->format($tweets);

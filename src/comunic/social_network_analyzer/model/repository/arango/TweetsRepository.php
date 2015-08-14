@@ -18,25 +18,24 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			parent::__construct();
 
 			$this->entityName = "tweets";
-			$this->collHandler->setCollection($this->entityName);
 			
 		}
 
 		public function import($tweets, $datasetId){
 			
-			$idsTweets = $this->graphHandler->importDocuments($tweets, $this->entityName,new TweetToArray());
-			
-			$datasetId = $this->mountId("datasets",$datasetId);
-			$this->graphHandler->createEdgeToManyFrom($datasetId,$idsTweets,"datasets_tweets_belong");
+			// $idsTweets = $this->graphHandler->importDocuments($tweets, $this->entityName,new TweetToArray());
+			$idsTweets = $this->graphHandler->import($this->entityName,$tweets,new TweetToArray());
+			// $datasetId = $this->buildId("datasets",$datasetId);
+			// $this->graphHandler->createEdgeToManyFrom($datasetId,$idsTweets,"datasets_tweets_belong");
 
-			$tweets = $this->graphHandler->getByIds($idsTweets, $this->entityName, new ArrayToTweet());
-			$wordsRepo = new WordsRepository();
-			foreach ($tweets as $tweet) {
+			// $tweets = $this->graphHandler->getByIds($idsTweets, $this->entityName, new ArrayToTweet());
+			// $wordsRepo = new WordsRepository();
+			// foreach ($tweets as $tweet) {
 
-				$tweetId = $this->mountId($this->entityName, $tweet->getId());	
-				$wordsRepo->importFromTweet($tweet->getText(),$tweetId);	
+			// 	$tweetId = $this->buildId($this->entityName, $tweet->getId());	
+			// 	$wordsRepo->importFromTweet($tweet->getText(),$tweetId);	
 
-			}
+			// }
 			
 		}
 
@@ -46,7 +45,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function filterByDataset($datasetId){
-			$datasetId = $this->mountId("datasets", $datasetId);
+			$datasetId = $this->buildId("datasets", $datasetId);
 
 			$edges = $this->graphHandler->getConnectedEdges($datasetId,"projects_datasets_has");
 
@@ -59,7 +58,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function findById($id){
-			$id = $this->mountId($this->entityName, $id);
+			$id = $this->buildId($this->entityName, $id);
 			return $this->graphHandler->getVertex($id, new ArrayToTweet());
 
 		}
@@ -85,17 +84,42 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
-				$wordsIds[] = array("_id" => $this->mountId("words", new Word($word)));
+				$wordsIds[] = array("_id" => $this->buildId("words", new Word($word)));
 			}
 
-			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->mountId("datasets", $datasetId)), $wordsIds);
+			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
+
+			if(\count($neighbors)==0){
+				return [];
+			}
 
 			return $this->graphHandler->getByIds($neighbors,$this->entityName,new ArrayToTweet());
 		}
 
 
+		public function findbyCategoryInAnInterval($datasetId, $category, $skip, $amount){
+
+			$wordsRepo = new WordsRepository();
+
+			$words = $wordsRepo->getWordsAsString();
+
+			$matchWords = $category->matchWithKeywords($words);
+
+			$wordsIds = array();
+			foreach ($matchWords as $word) {
+				$wordsIds[] = array("_id" => $this->buildId("words", new Word($word)));
+			}
+
+			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
+
+
+
+			return $this->graphHandler->getByIdsInAnInterval($neighbors,$this->entityName,new ArrayToTweet(),$skip, $amount);
+
+		}
+
 		public function listInAnInterval($datasetId, $skip, $amount){
-			$datasetId = $this->mountId("datasets", $datasetId);
+			$datasetId = $this->buildId("datasets", $datasetId);
 
 			$edges = $this->graphHandler->getConnectedEdges($datasetId, "datasets_tweets_belong");
 			
@@ -108,24 +132,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		}
 
-		public function findbyCategoryInAnInterval($datasetId, $category, $skip, $amount){
 
-			$wordsRepo = new WordsRepository();
-
-			$words = $wordsRepo->getWordsAsString();
-
-			$matchWords = $category->matchWithKeywords($words);
-
-			$wordsIds = array();
-			foreach ($matchWords as $word) {
-				$wordsIds[] = array("_id" => $this->mountId("words", new Word($word)));
-			}
-
-			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->mountId("datasets", $datasetId)), $wordsIds);
-
-			return $this->graphHandler->getByIdsInAnInterval($neighbors,$this->entityName,new ArrayToTweet(),$skip, $amount);
-
-		}
 
 	}
 
