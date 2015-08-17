@@ -22,9 +22,9 @@ namespace comunic\social_network_analyzer\model\entity\parse\json{
             if(isset($jsonObj['fromUser'])){
                 $tweet->setFromUser($jsonObj['fromUser']);
             }
-            if(isset($jsonObj['idTweet'])){
-               $tweet->setIdTweet($jsonObj['idTweet']);
-           }
+           //  if(isset($jsonObj['idTweet'])){
+           //     $tweet->setIdTweet($jsonObj['idTweet']);
+           // }
            if(isset($jsonObj['fromUserId'])){
             $tweet->setFromUserId($jsonObj['fromUserId']);
         }

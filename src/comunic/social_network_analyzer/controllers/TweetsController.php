@@ -1,4 +1,4 @@
-<?php
+ <?php
 use comunic\social_network_analyzer\model\entity\parse\csv\CSVTweetParser;
 use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
@@ -22,14 +22,20 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
     $params = $restapp->request()->params();
 
     if(isset($params['skip']) and isset($params['amount'])){
-        $skip = intval($params['skip']);
-        $amount = intval($params['amount']);
+
+        $options = array(
+            'skip' => intval($params['skip']),
+            'amount' => intval($params['amount']),
+            'sortBy' => isset($params['sortBy']) ? $params['sortBy'] : 'time',
+            'direction' => isset($params['direction']) ? $params['direction'] : 'ASC'
+        );
+        
 
         if(isset($params['filter'])){
 
             switch ($params['filter']) {
                 case 'byCategory':
-                echo $tweetsFacade->findByCategoryInAnInterval($idDataset, $params['idCategory'],new JsonPaginator(new TweetToArray()), $skip, $amount);
+                echo $tweetsFacade->findByCategoryInAnInterval($idDataset, $params['idCategory'],new JsonPaginator(new TweetToArray()), $options);
                 break;
                 
                 default:
@@ -38,7 +44,7 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
             }
 
         }else{
-            echo $tweetsFacade->listInAnInterval($idDataset,new JsonPaginator(new TweetToArray()), $skip, $amount);
+            echo $tweetsFacade->listInAnInterval($idDataset,new JsonPaginator(new TweetToArray()), $options);
         }
     }
 

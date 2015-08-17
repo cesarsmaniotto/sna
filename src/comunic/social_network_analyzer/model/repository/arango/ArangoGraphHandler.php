@@ -52,7 +52,20 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		
 		}
 
-		public function import($collection,$objects,$toArrayFunc){
+		public function importObjects($collection,$objects,$toArrayFunc){
+
+			$fObjectToArray = new ObjectToArrayWithArangoKey();	
+
+			$arrayData = array();
+			foreach ($objects as $obj) {
+				$arrayData[] = $fObjectToArray($obj, $toArrayFunc);
+			}
+
+			return $this->import($collection,$arrayData);
+
+		}
+
+		public function import($collection, $arrayData){
 			$params = array(
 				"type"=>"list",
 				"collection"=>$collection,
@@ -63,20 +76,12 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 				"complete"=>false,
 				"details"=>true);
 
-			$fObjectToArray = new ObjectToArrayWithArangoKey();	
-
-			$arrayData = array();
-			foreach ($objects as $obj) {
-				$arrayData[] = $fObjectToArray($obj, $toArrayFunc);
-			}
-
-
 			$url      = UrlHelper::appendParamsUrl(Urls::URL_IMPORT, $params);
 			
 			$response = $this->connection->post($url, $this->connection->json_encode_wrapper($arrayData));
-			echo \count($objects);
-			echo '<br>';
+
 			echo var_dump($response->getJson());
+
 		}
 
 
@@ -121,8 +126,25 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return $this->graphHandler->updateVertex($this->graph, $vertexId, $documentVertex, $options, $collection);
 		}
 
-		public function createEdge($fromVertex, $toVertex, $collectionEdge = null, $labelEdge = null, $documentEdge = array()){
+		public function saveEdge($fromVertex, $toVertex, $collectionEdge = null, $labelEdge = null, $documentEdge = array()){
 			return $this->graphHandler->saveEdge($this->graph, $fromVertex, $toVertex, $labelEdge, $documentEdge, $collectionEdge);
+		}
+
+		public function createEdge($fromVertex, $toVertex, $label=null,$document=array()){
+
+			if (is_array($document)) {
+			    $document = Edge::createFromArray($document);
+			}
+			if (!is_null($label)) {
+			    $document->set('$label', $label);
+			}
+			$document->setFrom($fromVertex);
+			$document->setTo($toVertex);
+			$data = $document->getAll();
+			$data["_from"] = $fromVertex;
+			$data["_to"] = $toVertex;
+
+			return $data;
 		}
 
 		public function getEdge($edgeId, array $options = array(), $collection = null){
@@ -172,7 +194,9 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function listVertex($collectionName,$toObjectFunction){
-			$cursor = $this->executeStatement("FOR u in @@collection RETURN u", array('@collection' => $collectionName),true);
+			$options['@collection'] = $collectionName;
+			$cursor = $this->executeStatement("FOR u in @@collection RETURN u", 
+				$options,true);
 
 			if($cursor->getCount()==0){
 				return [];
@@ -181,10 +205,10 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return $this->createObject($cursor->getAll(),$toObjectFunction);
 		}
 
-		public function listInAnInterval($collectionName, $toObjectFunction, $skip, $amount){
-
-			$cursor = $this->executeStatement("FOR u in @@collection LIMIT @skip,@amount RETURN u",
-				array('@collection'=>$collectionName, 'skip' => $skip, 'amount'=>$amount), true);
+		public function listInAnInterval($collectionName, $toObjectFunction, $options){
+			$options['@collection'] = $collectionName;
+			$cursor = $this->executeStatement("FOR u in @@collection SORT u.@sortBy @direction LIMIT @skip,@amount RETURN u",
+				$options, true);
 
 			$objects = $this->createObject($cursor->getAll(), $toObjectFunction);
 
@@ -192,9 +216,11 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		}
 
-		public function getByIds($idList,$collectionName,$toObjectFunction){
-			$cursor = $this->executeStatement("FOR u in @idList FOR v in @@collection FILTER u == v._id RETURN v",
-				array('idList'=>$idList,'@collection'=>$collectionName),true);
+		public function getByIds($idList,$collectionName,$toObjectFunction,$options){
+			$options['@collection'] = $collectionName;
+			$options['idList']=$idList;
+			$cursor = $this->executeStatement("FOR u in @idList FOR v in @@collection FILTER u == v._id SORT v.@sortBy @direction RETURN v",
+				$options,true);
 
 			if($cursor->getCount()==0){
 				return [];
@@ -203,57 +229,15 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return $this->createObject($cursor->getAll(), $toObjectFunction);	
 		}
 
-		public function getByIdsInAnInterval($idList,$collectionName,$toObjectFunction,$skip, $amount){
-			$cursor = $this->executeStatement("FOR u in @idList FOR v in @@collection FILTER u == v._id LIMIT @skip,@amount RETURN v",
-				array('idList'=>$idList,'@collection'=>$collectionName, 'skip' => $skip, 'amount'=>$amount),true);
+		public function getByIdsInAnInterval($idList,$collectionName,$toObjectFunction,$options){
+			$options['@collection'] = $collectionName;
+			$options['idList'] = $idList;
+			$cursor = $this->executeStatement("FOR u in @idList FOR v in @@collection FILTER u == v._id SORT v.@sortBy @direction LIMIT @skip,@amount RETURN v",
+				$options,true);
 
 			$objects = $this->createObject($cursor->getAll(), $toObjectFunction);
 
-			return new Paginator($objects, $cursor->getFullCount(), $skip, $amount);
-		}
-
-		public function importDocuments($objects, $collectionName,$toArrayFunc){
-
-			$fObjectToArray = new ObjectToArrayWithArangoKey();	
-
-			$arrayData = array();
-			foreach ($objects as $obj) {
-				$arrayData[] = $fObjectToArray($obj, $toArrayFunc);
-			}
-
-
-			$query = "FOR u in @arrayData INSERT u IN @@collection RETURN NEW._id";
-			$params = array('arrayData'=>$arrayData, '@collection'=>$collectionName);
-
-			$cursor = $this->executeStatement($query,$params);
-
-			return $cursor->getAll();
-
-		}
-
-		public function returnsExistingIds($idsList,$collectionName){
-
-			$query = "FOR u in @idsList FOR v in @@collection FILTER u == v._id RETURN u";
-			$params = array('idsList'=>$idsList, '@collection'=>$collectionName);
-
-			return $this->executeStatement($query,$params)->getAll();
-
-		}
-
-		public function createEdgeToManyFrom($to,$listFrom,$edgeCollection){
-			$query = "FOR u in @listFrom 
-						INSERT {
-							_to: @to,
-							_from: u
-						} 
-						IN @@collection 
-						RETURN NEW";
-			$params = array('to'=>$to,'listFrom'=>$listFrom, '@collection'=>$edgeCollection);
-
-			$cursor = $this->executeStatement($query,$params);
-
-			return $cursor->getAll();
-
+			return new Paginator($objects, $cursor->getFullCount(), $options['skip'], $options['amount']);
 		}
 
 		public function getCommonNeighbors($vertex1, $vertex2, $options1=array(), $options2=array()){
@@ -274,10 +258,53 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 				$neighbors = \array_merge($neighbors,$item->getAll()["neighbors"]);
 
 			}
-
 			return ArrayUtil::eliminates_repeated($neighbors);
 
 		}
+
+		// public function importDocuments($objects, $collectionName,$toArrayFunc){
+
+		// 	$fObjectToArray = new ObjectToArrayWithArangoKey();	
+
+		// 	$arrayData = array();
+		// 	foreach ($objects as $obj) {
+		// 		$arrayData[] = $fObjectToArray($obj, $toArrayFunc);
+		// 	}
+
+
+		// 	$query = "FOR u in @arrayData INSERT u IN @@collection RETURN NEW._id";
+		// 	$params = array('arrayData'=>$arrayData, '@collection'=>$collectionName);
+
+		// 	$cursor = $this->executeStatement($query,$params);
+
+		// 	return $cursor->getAll();
+
+		// }
+
+		// public function returnsExistingIds($idsList,$collectionName){
+
+		// 	$query = "FOR u in @idsList FOR v in @@collection FILTER u == v._id RETURN u";
+		// 	$params = array('idsList'=>$idsList, '@collection'=>$collectionName);
+
+		// 	return $this->executeStatement($query,$params)->getAll();
+
+		// }
+
+		// public function createEdgeToManyFrom($to,$listFrom,$edgeCollection){
+		// 	$query = "FOR u in @listFrom 
+		// 				INSERT {
+		// 					_to: @to,
+		// 					_from: u
+		// 				} 
+		// 				IN @@collection 
+		// 				RETURN NEW";
+		// 	$params = array('to'=>$to,'listFrom'=>$listFrom, '@collection'=>$edgeCollection);
+
+		// 	$cursor = $this->executeStatement($query,$params);
+
+		// 	return $cursor->getAll();
+
+		// }
 
 	}
 

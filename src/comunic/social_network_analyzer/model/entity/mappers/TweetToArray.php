@@ -12,7 +12,7 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
                 'text' => $obj->getText(),
                 'toUserId' => $obj->getToUserId(),
                 'fromUser' => $obj->getFromUser(),
-                'idTweet' => $obj->getIdTweet(),
+                // 'idTweet' => $obj->getIdTweet(),
                 'fromUserId' => $obj->getFromUserId(),
                 'isoLanguageCode' => $obj->getIsoLanguageCode(),
                 'source' => $obj->getSource(),

@@ -20,7 +20,7 @@ use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
 $tweets = array(
 	array(	"text" => "opa RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalização da heroína em garrafa de 2 litros no supermercado",
 	"fromUserId" => null,
-	"idTweet" => "553315797247217664",
+	"id" => "553315797247217664",
 	"createdAt" => "Thu Jan 08 22:22:20 +0000 2015",
 	"time" => "1420755740",
 	'toUserId' => null,
@@ -33,7 +33,7 @@ $tweets = array(
 	'geoCoordinates1' => null),
 	array(	"text" => "claroooo RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalização da heroína em garrafa de 2 litros no supermercado",
 	"fromUserId" => null,
-	"idTweet" => "553315797247217664",
+	"id" => "553315797247217663",
 	"createdAt" => "Thu Jan 08 22:22:20 +0000 2015",
 	"time" => "1420755740",
 	'toUserId' => null,
@@ -46,7 +46,7 @@ $tweets = array(
 	'geoCoordinates1' => null),
 	array(	"text" => "joinha RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalização da heroína em garrafa de 2 litros no supermercado",
 	"fromUserId" => null,
-	"idTweet" => "553315797247217664",
+	"id" => "553315797247217662",
 	"createdAt" => "Thu Jan 08 22:22:20 +0000 2015",
 	"time" => "1420755740",
 	'toUserId' => null,
@@ -59,14 +59,14 @@ $tweets = array(
 	'geoCoordinates1' => null)
 	);
 
-// $fArrayToTweet = new ArrayToTweet();
-// $objects = array();
-// foreach ($tweets as $tweet) {
-// 	$objects[] = $fArrayToTweet($tweet);
-// }
+$fArrayToTweet = new ArrayToTweet();
+$objects = array();
+foreach ($tweets as $tweet) {
+	$objects[] = $fArrayToTweet($tweet);
+}
 
 
-// $repo = new TweetsRepository();
+$repo = new TweetsRepository();
 // // $cat = new CategoriesRepository();
 
 // // echo var_dump($repo->listInAnInterval("93496805839", 0, 25));
@@ -88,10 +88,9 @@ $tweets = array(
 
 // echo var_dump($result);
 
-$graphHandler = new ArangoGraphHandler();
+// $graphHandler = new ArangoGraphHandler();
 
 
 
-echo var_dump($graphHandler->import("tweets", $tweets));
-
+echo var_dump($repo->import($objects,"621332107006"));
 ?>

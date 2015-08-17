@@ -20,7 +20,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$projectId = $this->buildId("projects", $projectId);
 
-			return $this->graphHandler->createEdge($projectId, $datasetVertex, "projects_datasets_has","projects_datasets_has");
+			return $this->graphHandler->saveEdge($projectId, $datasetVertex, "projects_datasets_has","projects_datasets_has");
 		}
 
 		public function filterByProject($projectId){

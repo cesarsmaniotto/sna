@@ -22,26 +22,37 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function import($tweets, $datasetId){
-			
-			// $idsTweets = $this->graphHandler->importDocuments($tweets, $this->entityName,new TweetToArray());
-			$idsTweets = $this->graphHandler->import($this->entityName,$tweets,new TweetToArray());
-			// $datasetId = $this->buildId("datasets",$datasetId);
-			// $this->graphHandler->createEdgeToManyFrom($datasetId,$idsTweets,"datasets_tweets_belong");
+			$slices = ArrayUtil::slicer($tweets,1000);
 
-			// $tweets = $this->graphHandler->getByIds($idsTweets, $this->entityName, new ArrayToTweet());
-			// $wordsRepo = new WordsRepository();
-			// foreach ($tweets as $tweet) {
+			foreach ($slices as $slice) {
+				$this->graphHandler->importObjects($this->entityName,$slice,new TweetToArray());
 
-			// 	$tweetId = $this->buildId($this->entityName, $tweet->getId());	
-			// 	$wordsRepo->importFromTweet($tweet->getText(),$tweetId);	
+				$edges = array();
+				$datasetIdArango = $this->buildId("datasets",$datasetId);
+				foreach ($slice as $tweet) {
 
-			// }
+
+					$tweetIdArango = $this->buildId($this->entityName,$tweet->getId());
+					$edges[] = $this->graphHandler->createEdge($datasetIdArango,$tweetIdArango,"datasets_tweets_belong",array("_key"=>$datasetId.$tweet->getId()));
+				}
+				$this->graphHandler->import("datasets_tweets_belong",$edges);
+			}
+
+			$wordsRepo = new WordsRepository();
+			foreach ($tweets as $tweet) {
+				
+				$wordsRepo->importFromTweet($tweet);	
+
+			}
 			
 		}
 
 		public function listAll(){
-
-			return $this->graphHandler->listVertex($this->entityName,new ArrayToTweet());
+			$options = array(
+				'sortBy'=>'time',
+				'direction'=>'ASC'
+				);
+			return $this->graphHandler->listVertex($this->entityName,new ArrayToTweet(),$options);
 		}
 
 		public function filterByDataset($datasetId){
@@ -97,7 +108,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 
-		public function findbyCategoryInAnInterval($datasetId, $category, $skip, $amount){
+		public function findbyCategoryInAnInterval($datasetId, $category, $options){
 
 			$wordsRepo = new WordsRepository();
 
@@ -114,21 +125,21 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 
 
-			return $this->graphHandler->getByIdsInAnInterval($neighbors,$this->entityName,new ArrayToTweet(),$skip, $amount);
+			return $this->graphHandler->getByIdsInAnInterval($neighbors,$this->entityName,new ArrayToTweet(),$options);
 
 		}
 
-		public function listInAnInterval($datasetId, $skip, $amount){
+		public function listInAnInterval($datasetId, $options){
 			$datasetId = $this->buildId("datasets", $datasetId);
 
 			$edges = $this->graphHandler->getConnectedEdges($datasetId, "datasets_tweets_belong");
 			
 			$tweetsIds = array();
 			foreach ($edges->getAll() as $edge) {
-				$tweetsIds[] =$edge->getFrom();
+				$tweetsIds[] =$edge->getTo();
 			}
 
-			return $this->graphHandler->getByIdsInAnInterval($tweetsIds,$this->entityName,new ArrayToTweet(),$skip, $amount);
+			return $this->graphHandler->getByIdsInAnInterval($tweetsIds,$this->entityName,new ArrayToTweet(),$options);
 
 		}
 

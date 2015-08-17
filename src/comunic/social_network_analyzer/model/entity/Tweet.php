@@ -23,7 +23,7 @@ private $id;
 private $text;
 private $toUserId;
 private $fromUser;
-private $idTweet;
+// private $idTweet;
 private $fromUserId;
 private $isoLanguageCode;
 private $source;
@@ -74,15 +74,15 @@ public function setFromUser($fromUser)
     return $this->fromUser = $fromUser;
 }
 
-public function getIdTweet()
-{
-    return $this->idTweet;
-}
+// public function getIdTweet()
+// {
+//     return $this->idTweet;
+// }
 
-public function setIdTweet($idTweet)
-{
-    return $this->idTweet = $idTweet;
-}
+// public function setIdTweet($idTweet)
+// {
+//     return $this->idTweet = $idTweet;
+// }
 
 public function getFromUserId()
 {

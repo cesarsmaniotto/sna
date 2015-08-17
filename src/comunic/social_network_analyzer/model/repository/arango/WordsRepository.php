@@ -17,30 +17,31 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		}
 
-		public function importFromTweet($text,$tweetId){
-			$textWithoutPunctuation = StringUtil::removePunctuation($text);
+		public function importFromTweet($tweet){
+			$textWithoutPunctuation = StringUtil::removePunctuation($tweet->getText());
 			$words = ArrayUtil::eliminates_repeated(\explode(" ", $textWithoutPunctuation));
 			
 			$wordObjects=array();
-			$wordIds=array();
+
 			foreach($words as $word){
-				$wordObj=new Word($word);
-				$wordId=$this->buildId($this->entityName, $wordObj->getId());
-				$wordIds[]=$wordId;
-				$wordObjects[$wordId]= $wordObj;
-			}
-			$existingIds = $this->graphHandler->returnsExistingIds($wordIds,$this->entityName );
-
-			foreach ($existingIds as $id) {
-				unset($wordObjects[$id]);
+				$wordObjects[]= new Word($word);
 			}
 
-			$this->graphHandler->importDocuments(array_values($wordObjects),"words",new WordToArray());
-			$this->graphHandler->createEdgeToManyFrom($tweetId,$wordIds,"tweets_words_contains");
+			$this->graphHandler->importObjects("words",$wordObjects,new WordToArray());
+
+			$edges = array();
+			$tweetIdArango = $this->buildId("tweets",$tweet->getId());
+			foreach ($wordObjects as $word) {
+				
+				$wordIdArango = $this->buildId("words",$word->getId());
+				$edges[] = $this->graphHandler->createEdge($tweetIdArango,$wordIdArango,"tweets_words_contains",array("_key"=>$tweet->getId().$word->getId()));
+			}
+
+			$this->graphHandler->import("tweets_words_contains",$edges);
 		}
 
 		public function getWordsAsString(){
-			$words = $this->graphHandler->listVertex($this->entityName,new ArrayToWord());
+			$words = $this->graphHandler->listVertex($this->entityName,new ArrayToWord(),array());
 			$strWords = array();
 
 			foreach ($words as $word) {

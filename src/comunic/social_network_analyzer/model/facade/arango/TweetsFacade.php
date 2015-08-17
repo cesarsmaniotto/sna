@@ -40,20 +40,8 @@ function __construct($repository, $categoryRep){
    */
   public function import( $tweets,  $datasetId) {
 
-    $slices = array();
+      $this->repositoryTweet->import($tweets, $datasetId);
 
-    $qttPerSlice = 500;
-    $nSlices = ceil(count($tweets) / $qttPerSlice);
-
-    for ($i=0; $i <$nSlices ; $i++) { 
-      $slices[] = \array_slice($tweets, $i*($qttPerSlice), $qttPerSlice);
-
-
-    }
-
-    foreach ($slices as $slice) {
-      $this->repositoryTweet->import($slice, $datasetId);
-    }
 
   } // end of member function insertAll
 
@@ -96,15 +84,14 @@ function __construct($repository, $categoryRep){
   } // end of member function listAll
 
 
-  public function listInAnInterval($datasetId, $fmt, $page, $amount){
-    $page=  \intval($page);
-    $amount=  \intval($amount);
-    return $fmt->format($this->repositoryTweet->listInAnInterval($datasetId, $page, $amount));
+  public function listInAnInterval($datasetId, $fmt, $options){
+
+    return $fmt->format($this->repositoryTweet->listInAnInterval($datasetId, $options));
   }
 
-  public function findbyCategoryInAnInterval($datasetId, $id_cat, $fmt, $skip, $amount){
+  public function findbyCategoryInAnInterval($datasetId, $id_cat, $fmt, $options){
     $category = $this->categoryRep->findById($id_cat);
-    $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($datasetId, $category, $skip, $amount);
+    $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($datasetId, $category, $options);
     return $fmt->format($tweets);
   }
 

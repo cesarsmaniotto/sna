@@ -30,6 +30,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function listAll(){
+
 			return $this->graphHandler->listVertex($this->entityName, new ArrayToCategory());
 		}
 
