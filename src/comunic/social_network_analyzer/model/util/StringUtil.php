@@ -6,7 +6,7 @@ namespace comunic\social_network_analyzer\model\util{
 
         const ACCENT_STRINGS = 'ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËẼÌÍÎÏĨÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëẽìíîïĩðñòóôõöøùúûüýÿ';
         const NO_ACCENT_STRINGS = 'SOZsozYYuAAAAAAACEEEEEIIIIIDNOOOOOOUUUUYsaaaaaaaceeeeeiiiiionoooooouuuuyy';
-        const PUNCTUATION = '! " # $ % & \' ( ) … * + , - . / : ; < = > ? @ [ \\ ] ^ _ ` { | } ~';
+        const PUNCTUATION = '! " # $ % & \' ( ) … * + , - . / : ; < = > ? @ [ \\ ] ^ _ ` { | } ~ ‘ ′';
 
      
 /**
@@ -44,9 +44,11 @@ return utf8_encode($text);
 }
 
 static public function removePunctuation($string){
-    $explodePunctuation = \explode(" ", self::PUNCTUATION);
-    $string = \trim($string);
-    return \str_replace($explodePunctuation, "", $string);
+
+    return preg_replace("/[^a-zA-Z0-9\s]/", "", $string);
+    // $explodePunctuation = \explode(" ", self::PUNCTUATION);
+    // $string = \trim($string);
+    // return \str_replace($explodePunctuation, "", $string);
 }
 
 

@@ -26,7 +26,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			    // connection persistence on server. can use either 'Close' (one-time connections) or 'Keep-Alive' (re-used connections)
 				ConnectionOptions::OPTION_CONNECTION => 'Close',
 			    // connect timeout in seconds
-				ConnectionOptions::OPTION_TIMEOUT => 3,
+				ConnectionOptions::OPTION_TIMEOUT => 10,
 			    // whether or not to reconnect when a keep-alive connection has timed out on server
 				ConnectionOptions::OPTION_RECONNECT => true,
 			    // optionally create new collections when inserting documents

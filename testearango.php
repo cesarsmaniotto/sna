@@ -67,12 +67,12 @@ foreach ($tweets as $tweet) {
 
 
 $repo = new TweetsRepository();
-// // $cat = new CategoriesRepository();
+$cat = new CategoriesRepository();
 
-// // echo var_dump($repo->listInAnInterval("93496805839", 0, 25));
-// $category = new Category();
-// $category->setName("Foo");
-// $category->setKeywords(array("opa"));
+// echo var_dump($repo->listInAnInterval("93496805839", 0, 25));
+$category = new Category();
+$category->setName("Foo");
+$category->setKeywords(array("passe"));
 
 // $tweet = $repo->findbyCategoryInAnInterval("176869624", $category,0,20);
 
@@ -83,14 +83,24 @@ $repo = new TweetsRepository();
 // echo var_dump($result);
 
 // $facade = new TweetsFacade($repo,$cat);
+$options = array(
+'skip' => 0,
+'amount' => 20,
+'sortBy' =>  'time',
+'direction' => 'ASC');
 
-// $result = $facade->findbyCategoryInAnInterval("93496805839", $category,new JsonPaginator(new TweetToArray()),0,20);
+$result = $repo->findbyCategoryInAnInterval("1753388361310", $category,$options);
 
-// echo var_dump($result);
+echo var_dump($result);
+// $result[]="passe";
+// foreach ($result as $r) {
+// 	echo md5($r);
+// 	echo "<br>";
+// }
 
 // $graphHandler = new ArangoGraphHandler();
 
+// echo var_dump($graphHandler->getEdgesWithVertices("datasets/1303374276614","datasets_tweets_belong"));
 
-
-echo var_dump($repo->import($objects,"621332107006"));
+// echo var_dump($repo->import($objects,"621332107006"));
 ?>

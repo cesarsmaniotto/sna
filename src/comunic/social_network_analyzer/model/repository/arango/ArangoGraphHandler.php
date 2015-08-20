@@ -165,8 +165,42 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return $this->graphHandler->removeEdge($this->graph, $edgeId, $revision = null, $options = array(), $collection = null);
 		}
 
-		public function getConnectedEdges($vertexId, $edgeCollection){
+		public function getEdges($vertexId, $edgeCollection){
 			return $this->graphHandler->getEdges($this->graph, array('vertexExample'=> $vertexId, 'edgeCollectionRestriction'=>$edgeCollection));
+		}
+
+		public function getEdgesWithVertices($vertexId,$edgeCollection,$toObjectFunc,$params,$orientation='any',$edgeExample=null){
+			// $params['vertexId']=$vertexId;
+			// $params['@edgeCollection']=$edgeCollection;
+			// $params['orientation']=$orientation;
+			// $params['edgeExample']=$edgeExample;
+
+			// $params['option']=array('includeVertices'=>true);
+
+			// $cursor = $this->executeStatement("FOR e in EDGES(@@edgeCollection,@vertexId,@orientation,@edgeExample,@option) SORT e.vertex.@sortBy @direction LIMIT @skip,@amount RETURN e",
+			// $params,true);
+
+			// $result = $cursor->getAll();
+
+			// $objects = array();
+			// foreach ($cursor as $item) {
+			// 	$objects[]=$this->createObject($item->vertex, $toObjectFunc);
+			// }
+			// return new Paginator($objects, $cursor->getFullCount(), $params['skip'],$params['amount']);
+
+			$params['vertexId']=$vertexId;
+			$params['graph']="sna";
+			$params['@edgeCollection']=$edgeCollection;
+			// $params['orientation']=$orientation;
+
+			// $params['option']=array('includeVertices'=>true);
+
+			$cursor = $this->executeStatement("for e in graph_edges(@graph,@vertexId,{edgeCollectionRestriction:@@edgeCollection,includeData:true}) return (for u in tweets filter e._to == u._id sort u.@sortBy @direction limit @skip,@amount return u )"
+				,$params,true);
+
+			$objects = $this->createObject($cursor->getAll(), $toObjectFunction);
+
+			return new Paginator($objects, $cursor->getFullCount(), $skip, $amount);
 		}
 
 		public function executeStatement($query, $params, $fullCount=false){
@@ -180,11 +214,12 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		private function createObject($arrayData, $toObjectFunction){
 
 			$fArrayToObject = new ArrayWithArangoKeyToObject();	
-			$objects = array();
+			
 
 			if(ArrayUtil::is_assoc_array($arrayData)){
 				return $fArrayToObject($arrayData, $toObjectFunction);
 			}else{
+				$objects = array();
 				foreach($arrayData as $item){
 					$objects[]= $fArrayToObject($item->getAll(), $toObjectFunction);
 				}
@@ -212,7 +247,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$objects = $this->createObject($cursor->getAll(), $toObjectFunction);
 
-			return new Paginator($objects, $cursor->getFullCount(), $skip, $amount);
+			return new Paginator($objects, $cursor->getFullCount(), $options['skip'], $options['amount']);
 
 		}
 
@@ -238,6 +273,18 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			$objects = $this->createObject($cursor->getAll(), $toObjectFunction);
 
 			return new Paginator($objects, $cursor->getFullCount(), $options['skip'], $options['amount']);
+		}
+
+		public function queryLike($collection,$attrib, $search){
+
+			$options['@collection']=$collection;
+			$options['attrib']=$attrib;
+			$options['search']="%$search%";
+
+			$cursor = $this->executeStatement("FOR u in @@collection FILTER LIKE(u.@attrib,@search,true) RETURN u",$options);
+
+			return $cursor->getAll();
+
 		}
 
 		public function getCommonNeighbors($vertex1, $vertex2, $options1=array(), $options2=array()){

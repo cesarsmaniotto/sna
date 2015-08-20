@@ -29,8 +29,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 				$edges = array();
 				$datasetIdArango = $this->buildId("datasets",$datasetId);
-				foreach ($slice as $tweet) {
-
+				foreach ($slice as $tweet) {	
 
 					$tweetIdArango = $this->buildId($this->entityName,$tweet->getId());
 					$edges[] = $this->graphHandler->createEdge($datasetIdArango,$tweetIdArango,"datasets_tweets_belong",array("_key"=>$datasetId.$tweet->getId()));
@@ -48,11 +47,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function listAll(){
-			$options = array(
-				'sortBy'=>'time',
-				'direction'=>'ASC'
-				);
-			return $this->graphHandler->listVertex($this->entityName,new ArrayToTweet(),$options);
+			return $this->graphHandler->listVertex($this->entityName,new ArrayToTweet());
 		}
 
 		public function filterByDataset($datasetId){
@@ -116,6 +111,8 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$matchWords = $category->matchWithKeywords($words);
 
+			// return $words;
+
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
 				$wordsIds[] = array("_id" => $this->buildId("words", new Word($word)));
@@ -132,7 +129,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		public function listInAnInterval($datasetId, $options){
 			$datasetId = $this->buildId("datasets", $datasetId);
 
-			$edges = $this->graphHandler->getConnectedEdges($datasetId, "datasets_tweets_belong");
+			$edges = $this->graphHandler->getEdges($datasetId, "datasets_tweets_belong");
 			
 			$tweetsIds = array();
 			foreach ($edges->getAll() as $edge) {
@@ -140,6 +137,10 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			}
 
 			return $this->graphHandler->getByIdsInAnInterval($tweetsIds,$this->entityName,new ArrayToTweet(),$options);
+
+			// $datasetId = $this->buildId("datasets", $datasetId);
+
+			// return $this->graphHandler->getEdgesWithVertices($datasetId,"datasets_tweets_belong",new ArrayToTweet(),$options);
 
 		}
 

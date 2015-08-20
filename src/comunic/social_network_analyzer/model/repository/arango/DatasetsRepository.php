@@ -26,7 +26,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		public function filterByProject($projectId){
 			$projectId = $this->buildId("projects", $projectId);
 
-			$edges = $this->graphHandler->getConnectedEdges($projectId,"projects_datasets_has");
+			$edges = $this->graphHandler->getEdges($projectId,"projects_datasets_has");
 
 			$datasets = array();
 			foreach ($edges->getAll() as $edge) {
