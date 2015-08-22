@@ -2,15 +2,14 @@
 
 namespace comunic\social_network_analyzer\model\entity{
 
-
 	class Word{
-
 
 		private $id;
 		private $word;
 
-		function __construct($word=null){
-			$this->id = \md5(\strtolower($word));
+		function __construct($id=null, $word=null){
+
+			$this->id = strval($id);
 			$this->word = $word;
 		}
 
@@ -37,7 +36,7 @@ namespace comunic\social_network_analyzer\model\entity{
 
 		public function __toString()
 		    {
-		        return $this->id;
+		        return $this->word;
 		   }
 
 		

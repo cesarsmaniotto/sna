@@ -80,7 +80,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			
 			$response = $this->connection->post($url, $this->connection->json_encode_wrapper($arrayData));
 
-			echo var_dump($response->getJson());
+			// echo var_dump($response->getJson());
 
 		}
 
@@ -296,13 +296,13 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 				"options2" => $options2
 				);
 
-			$cursor = $this->executeStatement("FOR e IN GRAPH_COMMON_NEIGHBORS(@graph, @vertex1,@vertex2,@options1,@options2) RETURN e", $params);
+			$cursor = $this->executeStatement("FOR e IN GRAPH_COMMON_NEIGHBORS(@graph, @vertex1,@vertex2,@options1,@options2) RETURN e.neighbors", $params);
 		
 			$neighbors=array();
 
 			foreach ($cursor->getAll() as $item) {
 
-				$neighbors = \array_merge($neighbors,$item->getAll()["neighbors"]);
+				$neighbors = \array_merge($neighbors,$item->getAll());
 
 			}
 			return ArrayUtil::eliminates_repeated($neighbors);

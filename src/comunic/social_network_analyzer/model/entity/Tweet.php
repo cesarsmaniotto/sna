@@ -19,10 +19,10 @@ class Tweet
 * attribute idTweet is the id of tweet
 */
 
-private $id;
 private $text;
 private $toUserId;
 private $fromUser;
+private $id;
 // private $idTweet;
 private $fromUserId;
 private $isoLanguageCode;
@@ -33,6 +33,10 @@ private $geoCoordinates0;
 private $geoCoordinates1;
 private $createdAt;
 private $time;
+
+public static function getHeaderCSV(){
+    return "text|to_user_id|from_user|id|from_user_id|iso_language_code|source|profile_image_url|geo_type|geo_coordinates_0|geo_coordinates_1|created_at|time";
+}
 
 public function getId()
 {

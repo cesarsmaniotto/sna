@@ -7,15 +7,24 @@ ini_set('display_errors', true);
 
 
 use comunic\social_network_analyzer\model\entity\mappers\ArrayToTweet;
+use comunic\social_network_analyzer\model\entity\mappers\WordToArray;
 use comunic\social_network_analyzer\model\repository\arango\TweetsRepository;
 use comunic\social_network_analyzer\model\repository\arango\CategoriesRepository;
 use comunic\social_network_analyzer\model\repository\arango\ArangoGraphHandler;
 use comunic\social_network_analyzer\model\facade\arango\TweetsFacade;
 use comunic\social_network_analyzer\model\entity\Project;
+use comunic\social_network_analyzer\model\entity\Word;
+use comunic\social_network_analyzer\model\entity\Tweet;
 use comunic\social_network_analyzer\model\util\StringUtil;
 use comunic\social_network_analyzer\model\entity\Category;
 use comunic\social_network_analyzer\model\entity\format\json\JsonPaginator;
 use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
+use comunic\social_network_analyzer\model\entity\parse\csv\CSVTweetParser;
+use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
+use comunic\social_network_analyzer\model\entity\format\csv\CSVTweetFormatter;
+use comunic\social_network_analyzer\model\entity\writers\EntityToCSV;
+use comunic\social_network_analyzer\model\util\DownloadFile;
+
 
 $tweets = array(
 	array(	"text" => "opa RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalização da heroína em garrafa de 2 litros no supermercado",
@@ -69,10 +78,10 @@ foreach ($tweets as $tweet) {
 $repo = new TweetsRepository();
 $cat = new CategoriesRepository();
 
-// echo var_dump($repo->listInAnInterval("93496805839", 0, 25));
-$category = new Category();
-$category->setName("Foo");
-$category->setKeywords(array("passe"));
+
+// $category = new Category();
+// $category->setName("Foo");
+// $category->setKeywords(array("Ach.?", "Adoro", "Apoio", "argumento", "Concordo", "Defendo", "Desabafo", "Diálog.?", "Discut.?", "Galera", "Gente", "gostaria de saber", "Gostei", "Indignad.?", "lido e aplaudido", "Manoo", "né", "Olha", "Olhae", "Por que", "Pq", "Qual o sentido", "Que tal", "Quer.?", "question.?", "Repito", "Respond.?", "Será que", "Sério que", "Sinto", "tenho direito", "Vc quis dizer", "Xatiad.?", "Junho de 2013", "Sobre o ato", "Transporte como mercadoria", "esperando respostas", "migos", "pilho", "eai", "cheguei", "conclusão", "fera"));
 
 // $tweet = $repo->findbyCategoryInAnInterval("176869624", $category,0,20);
 
@@ -83,15 +92,19 @@ $category->setKeywords(array("passe"));
 // echo var_dump($result);
 
 // $facade = new TweetsFacade($repo,$cat);
-$options = array(
-'skip' => 0,
-'amount' => 20,
-'sortBy' =>  'time',
-'direction' => 'ASC');
 
-$result = $repo->findbyCategoryInAnInterval("1753388361310", $category,$options);
 
-echo var_dump($result);
+// $options = array(
+// 'skip' => 0,
+// 'amount' => 20,
+// 'sortBy' =>  'time',
+// 'direction' => 'ASC');
+
+// $result = $facade->findbyCategoryInAnInterval("3075647380220", "3150162795260", new JsonPaginator(new TweetToArray()), $options);
+
+
+// echo var_dump($result);
+
 // $result[]="passe";
 // foreach ($result as $r) {
 // 	echo md5($r);
@@ -100,7 +113,46 @@ echo var_dump($result);
 
 // $graphHandler = new ArangoGraphHandler();
 
+
+// // Iniciamos o "contador"
+// list($usec, $sec) = explode(' ', microtime());
+// $script_start = (float) $sec + (float) $usec;
+ 
+// /* SEU CÓDIGO PHP */
+//  $options = array(
+//  'skip' => 0,
+//  'amount' => 20,
+//  'sortBy' =>  'time',
+//  'direction' => 'ASC');
+
+
+// $repo->listInAnInterval("2778090575412", $options);
+
+// // Terminamos o "contador" e exibimos
+// list($usec, $sec) = explode(' ', microtime());
+// $script_end = (float) $sec + (float) $usec;
+// $elapsed_time = round($script_end - $script_start, 5);
+
+// // Exibimos uma mensagem
+// echo 'Elapsed time: ', $elapsed_time, ' secs. Memory usage: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb';
+
+
 // echo var_dump($graphHandler->getEdgesWithVertices("datasets/1303374276614","datasets_tweets_belong"));
 
 // echo var_dump($repo->import($objects,"621332107006"));
+
+// $filename = "/home/cesar/datasets/os3juntos.csv";
+// $arquivo = fopen($filename, "r");
+// $arquivolido = fread($arquivo, filesize($filename));
+
+// $csvparser = new CSVTweetParser();
+// $tweets = $csvparser->parse($arquivolido);
+
+// $repo->import($tweets,"2778090575412");
+
+
+$csv = new CSVTweetFormatter();
+
+echo var_dump($csv->format($objects));
+
 ?>

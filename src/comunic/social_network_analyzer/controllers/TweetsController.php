@@ -4,7 +4,8 @@ use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 use comunic\social_network_analyzer\model\entity\format\json\JsonPaginator;
 use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
-
+use comunic\social_network_analyzer\model\util\DownloadFile;
+use comunic\social_network_analyzer\model\entity\writers\EntityToCSV;
 $tweetsFacade = $factory->instantiateTweets();
 
 $restapp->post('/tweets/csv_to_json/:idDataset', function($idDataset) use($restapp, $tweetsFacade) {
@@ -29,13 +30,16 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
             'sortBy' => isset($params['sortBy']) ? $params['sortBy'] : 'time',
             'direction' => isset($params['direction']) ? $params['direction'] : 'ASC'
         );
+
+        $file = "/home/cesar/csv/arquivo.csv";
         
 
         if(isset($params['filter'])){
 
             switch ($params['filter']) {
                 case 'byCategory':
-                echo $tweetsFacade->findByCategoryInAnInterval($idDataset, $params['idCategory'],new JsonPaginator(new TweetToArray()), $options);
+
+                   echo $tweetsFacade->findByCategoryInAnInterval($idDataset, $params['idCategory'],new JsonPaginator(new TweetToArray()), $options);
                 break;
                 
                 default:

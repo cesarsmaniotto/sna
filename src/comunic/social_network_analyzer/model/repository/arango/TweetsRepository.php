@@ -22,27 +22,28 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function import($tweets, $datasetId){
-			$slices = ArrayUtil::slicer($tweets,1000);
+			// $slices = ArrayUtil::slicer($tweets,1000);
 
-			foreach ($slices as $slice) {
-				$this->graphHandler->importObjects($this->entityName,$slice,new TweetToArray());
+			// foreach ($slices as $slice) {
+				$this->graphHandler->importObjects($this->entityName,$tweets,new TweetToArray());
 
 				$edges = array();
 				$datasetIdArango = $this->buildId("datasets",$datasetId);
-				foreach ($slice as $tweet) {	
+				foreach ($tweets as $tweet) {	
 
 					$tweetIdArango = $this->buildId($this->entityName,$tweet->getId());
 					$edges[] = $this->graphHandler->createEdge($datasetIdArango,$tweetIdArango,"datasets_tweets_belong",array("_key"=>$datasetId.$tweet->getId()));
+					
 				}
 				$this->graphHandler->import("datasets_tweets_belong",$edges);
-			}
+			// }
 
 			$wordsRepo = new WordsRepository();
-			foreach ($tweets as $tweet) {
+			// foreach ($tweets as $tweet) {
 				
-				$wordsRepo->importFromTweet($tweet);	
+			$wordsRepo->importFromTweet($tweets);	
 
-			}
+			// }
 			
 		}
 
@@ -107,20 +108,17 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$wordsRepo = new WordsRepository();
 
-			$words = $wordsRepo->getWordsAsString();
+			$words = $wordsRepo->listAll();
 
 			$matchWords = $category->matchWithKeywords($words);
-
-			// return $words;
+			
 
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
-				$wordsIds[] = array("_id" => $this->buildId("words", new Word($word)));
+				$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));
 			}
 
 			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
-
-
 
 			return $this->graphHandler->getByIdsInAnInterval($neighbors,$this->entityName,new ArrayToTweet(),$options);
 
