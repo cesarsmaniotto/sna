@@ -46,7 +46,7 @@ interface ITweetsRepository
    * @see \comunic\social_network_analyzer\model\entity\Tweet
    * @access public
    */
-  public function findByCategory($datasetId, $category);
+  public function findByCategory($datasetId, $category,$options);
 
 
 public function listInAnInterval($datasetId, $options);

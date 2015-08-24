@@ -18,7 +18,27 @@ namespace comunic\social_network_analyzer\model\entity\format\csv{
 			$rows=$header;
 
 			foreach ($objects as $obj) {
-			    $rows.=\implode("|",\array_values($toArray($obj))) . "\n";
+				// $rows.=$obj->getText()."|";
+				// $rows.=$obj->getToUserId()."|";
+				// $rows.=$obj->getFromUser()."|";
+				// $rows.=$obj->getId()."|";
+				// $rows.=$obj->getFromUserId()."|";
+				// $rows.=$obj->getSource()."|";
+				// $rows.=$obj->getProfileImageUrl()."|";
+				// $rows.=$obj->getGeoType()."|";
+				// $rows.=$obj->getGeoCoordinates0()."|";
+				// $rows.=$obj->getGeoCoordinates1()."|";
+				// $rows.=$obj->getCreatedAt()."|";
+				// $rows.=$obj->getTime()."\n";
+
+				// $arr = \array_values($toArray($obj));
+				// $slashes= array();
+				// foreach ($arr as $v) {
+				// 		$slashes[] = addslashes($v);
+				// }
+
+
+			    $rows.="'".\implode("'|'",\array_values($toArray($obj))) ."'". "\n";
 			}
 			 
 			return $rows;
@@ -27,18 +47,18 @@ namespace comunic\social_network_analyzer\model\entity\format\csv{
 			// $csv = Tweet::getHeaderCSV()."<br>";
 
 			// foreach ($objects as $tweet) {
-			// 	$csv.=$tweet->getText()."|";
-			// 	$csv.=$tweet->getToUserId()."|";
-			// 	$csv.=$tweet->getFromUser()."|";
-			// 	$csv.=$tweet->getId()."|";
-			// 	$csv.=$tweet->getFromUserId()."|";
-			// 	$csv.=$tweet->getSource()."|";
-			// 	$csv.=$tweet->getProfileImageUrl()."|";
-			// 	$csv.=$tweet->getGeoType()."|";
-			// 	$csv.=$tweet->getGeoCoordinates0()."|";
-			// 	$csv.=$tweet->getGeoCoordinates1()."|";
-			// 	$csv.=$tweet->getCreatedAt()."|";
-			// 	$csv.=$tweet->getTime()."<br><br>";
+				// $rows.=$obj->getText()."|";
+				// $rows.=$obj->getToUserId()."|";
+				// $rows.=$obj->getFromUser()."|";
+				// $rows.=$obj->getId()."|";
+				// $rows.=$obj->getFromUserId()."|";
+				// $rows.=$obj->getSource()."|";
+				// $rows.=$obj->getProfileImageUrl()."|";
+				// $rows.=$obj->getGeoType()."|";
+				// $rows.=$obj->getGeoCoordinates0()."|";
+				// $rows.=$obj->getGeoCoordinates1()."|";
+				// $rows.=$obj->getCreatedAt()."|";
+				// $rows.=$obj->getTime()."\n";
 			// }
 			// return $csv;
 

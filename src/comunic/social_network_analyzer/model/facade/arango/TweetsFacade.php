@@ -66,9 +66,9 @@ function __construct($repository, $categoryRep){
    * @return string
    * @access public
    */
-  public function findByCategory($id_cat, $datasetId, $fmt) {
+  public function findByCategory( $datasetId,$id_cat, $fmt,$options) {
     $category = $this->categoryRep->findById($id_cat);
-    $tweets=$this->repositoryTweet->findByCategory($category);
+    $tweets=$this->repositoryTweet->findByCategory($datasetId,$category,$options);
     return $fmt->format($tweets);
   } // end of member function listByCategory
 

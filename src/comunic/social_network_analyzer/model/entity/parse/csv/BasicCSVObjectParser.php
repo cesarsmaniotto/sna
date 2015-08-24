@@ -11,8 +11,9 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv{
             $csvData = \trim($csvData);
             $csvDataArray = \explode("\n", $csvData);
 
-            $fieldNames = \str_getcsv(\trim($csvDataArray[0]), "|");
+            $csvDataArray = $this->prepareCSV($csvDataArray);
 
+            $fieldNames = \str_getcsv(\trim($csvDataArray[0]), "|");
             unset($csvDataArray[0]);
 
             $objects = array();
@@ -43,6 +44,8 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv{
         }
 
         abstract protected function arrayToObject($arrayData);
+
+        abstract protected function prepareCSV($data);
 
 
     }

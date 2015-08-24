@@ -141,18 +141,20 @@ $cat = new CategoriesRepository();
 
 // echo var_dump($repo->import($objects,"621332107006"));
 
-// $filename = "/home/cesar/datasets/os3juntos.csv";
-// $arquivo = fopen($filename, "r");
-// $arquivolido = fread($arquivo, filesize($filename));
+$filename = "/home/cesar/datasets/teste.csv";
+$arquivo = fopen($filename, "r");
+$arquivolido = fread($arquivo, filesize($filename));
 
-// $csvparser = new CSVTweetParser();
-// $tweets = $csvparser->parse($arquivolido);
+$csvparser = new CSVTweetParser();
+$tweets = $csvparser->parse($arquivolido);
 
-// $repo->import($tweets,"2778090575412");
+echo var_dump($tweets);
+
+// $repo->import($tweets,"145279421605");
 
 
-$csv = new CSVTweetFormatter();
+// $csv = new CSVTweetFormatter();
 
-echo var_dump($csv->format($objects));
+// echo var_dump($csv->format($objects));
 
 ?>

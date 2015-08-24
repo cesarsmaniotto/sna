@@ -82,16 +82,18 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return $this->graphHandler->createEdge($tweetId,$categoryId,$relationName,$relationName);
 		}
 
-		public function findByCategory($datasetId, $category){
+		public function findByCategory($datasetId, $category,$options){
 			$wordsRepo = new WordsRepository();
 
-			$words = $wordsRepo->getWordsAsString();
+
+			$words = $wordsRepo->listAll();
 
 			$matchWords = $category->matchWithKeywords($words);
+			
 
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
-				$wordsIds[] = array("_id" => $this->buildId("words", new Word($word)));
+				$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));
 			}
 
 			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
@@ -100,7 +102,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 				return [];
 			}
 
-			return $this->graphHandler->getByIds($neighbors,$this->entityName,new ArrayToTweet());
+			return $this->graphHandler->getByIds($neighbors,$this->entityName,new ArrayToTweet(),$options);
 		}
 
 
