@@ -49,7 +49,7 @@ interface ITweetsRepository
   public function findByCategory($datasetId, $category,$options);
 
 
-public function listInAnInterval($datasetId, $options);
+public function listByDatasetInAnInterval($datasetId, $options);
 
 public function findbyCategoryInAnInterval($datasetId,$category, $options);
 

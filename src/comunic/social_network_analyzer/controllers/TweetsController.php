@@ -31,13 +31,18 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
             'sortBy' => isset($params['sortBy']) ? $params['sortBy'] : 'time',
             'direction' => isset($params['direction']) ? $params['direction'] : 'ASC'
         );
-
-        if(isset($params['filter'])){
-
             switch ($params['filter']) {
                 case 'byCategory':
 
                    echo $tweetsFacade->findByCategoryInAnInterval($idDataset, $params['idCategory'],new JsonPaginator(new TweetToArray()), $options);
+                break;
+
+                case 'default':
+                    echo $tweetsFacade->listByDatasetInAnInterval($idDataset,new JsonPaginator(new TweetToArray()), $options);
+                break;
+
+                case 'search':
+                    echo $tweetsFacade->searchInTheTextInAnInterval($params['searchBy'],$options,new JsonPaginator(new TweetToArray()));
                 break;
                 
                 default:
@@ -45,9 +50,6 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
                 break;
             }
 
-        }else{
-            echo $tweetsFacade->listInAnInterval($idDataset,new JsonPaginator(new TweetToArray()), $options);
-        }
     }
 
     
@@ -62,23 +64,25 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
              'direction' => isset($params['direction']) ? $params['direction'] : 'ASC'
          );
 
-         if(isset($params['filter'])){
 
              switch ($params['filter']) {
                  case 'byCategory':
                     $jsonResponse = ['values' => $tweetsFacade->findByCategory($idDataset, $params['idCategory'],new CSVTweetFormatter(),$options)];
                     echo \json_encode($jsonResponse);
                  break;
-                 
-                 default:
-                     # code...
+
+                 case 'default':
+                    $jsonResponse = ['values' => $tweetsFacade->listByDataset($idDataset,new CSVTweetFormatter(), $options)];
+                    echo \json_encode($jsonResponse);
                  break;
+
+                 case 'search':
+                    $jsonResponse = ['values' => $tweetsFacade->searchInTheText($params['searchBy'],$options,new CSVTweetFormatter())];
+                    echo \json_encode($jsonResponse);
+
+                break;
+                
              }
-
-         }else{
-             echo $tweetsFacade->listInAnInterval($idDataset,new JsonPaginator(new TweetToArray()), $options);
-         }
-
      
  });
 

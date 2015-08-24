@@ -275,15 +275,29 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return new Paginator($objects, $cursor->getFullCount(), $options['skip'], $options['amount']);
 		}
 
-		public function queryLike($collection,$attrib, $search){
+		public function queryLikeInAnInterval($collection,$attrib, $search, $toObjectFunc, $options){
 
 			$options['@collection']=$collection;
 			$options['attrib']=$attrib;
 			$options['search']="%$search%";
 
-			$cursor = $this->executeStatement("FOR u in @@collection FILTER LIKE(u.@attrib,@search,true) RETURN u",$options);
+			$cursor = $this->executeStatement("FOR u in @@collection FILTER LIKE(u.@attrib,@search,true) SORT u.@sortBy @direction LIMIT @skip,@amount RETURN u",$options,true);
+			$objects = $this->createObject($cursor->getAll(), $toObjectFunc);
+			return new Paginator($objects, $cursor->getFullCount(), $options['skip'], $options['amount']);
 
-			return $cursor->getAll();
+
+		}
+
+		public function queryLike($collection,$attrib, $search, $toObjectFunc, $options){
+
+			$options['@collection']=$collection;
+			$options['attrib']=$attrib;
+			$options['search']="%$search%";
+
+			$cursor = $this->executeStatement("FOR u in @@collection FILTER LIKE(u.@attrib,@search,true) SORT u.@sortBy @direction RETURN u",$options);
+			return $this->createObject($cursor->getAll(), $toObjectFunc);
+
+
 
 		}
 

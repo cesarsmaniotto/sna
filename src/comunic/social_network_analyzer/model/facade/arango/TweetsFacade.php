@@ -84,9 +84,14 @@ function __construct($repository, $categoryRep){
   } // end of member function listAll
 
 
-  public function listInAnInterval($datasetId, $fmt, $options){
+  public function listByDatasetInAnInterval($datasetId, $fmt, $options){
 
-    return $fmt->format($this->repositoryTweet->listInAnInterval($datasetId, $options));
+    return $fmt->format($this->repositoryTweet->listByDatasetInAnInterval($datasetId, $options));
+  }
+
+  public function listByDataset($datasetId, $fmt, $options){
+
+    return $fmt->format($this->repositoryTweet->listByDataset($datasetId, $options));
   }
 
   public function findbyCategoryInAnInterval($datasetId, $id_cat, $fmt, $options){
@@ -94,6 +99,19 @@ function __construct($repository, $categoryRep){
     $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($datasetId, $category, $options);
     return $fmt->format($tweets);
   }
+
+  public function searchInTheTextInAnInterval($search,$options,$fmt){
+    $tweets=$this->repositoryTweet->searchInTheTextInAnInterval($search,$options);
+    return $fmt->format($tweets);
+
+  }
+
+  public function searchInTheText($search,$options,$fmt){
+    $tweets=$this->repositoryTweet->searchInTheText($search,$options);
+    return $fmt->format($tweets);
+
+  }
+
 
 }
 

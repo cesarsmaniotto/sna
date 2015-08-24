@@ -31,38 +31,17 @@ namespace comunic\social_network_analyzer\model\entity\format\csv{
 				// $rows.=$obj->getCreatedAt()."|";
 				// $rows.=$obj->getTime()."\n";
 
-				// $arr = \array_values($toArray($obj));
-				// $slashes= array();
-				// foreach ($arr as $v) {
-				// 		$slashes[] = addslashes($v);
-				// }
+				$arr = \array_values($toArray($obj));
+				$slashes= array();
+				foreach ($arr as $v) {
+						$slashes[] = addslashes($v);
+				}
 
-
-			    $rows.="'".\implode("'|'",\array_values($toArray($obj))) ."'". "\n";
+				$rows.="'".\implode("'|'",\array_values($toArray($obj))) ."'". "\n";
+			    // $rows.="'".\implode("'|'",\array_values($toArray($obj))) ."'". "\n";
 			}
 			 
 			return $rows;
-
-
-			// $csv = Tweet::getHeaderCSV()."<br>";
-
-			// foreach ($objects as $tweet) {
-				// $rows.=$obj->getText()."|";
-				// $rows.=$obj->getToUserId()."|";
-				// $rows.=$obj->getFromUser()."|";
-				// $rows.=$obj->getId()."|";
-				// $rows.=$obj->getFromUserId()."|";
-				// $rows.=$obj->getSource()."|";
-				// $rows.=$obj->getProfileImageUrl()."|";
-				// $rows.=$obj->getGeoType()."|";
-				// $rows.=$obj->getGeoCoordinates0()."|";
-				// $rows.=$obj->getGeoCoordinates1()."|";
-				// $rows.=$obj->getCreatedAt()."|";
-				// $rows.=$obj->getTime()."\n";
-			// }
-			// return $csv;
-
-
 
 		}
 

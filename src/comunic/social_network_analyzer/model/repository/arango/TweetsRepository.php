@@ -51,19 +51,6 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			return $this->graphHandler->listVertex($this->entityName,new ArrayToTweet());
 		}
 
-		public function filterByDataset($datasetId){
-			$datasetId = $this->buildId("datasets", $datasetId);
-
-			$edges = $this->graphHandler->getConnectedEdges($datasetId,"projects_datasets_has");
-
-			$datasets = array();
-			foreach ($edges->getAll() as $edge) {
-				$datasets[] = $this->graphHandler->getVertex($edge->getTo() ,new ArrayToTweet());
-			}
-
-			return $datasets;
-		}
-
 		public function findById($id){
 			$id = $this->buildId($this->entityName, $id);
 			return $this->graphHandler->getVertex($id, new ArrayToTweet());
@@ -126,7 +113,38 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		}
 
-		public function listInAnInterval($datasetId, $options){
+		public function listByDataset($datasetId, $options){
+			$datasetId = $this->buildId("datasets", $datasetId);
+
+			$edges = $this->graphHandler->getEdges($datasetId, "datasets_tweets_belong");
+			
+			$tweetsIds = array();
+			foreach ($edges->getAll() as $edge) {
+				$tweetsIds[] =$edge->getTo();
+			}
+
+			return $this->graphHandler->getByIds($tweetsIds,$this->entityName,new ArrayToTweet(),$options);
+
+		}
+
+		public function isolateDialogues($tweets,$skip=null,$amount=null){
+			for ($i=0; $i < \count($tweets); $i++) { 
+				if(!\strstr($tweets[$i]->getText(), '@')){
+					unset($tweets[$i]);
+				}
+			}
+			return $tweets;
+		}
+
+		public function searchInTheTextInAnInterval($search,$options){
+			return $this->graphHandler->queryLikeInAnInterval($this->entityName,"text", $search, new ArrayToTweet(), $options);
+		}
+
+		public function searchInTheText($search,$options){
+			return $this->graphHandler->queryLike($this->entityName,"text", $search, new ArrayToTweet(), $options);
+		}
+
+		public function listByDatasetInAnInterval($datasetId, $options){
 			$datasetId = $this->buildId("datasets", $datasetId);
 
 			$edges = $this->graphHandler->getEdges($datasetId, "datasets_tweets_belong");
