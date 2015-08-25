@@ -86,9 +86,5 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
      
  });
 
-// $restapp->get('/tweets/json/listInAnInterval/:idDataset/:indPage/:amount', function($idDataset, $indPage,$amount) use($restapp, $tweetsFacade) {
-//     echo $tweetsFacade->listInAnInterval($idDataset,new JsonPaginator(new TweetToArray()), $indPage, $amount);
-
-// });
 
 ?>

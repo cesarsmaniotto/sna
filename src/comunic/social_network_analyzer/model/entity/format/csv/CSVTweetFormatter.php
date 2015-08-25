@@ -3,10 +3,20 @@
 namespace comunic\social_network_analyzer\model\entity\format\csv{
 
 	use comunic\social_network_analyzer\model\entity\format\IObjectFormatter;
-	use comunic\social_network_analyzer\model\entity\Tweet;
+
 	use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
 
+	use comunic\social_network_analyzer\model\util\StringUtil;
+
 	class CSVTweetFormatter implements IObjectFormatter{
+
+		private $enclosure;
+		private $delimiter;
+
+		function __construct($delimiter='|',$enclosure='"'){
+			$this->enclosure = $enclosure;
+			$this->delimiter = $delimiter;
+		}
 
 
 		public function format($objects){
@@ -18,38 +28,40 @@ namespace comunic\social_network_analyzer\model\entity\format\csv{
 			$rows=$header;
 
 			foreach ($objects as $obj) {
-				// $rows.=$obj->getText()."|";
-				// $rows.=$obj->getToUserId()."|";
-				// $rows.=$obj->getFromUser()."|";
-				// $rows.=$obj->getId()."|";
-				// $rows.=$obj->getFromUserId()."|";
-				// $rows.=$obj->getSource()."|";
-				// $rows.=$obj->getProfileImageUrl()."|";
-				// $rows.=$obj->getGeoType()."|";
-				// $rows.=$obj->getGeoCoordinates0()."|";
-				// $rows.=$obj->getGeoCoordinates1()."|";
-				// $rows.=$obj->getCreatedAt()."|";
-				// $rows.=$obj->getTime()."\n";
 
-				$arr = \array_values($toArray($obj));
-				$slashes= array();
-				foreach ($arr as $v) {
-						$slashes[] = addslashes($v);
-				}
+				$enclosedAttribs = $this->encloseAttributes(array_values($toArray($obj)));
 
-				$rows.="'".\implode("'|'",\array_values($toArray($obj))) ."'". "\n";
-			    // $rows.="'".\implode("'|'",\array_values($toArray($obj))) ."'". "\n";
+				$withoutLineBreaks = StringUtil::removeLineBreaks(\implode($this->delimiter,$enclosedAttribs));
+
+				$rows.=$withoutLineBreaks. "\n";
+
 			}
-			 
+
 			return $rows;
 
 		}
 
+		private function encloseAttributes($attributes){
+
+			$enclosed = array();
+
+			foreach ($attributes as $attrib) {
+				$attrib = $this->addEnclosure($attrib);
+				$enclosed[] = $this->enclosure.$attrib.$this->enclosure;
+			}
+
+			return $enclosed;
+
+		}
+
+		private function addEnclosure($string){
+			return \str_replace($this->enclosure, \str_repeat($this->enclosure,2),$string);
+		}
+
 	}
 
-
-
 }
+
 
 
 ?>

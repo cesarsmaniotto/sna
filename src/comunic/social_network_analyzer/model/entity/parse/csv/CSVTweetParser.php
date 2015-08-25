@@ -33,8 +33,8 @@ namespace comunic\social_network_analyzer\model\entity\parse\csv {
    protected function prepareCSV($data){
      for ($i=0; $i <\count($data) ; $i++) { 
        if(\strlen($data[$i]) < 140 && (\count(\explode("|", $data[$i]))==1)){
-         $data[$i] = \str_replace("\n", "", $data[$i]);
-         $data[$i+1] = $data[$i] ." ". $data[$i+1];
+         // $data[$i] = \str_replace("\n", "", $data[$i]);
+         $data[$i+1] = $data[$i] . $data[$i+1];
          unset($data[$i]);
        }
      }

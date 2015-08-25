@@ -10,7 +10,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 	use comunic\social_network_analyzer\model\entity\Word;
 	use comunic\social_network_analyzer\model\entity\mappers\WordToArray;
 	use comunic\social_network_analyzer\model\entity\mappers\ArrayToWord;
-
+	use comunic\social_network_analyzer\model\entity\Paginator;
 	class TweetsRepository extends AbstractArangoRepository implements ITweetsRepository{
 		
 
@@ -125,15 +125,6 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			return $this->graphHandler->getByIds($tweetsIds,$this->entityName,new ArrayToTweet(),$options);
 
-		}
-
-		public function isolateDialogues($tweets,$skip=null,$amount=null){
-			for ($i=0; $i < \count($tweets); $i++) { 
-				if(!\strstr($tweets[$i]->getText(), '@')){
-					unset($tweets[$i]);
-				}
-			}
-			return $tweets;
 		}
 
 		public function searchInTheTextInAnInterval($search,$options){

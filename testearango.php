@@ -91,7 +91,7 @@ $cat = new CategoriesRepository();
 
 // echo var_dump($result);
 
-// $facade = new TweetsFacade($repo,$cat);
+$facade = new TweetsFacade($repo,$cat);
 
 
 // $options = array(
@@ -141,20 +141,25 @@ $cat = new CategoriesRepository();
 
 // echo var_dump($repo->import($objects,"621332107006"));
 
-$filename = "/home/cesar/datasets/teste.csv";
-$arquivo = fopen($filename, "r");
-$arquivolido = fread($arquivo, filesize($filename));
+// $filename = "/home/cesar/datasets/teste.csv";
+// $arquivo = fopen($filename, "r");
+// $arquivolido = fread($arquivo, filesize($filename));
 
-$csvparser = new CSVTweetParser();
-$tweets = $csvparser->parse($arquivolido);
+// $csvparser = new CSVTweetParser();
+// $tweets = $csvparser->parse($arquivolido);
 
-echo var_dump($tweets);
+// echo var_dump($tweets);
 
 // $repo->import($tweets,"145279421605");
 
+$options = array(
+'sortBy' =>  'time',
+'direction' => 'ASC');
 
-// $csv = new CSVTweetFormatter();
+$result = $facade->findbyCategory("3900608649026", "3327936764693", new CSVTweetFormatter(), $options);
 
-// echo var_dump($csv->format($objects));
+
+
+echo var_dump($result);
 
 ?>

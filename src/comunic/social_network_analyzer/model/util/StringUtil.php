@@ -45,10 +45,12 @@ return utf8_encode($text);
 
 static public function removePunctuation($string){
 
-    return preg_replace("/[^a-zA-Z0-9\s]/", "", $string);
-    // $explodePunctuation = \explode(" ", self::PUNCTUATION);
-    // $string = \trim($string);
-    // return \str_replace($explodePunctuation, "", $string);
+    return \preg_replace("/[^a-zA-Z0-9\s]/", "", $string);
+
+}
+
+static public function removeLineBreaks($string){
+    return \str_replace(array("\n","\r"), "", $string);
 }
 
 
