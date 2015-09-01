@@ -79,19 +79,25 @@ $repo = new TweetsRepository();
 $cat = new CategoriesRepository();
 
 
-// $category = new Category();
-// $category->setName("Foo");
-// $category->setKeywords(array("Ach.?", "Adoro", "Apoio", "argumento", "Concordo", "Defendo", "Desabafo", "Diálog.?", "Discut.?", "Galera", "Gente", "gostaria de saber", "Gostei", "Indignad.?", "lido e aplaudido", "Manoo", "né", "Olha", "Olhae", "Por que", "Pq", "Qual o sentido", "Que tal", "Quer.?", "question.?", "Repito", "Respond.?", "Será que", "Sério que", "Sinto", "tenho direito", "Vc quis dizer", "Xatiad.?", "Junho de 2013", "Sobre o ato", "Transporte como mercadoria", "esperando respostas", "migos", "pilho", "eai", "cheguei", "conclusão", "fera"));
+$category = new Category();
+$category->setName("Foo");
+$category->setKeywords(array("mpl_sp"));
 
-// $tweet = $repo->findbyCategoryInAnInterval("176869624", $category,0,20);
+$options = array(
+'skip' => 0,
+'amount' => 20,
+'sortBy' =>  'time',
+'direction' => 'ASC');
 
-// echo var_dump($tweet);
+$tweet = $repo->findbyCategoryInAnInterval("189028959541", $category,$options);
+
+echo var_dump($tweet);
 
 // $result = $repo->listInAnInterval(1,3);
 
 // echo var_dump($result);
 
-$facade = new TweetsFacade($repo,$cat);
+// $facade = new TweetsFacade($repo,$cat);
 
 
 // $options = array(
@@ -100,7 +106,7 @@ $facade = new TweetsFacade($repo,$cat);
 // 'sortBy' =>  'time',
 // 'direction' => 'ASC');
 
-// $result = $facade->findbyCategoryInAnInterval("3075647380220", "3150162795260", new JsonPaginator(new TweetToArray()), $options);
+// $result = $facade->findbyCategoryInAnInterval("189028959541", "94748935477", new JsonPaginator(new TweetToArray()), $options);
 
 
 // echo var_dump($result);
@@ -152,14 +158,14 @@ $facade = new TweetsFacade($repo,$cat);
 
 // $repo->import($tweets,"145279421605");
 
-$options = array(
-'sortBy' =>  'time',
-'direction' => 'ASC');
+// $options = array(
+// 'sortBy' =>  'time',
+// 'direction' => 'ASC');
 
-$result = $facade->findbyCategory("3900608649026", "3327936764693", new CSVTweetFormatter(), $options);
+// $result = $facade->findbyCategory("3900608649026", "3327936764693", new CSVTweetFormatter(), $options);
 
 
 
-echo var_dump($result);
+// echo var_dump($result);
 
 ?>

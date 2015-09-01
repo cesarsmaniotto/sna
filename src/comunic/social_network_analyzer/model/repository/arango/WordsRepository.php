@@ -23,7 +23,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			$words = array();
 			$id = 0;
 			foreach ($tweets as $tweet) {
-				$textWithoutPunctuation = StringUtil::removePunctuation($tweet->getText());
+				$textWithoutPunctuation = StringUtil::removePunctuation($tweet->getText(),"_-");
 				$wordsTw = ArrayUtil::eliminates_repeated(\explode(" ", $textWithoutPunctuation));
 
 				$tweetIdArango = $this->buildId("tweets",$tweet->getId());

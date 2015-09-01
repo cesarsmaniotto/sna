@@ -43,9 +43,9 @@ foreach ($regex as $rg_key => $rg){
 return utf8_encode($text);
 }
 
-static public function removePunctuation($string){
+static public function removePunctuation($string,$except){
 
-    return \preg_replace("/[^a-zA-Z0-9\s]/", "", $string);
+    return \preg_replace("/[^a-zA-Z0-9\s$except]/", "", $string);
 
 }
 

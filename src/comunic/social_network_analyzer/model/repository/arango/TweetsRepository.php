@@ -77,7 +77,6 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$matchWords = $category->matchWithKeywords($words);
 			
-
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
 				$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));
@@ -101,7 +100,6 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 			$matchWords = $category->matchWithKeywords($words);
 			
-
 			$wordsIds = array();
 			foreach ($matchWords as $word) {
 				$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));

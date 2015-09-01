@@ -105,9 +105,9 @@ private function toRegex(){
   $kwAsRegex = array();
 
   foreach ($this->keywords as $kw) {
-    $kw = str_replace('?', '', $kw);
+    // $kw = str_replace('?', '', $kw);
     $wordAsRegex = StringUtil::accentToRegex($kw);
-    $wordAsRegex = str_replace('.', '.?', $wordAsRegex);
+    // $wordAsRegex = str_replace('.', '.?', $wordAsRegex);
     $kwAsRegex[] = "/\b$wordAsRegex\b/iu";
   }
 
