@@ -8,6 +8,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 	use comunic\social_network_analyzer\model\entity\mappers\WordToArray;
 	use comunic\social_network_analyzer\model\entity\mappers\ArrayToWord;
 
+
 	class WordsRepository extends AbstractArangoRepository {
 		
 		function __construct(){
@@ -17,41 +18,97 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		}
 
+
+
 		public function importFromTweet($tweets){
 
 			$edges = array();
-			$words = array();
-			$id = 0;
+			$newWords = array();
+			$existingWords = $this->toAssocArray();
+			$idAtual = $this->graphHandler->lastInserted("words",new ArrayToWord())->getId() + 1;
+
 			foreach ($tweets as $tweet) {
 				$textWithoutPunctuation = StringUtil::removePunctuation($tweet->getText(),"_-");
-				$wordsTw = ArrayUtil::eliminates_repeated(\explode(" ", $textWithoutPunctuation));
+				$wordsTw = ArrayUtil::eliminates_repeated(\explode(" ", \mb_strtolower($textWithoutPunctuation)));
 
-				$tweetIdArango = $this->buildId("tweets",$tweet->getId());
-				$wordIdArango ="";
+				$tweetId = $this->buildId("tweets",$tweet->getId());
 
 				foreach($wordsTw as $word){
 
-					if(!isset($words[$word])){
-						$wordObj = new Word($id++,$word);
-						$words[$word]= $wordObj;
-						$wordIdArango = $this->buildId("words",$wordObj->getId());
+					if(isset($existingWords[$word])){
+
+						$wordObj = $existingWords[$word];
+
+					}else if(isset($newWords[$word])){
+
+						$wordObj = $newWords[$word];
+
 					}else{
-						$wordIdArango = $this->buildId("words",$words[$word]->getId());
+
+						$wordObj = new Word($idAtual++,$word);
+						$newWords[$word]= $wordObj;
+
 					}
-					
-					$edges[] = $this->graphHandler->createEdge($tweetIdArango,$wordIdArango,"tweets_words_contains");
+
+					$wordId = $this->buildId("words",$wordObj->getId());
+
+					$edges[] = $this->graphHandler->createEdge($tweetId,$wordId,"tweets_words_contains");
 
 				}
 
 				
 			}
-			$this->graphHandler->importObjects("words",\array_values($words),new WordToArray());
+			$this->graphHandler->importObjects("words",\array_values($newWords),new WordToArray());
 
 			$slicer = ArrayUtil::slicer($edges,20000);
 
 			foreach ($slicer as $slice) {
 				$this->graphHandler->import("tweets_words_contains",$slice);
 			}
+
+			return $newWords;
+
+
+
+
+
+
+
+
+
+			// $edges = array();
+			// $words = array();
+			// $id = 0;
+			// foreach ($tweets as $tweet) {
+			// 	$textWithoutPunctuation = StringUtil::removePunctuation($tweet->getText(),"_-");
+			// 	$wordsTw = ArrayUtil::eliminates_repeated(\explode(" ", $textWithoutPunctuation));
+
+			// 	$tweetIdArango = $this->buildId("tweets",$tweet->getId());
+			// 	$wordIdArango ="";
+
+			// 	foreach($wordsTw as $word){
+
+			// 		if(!isset($words[$word])){
+			// 			$wordObj = new Word($id++,$word);
+			// 			$words[$word]= $wordObj;
+			// 			$wordIdArango = $this->buildId("words",$wordObj->getId());
+			// 		}else{
+			// 			$wordIdArango = $this->buildId("words",$words[$word]->getId());
+			// 		}
+					
+			// 		$edges[] = $this->graphHandler->createEdge($tweetIdArango,$wordIdArango,"tweets_words_contains");
+
+			// 	}
+
+				
+			// }
+			// $this->graphHandler->importObjects("words",\array_values($words),new WordToArray());
+
+			// $slicer = ArrayUtil::slicer($edges,20000);
+
+			// foreach ($slicer as $slice) {
+			// 	$this->graphHandler->import("tweets_words_contains",$slice);
+			// }
 			
 
 
@@ -91,6 +148,17 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 		public function listAll(){
 			return $this->graphHandler->listVertex($this->entityName,new ArrayToWord());
+		}
+
+		public function toAssocArray(){
+			$words = $this->listAll();
+			$assoc_words = array();
+
+			foreach ($words as $word) {
+				$assoc_words[$word->getWord()]=$word;
+			}
+
+			return $assoc_words;
 		}
 
 		

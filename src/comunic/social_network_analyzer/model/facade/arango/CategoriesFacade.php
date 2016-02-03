@@ -32,15 +32,15 @@ namespace comunic\social_network_analyzer\model\facade\arango {
          * @return void
          * @access public
          */
-        public function insert($category_text, $parser) {
+        public function insert($category_text, $projectId, $parser) {
             $categories = $parser->parse($category_text);
 
             if(\is_array($categories)){
                 foreach ($categories as $category) {
-                 $this->repository->insert($category);
+                 $this->repository->insert($category,$projectId);
              }
          }else{
-            $this->repository->insert($categories);
+            $this->repository->insert($categories,$projectId);
         }
 
 
@@ -98,8 +98,18 @@ namespace comunic\social_network_analyzer\model\facade\arango {
             return $fmt->format($this->repository->listAll());
         }
 
+
+        public function filterByProject($projectId, $formatter){
+          $categories = $this->repository->filterByProject($projectId);
+          return $formatter->format($categories);
+        }
+
 // end of member function listAll
     }
+
+
+
+
 
 } // end of CategoriesFacade
 ?>

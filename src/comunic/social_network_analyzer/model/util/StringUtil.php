@@ -2,6 +2,9 @@
 
 namespace comunic\social_network_analyzer\model\util{
 
+    mb_internal_encoding('UTF-8');
+    mb_regex_encoding("UTF-8");
+
     class StringUtil {
 
         const ACCENT_STRINGS = 'ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËẼÌÍÎÏĨÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëẽìíîïĩðñòóôõöøùúûüýÿ';
@@ -45,7 +48,7 @@ return utf8_encode($text);
 
 static public function removePunctuation($string,$except){
 
-    return \preg_replace("/[^a-zA-Z0-9\s$except]/", "", $string);
+    return \mb_ereg_replace("/[^a-zA-Z0-9\s$except]/u", "", $string);
 
 }
 

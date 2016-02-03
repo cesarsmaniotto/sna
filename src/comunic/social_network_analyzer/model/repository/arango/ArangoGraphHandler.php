@@ -5,6 +5,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 	require "vendor/autoload.php";
 
 	use triagens\ArangoDb\GraphHandler;
+	use triagens\ArangoDb\CollectionHandler;
 	use triagens\ArangoDb\Edge;
 	use triagens\ArangoDb\Cursor;
 	use triagens\ArangoDb\Vertex;
@@ -13,6 +14,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 	use triagens\ArangoDb\Statement;
 	use triagens\ArangoDb\Urls;
 	use triagens\ArangoDb\UrlHelper;
+	use triagens\ArangoDb\AqlUserFunction;
 	use comunic\social_network_analyzer\model\repository\arango\mappers\ArrayWithArangoKeyToObject;
 	use comunic\social_network_analyzer\model\repository\arango\mappers\ObjectToArrayWithArangoKey;
 	use comunic\social_network_analyzer\model\util\ArrayUtil;
@@ -37,19 +39,42 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 
 				*/
 
+				// $colHandler = new CollectionHandler($this->connection);
+				// $colHandler->create("words", array('keyOptions'=> array('type'=>'autoincrement','allowUserKeys'=>true)));
+
 				$this->graphHandler->createGraph(new Graph("sna"));
 				$this->setGraph("sna");
 				$this->addEdgeDefinition("projects_datasets_has","projects","datasets");
 				$this->addEdgeDefinition("datasets_tweets_belong","datasets","tweets");
+				$this->addEdgeDefinition("projects_categories_belong","projects","categories");
+				$this->addEdgeDefinition("categories_words_contains","categories","words");
 				$this->addEdgeDefinition("tweets_categories_belong","tweets","categories");
 				$this->addEdgeDefinition("tweets_categories_not_belong","tweets","categories");
 				$this->addEdgeDefinition("tweets_words_contains","tweets","words");
-		
+
+
+				$aqlFunc = new AqlUserFunction($this->connection);
+
+				$aqlFunc->register("myfunctions::tweetsByCategory","function (config, result, vertex, path) {
+
+					if(config.data.indexOf(String(vertex._key))> -1){
+						return path.vertices[path.vertices.length - 2];
+					}
+
+				}");
+
+				$aqlFunc->register("myfunctions::pruneProjects","function (config,vertex,path){
+					var str = vertex._id;
+					if(str.split('/'')[0]==='projects'){
+						return [ 'prune', 'exclude' ];}
+					}");
+
+
 			} catch (\Exception $e) {
 
 			}
 			$this->setGraph("sna");
-		
+
 		}
 
 		public function importObjects($collection,$objects,$toArrayFunc){
@@ -62,6 +87,14 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			}
 
 			return $this->import($collection,$arrayData);
+
+		}
+
+		public function lastInserted($collName,$toObjFunc){
+			$collHandler = new CollectionHandler($this->connection);
+			$lastWord = $collHandler->last($collName);
+			
+			return !\is_null($lastWord) ? $this->createObject($lastWord,$toObjFunc) : -1;
 
 		}
 
@@ -133,10 +166,10 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		public function createEdge($fromVertex, $toVertex, $label=null,$document=array()){
 
 			if (is_array($document)) {
-			    $document = Edge::createFromArray($document);
+				$document = Edge::createFromArray($document);
 			}
 			if (!is_null($label)) {
-			    $document->set('$label', $label);
+				$document->set('$label', $label);
 			}
 			$document->setFrom($fromVertex);
 			$document->setTo($toVertex);
@@ -311,7 +344,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 				);
 
 			$cursor = $this->executeStatement("FOR e IN GRAPH_COMMON_NEIGHBORS(@graph, @vertex1,@vertex2,@options1,@options2) RETURN e.neighbors", $params);
-		
+
 			$neighbors=array();
 
 			foreach ($cursor->getAll() as $item) {

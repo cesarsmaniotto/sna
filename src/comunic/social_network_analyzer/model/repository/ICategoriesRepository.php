@@ -17,7 +17,7 @@ namespace comunic\social_network_analyzer\model\repository {
          * @return void
          * @access public
          */
-        public function insert($category);
+        public function insert($category, $projectId);
 
         /**
          *

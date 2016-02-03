@@ -27,7 +27,7 @@ use comunic\social_network_analyzer\model\util\DownloadFile;
 
 
 $tweets = array(
-	array(	"text" => "opa RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalização da heroína em garrafa de 2 litros no supermercado",
+	array(	"text" => "opa RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalizaÇão da heroína em garrafa de 2 litros no supermercado",
 	"fromUserId" => null,
 	"id" => "553315797247217664",
 	"createdAt" => "Thu Jan 08 22:22:20 +0000 2015",
@@ -53,7 +53,7 @@ $tweets = array(
 	'geoType' => null,
 	'geoCoordinates0' => null,
 	'geoCoordinates1' => null),
-	array(	"text" => "joinha RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalização da heroína em garrafa de 2 litros no supermercado",
+	array(	"text" => "joinha RT @beboquerosene: Depois de Pásse Livre, a proxima exigência é a legalizaÇão da heroína em garrafa de 2 litros no supermercado",
 	"fromUserId" => null,
 	"id" => "553315797247217662",
 	"createdAt" => "Thu Jan 08 22:22:20 +0000 2015",
@@ -78,27 +78,34 @@ foreach ($tweets as $tweet) {
 $repo = new TweetsRepository();
 $cat = new CategoriesRepository();
 
+// $repo->import($objects,"4556374541664");
 
-$category = new Category();
-$category->setName("Foo");
-$category->setKeywords(array("mpl_sp"));
+
+// $category = new Category();
+// $category->setName("Foo");
+// $category->setKeywords(array("cobertura","conclamando","confirma.?","confronto","confusão","convoc.?","correm","correria","deslocam","detid.?","direito","dispers.?","durante","espancado","esquina","estação","ferid.?","fot.?","gritaria","hoje","image.?","imprensa","incidentes","interditad.?","jornalista","lata","lixo","lixeiras","manifesta.?","marcad.?","máscara","mascarado","metrô","militant.?","minut.?","mobilidade","momento","tenso","morador.?","altura","fardas","notícia","ocupa.?","ontem","pacífico","palácio","passeata","pedra","pedrada","periferia","PM.?","terror","agridem","políci.?","bate","população","predio","prefeitura","pres.?","prisões","quebra.?","queima.?","atirar","realiza.?","refugia.?","reivindica.?","relat.?","repressão","rolar.?","roleta","rolou","rua","ruas","santander","violência","simultane.?","trajeto","trânsito","transmi.?","tretas","tropa","truculência","tumulto","rolar","masp","veja","vídeo"));
+
+
+// echo var_dump($cat->insert($category));
 
 $options = array(
-'skip' => 0,
-'amount' => 20,
+// 'skip' => 0,
+// 'amount' => 20,
 'sortBy' =>  'time',
 'direction' => 'ASC');
 
-$tweet = $repo->findbyCategoryInAnInterval("189028959541", $category,$options);
+$category = $cat->findById("4586473391456");
 
-echo var_dump($tweet);
+$tweets = $repo->findByCategory("4556374541664",$category,$options);
 
-// $result = $repo->listInAnInterval(1,3);
 
-// echo var_dump($result);
+echo var_dump($tweets[0]->getAll());
 
-// $facade = new TweetsFacade($repo,$cat);
 
+
+// $tweet = $repo->findbyCategoryInAnInterval("4125249758686", $category,$options);
+
+// echo var_dump($tweet);
 
 // $options = array(
 // 'skip' => 0,
@@ -117,12 +124,14 @@ echo var_dump($tweet);
 // 	echo "<br>";
 // }
 
-// $graphHandler = new ArangoGraphHandler();
 
 
-// // Iniciamos o "contador"
-// list($usec, $sec) = explode(' ', microtime());
-// $script_start = (float) $sec + (float) $usec;
+
+
+
+// Iniciamos o "contador"
+list($usec, $sec) = explode(' ', microtime());
+$script_start = (float) $sec + (float) $usec;
  
 // /* SEU CÓDIGO PHP */
 //  $options = array(
@@ -131,41 +140,22 @@ echo var_dump($tweet);
 //  'sortBy' =>  'time',
 //  'direction' => 'ASC');
 
+// $tweet = $repo->findbyCategory("4125249758686", $category,$options);
+
+// echo var_dump($tweet);
+
 
 // $repo->listInAnInterval("2778090575412", $options);
 
-// // Terminamos o "contador" e exibimos
-// list($usec, $sec) = explode(' ', microtime());
-// $script_end = (float) $sec + (float) $usec;
-// $elapsed_time = round($script_end - $script_start, 5);
+// Terminamos o "contador" e exibimos
+list($usec, $sec) = explode(' ', microtime());
+$script_end = (float) $sec + (float) $usec;
+$elapsed_time = round($script_end - $script_start, 5);
 
-// // Exibimos uma mensagem
-// echo 'Elapsed time: ', $elapsed_time, ' secs. Memory usage: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb';
-
-
-// echo var_dump($graphHandler->getEdgesWithVertices("datasets/1303374276614","datasets_tweets_belong"));
-
-// echo var_dump($repo->import($objects,"621332107006"));
-
-// $filename = "/home/cesar/datasets/teste.csv";
-// $arquivo = fopen($filename, "r");
-// $arquivolido = fread($arquivo, filesize($filename));
-
-// $csvparser = new CSVTweetParser();
-// $tweets = $csvparser->parse($arquivolido);
-
-// echo var_dump($tweets);
-
-// $repo->import($tweets,"145279421605");
-
-// $options = array(
-// 'sortBy' =>  'time',
-// 'direction' => 'ASC');
-
-// $result = $facade->findbyCategory("3900608649026", "3327936764693", new CSVTweetFormatter(), $options);
+// Exibimos uma mensagem
+echo 'Elapsed time: ', $elapsed_time, ' secs. Memory usage: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb';
 
 
 
-// echo var_dump($result);
 
 ?>

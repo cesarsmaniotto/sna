@@ -11,6 +11,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 	use comunic\social_network_analyzer\model\entity\mappers\WordToArray;
 	use comunic\social_network_analyzer\model\entity\mappers\ArrayToWord;
 	use comunic\social_network_analyzer\model\entity\Paginator;
+	use comunic\social_network_analyzer\model\repository\arango\mappers\ArrayWithArangoKeyToObject;
 	class TweetsRepository extends AbstractArangoRepository implements ITweetsRepository{
 		
 
@@ -41,7 +42,7 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			$wordsRepo = new WordsRepository();
 			// foreach ($tweets as $tweet) {
 				
-			$wordsRepo->importFromTweet($tweets);	
+			return $wordsRepo->importFromTweet($tweets);	
 
 			// }
 			
@@ -70,25 +71,69 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 		}
 
 		public function findByCategory($datasetId, $category,$options){
-			$wordsRepo = new WordsRepository();
+
+			$query = 'LET params = { 
+				filterVertices:@filter,
+    			visitor: @visitorFunc,
+    			visitorReturnsResults : true ,
+    			data:@data,
+    			maxDepth:3
+			}
+			FOR result IN graph_traversal("sna", @category, "any", params) sort result.time asc
+  				RETURN result';
+
+  			$params = array(
+  				'filter' => "myfunctions::pruneProject",
+  				'visitorFunc' => "myfunctions::tweetsByCategory",
+  				'data' => \is_array($datasetId) ? $datasetId : array($datasetId),
+  				'category' => $this->buildId("categories",$category->getId()),
 
 
-			$words = $wordsRepo->listAll();
+  				);
 
-			$matchWords = $category->matchWithKeywords($words);
+  			$stmt = $this->graphHandler->executeStatement($query,$params);
+
+
+  			$fArrayToObject = new ArrayWithArangoKeyToObject();	
+  			
+  			$data = $stmt->getAll();
+
+  			return $data;
+
+
+  			// if(ArrayUtil::is_assoc_array($data)){
+  			// 	return $fArrayToObject($data, new ArrayToTweet());
+  			// }else{
+  			// 	$objects = array();
+  			// 	foreach($data as $item){
+  			// 		$objects[]= $fArrayToObject($item->getAll(), new ArrayToTweet());
+  			// 	}
+  			// 	return $objects;
+  			// }	
+
+  		
+
+			// $wordsRepo = new WordsRepository();
+
+
+			// $words = $wordsRepo->listAll();
+
+			// $matchWords = $category->matchWithKeywords($words);
 			
-			$wordsIds = array();
-			foreach ($matchWords as $word) {
-				$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));
-			}
+			// $wordsIds = array();
+			// foreach ($matchWords as $word) {
+			// 	$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));
+			// }
 
-			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
+			// return $wordsIds;
 
-			if(\count($neighbors)==0){
-				return [];
-			}
+			// $neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
 
-			return $this->graphHandler->getByIds($neighbors,$this->entityName,new ArrayToTweet(),$options);
+			// if(\count($neighbors)==0){
+			// 	return [];
+			// }
+
+			// return $this->graphHandler->getByIds($neighbors,$this->entityName,new ArrayToTweet(),$options);
 		}
 
 
@@ -104,6 +149,8 @@ namespace comunic\social_network_analyzer\model\repository\arango{
 			foreach ($matchWords as $word) {
 				$wordsIds[] = array("_id" => $this->buildId("words", $word->getId()));
 			}
+
+
 
 			$neighbors = $this->graphHandler->getCommonNeighbors(array("_id"=>$this->buildId("datasets", $datasetId)), $wordsIds);
 
