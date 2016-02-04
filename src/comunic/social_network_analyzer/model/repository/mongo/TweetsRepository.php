@@ -18,7 +18,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             $this->mongoch = new MongoCollectionHandler('tweets',$connectionType);
         }
 
-        public function insert($tweet) {
+        public function import($tweet, $datasetId) {
             if($this->mongoch->count(array("text" => $tweet->getText())) == 0){
                 return $this->mongoch->save($tweet ,new TweetToArray());
             }
@@ -91,7 +91,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
          return $keywordsAsRegex;
      }
 
-     public function findByCategory($category) {
+     public function findByCategory($datasetId, $category, $options) {
 
         return $this->mongoch->find(new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
 
@@ -100,6 +100,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
     public function findbyCategoryInAnInterval($category, $initial, $final){
 
         return $this->mongoch->findInAnInterval($initial, $final, new ArrayToTweet(), array('text' => array('$in' => $this->filterByCategory($category))));
+
+    }
+
+    public function listByDatasetInAnInterval($datasetId, $options){
 
     }
 

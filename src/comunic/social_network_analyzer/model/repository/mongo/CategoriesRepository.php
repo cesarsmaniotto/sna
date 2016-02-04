@@ -16,7 +16,7 @@ class CategoriesRepository implements ICategoriesRepository{
         $this->mongoch = new MongoCollectionHandler('categories',$connectionType);
     }
 
-        public function insert($category){
+        public function insert($category, $projectId){
 
             return $this->mongoch->save($category, new CategoryToArray());
 

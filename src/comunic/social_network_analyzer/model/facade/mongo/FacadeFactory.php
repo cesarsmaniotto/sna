@@ -60,7 +60,7 @@ namespace comunic\social_network_analyzer\model\facade\mongo {
         }
 
         public function instantiateDatasets() {
-            return new DatasetsFacade($this->repositoryFactory->instantiateDataset());
+            return new DatasetsFacade($this->repositoryFactory->instantiateDataset(), $this->repositoryFactory->instantiateDataset());
         }
 
 

@@ -14,7 +14,7 @@ class DatasetsRepository implements IDatasetsRepository{
         $this->mongoch = new MongoCollectionHandler("datasets",$connectionType);
     }
 
-    public function insert($object){
+    public function insert($object,$datasetId){
 
         return $this->mongoch->save($object, new DatasetToArray());
     }

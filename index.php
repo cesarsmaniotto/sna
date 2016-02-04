@@ -6,13 +6,13 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Slim\Slim;
 
-use comunic\social_network_analyzer\model\facade\arango\FacadeFactory;
-use comunic\social_network_analyzer\model\repository\arango\ArangoRepository;
+use comunic\social_network_analyzer\model\facade\mongo\FacadeFactory;
+use comunic\social_network_analyzer\model\repository\mongo\MongoRepository;
 
 $restapp = new Slim();
 
-$arango = new ArangoRepository();
-$factory = new FacadeFactory($arango);
+$mongo = new MongoRepository("development");
+$factory = new FacadeFactory($mongo);
 
 define('CONTROLLERS_PATH', __DIR__.'/src/comunic/social_network_analyzer/controllers/');
 

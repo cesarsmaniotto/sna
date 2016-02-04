@@ -15,20 +15,20 @@ interface IDatasetsRepository
   /**
    *
    *
-   * @param comunic::social_network_analyzer::model::entity::Dataset project
+   * @param comunic::social_network_analyzer::model::entity::Dataset dataset
    * @return void
    * @access public
    */
-  public function insert( $project, $projectId);
+  public function insert( $dataset, $datasetId);
 
   /**
    *
    *
-   * @param comunic::social_network_analyzer::model::entity::Dataset project
+   * @param comunic::social_network_analyzer::model::entity::Dataset dataset
    * @return void
    * @access public
    */
-  public function update( $project);
+  public function update( $dataset);
 
   /**
    *
