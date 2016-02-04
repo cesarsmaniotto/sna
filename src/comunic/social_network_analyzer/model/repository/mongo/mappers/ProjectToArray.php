@@ -9,7 +9,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo\mappers{
 			return array(
 				'_id' => new \MongoId($obj->getId()),
 				'name' => $obj->getName(),
-                                            'datasetsIds' => $obj->getDatasetsIds()
+                                           
                                             );
 
 

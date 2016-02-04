@@ -19,9 +19,8 @@ namespace comunic\social_network_analyzer\model\entity\parse\json {
                 $project->setName($arrayData['name']);
             }
 
-            if (isset($arrayData['datasetsIds'])) {
-
-                $project->setDatasetsIds($arrayData['datasetsIds']);
+            if (isset($arrayData['datasets'])) {
+                $project->setName($arrayData['datasets']);
             }
 
             return $project;

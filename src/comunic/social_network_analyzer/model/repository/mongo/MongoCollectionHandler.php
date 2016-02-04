@@ -86,6 +86,27 @@ use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArray
             }
         }
 
+        public function update($criteria, $operator, $attribute, $obj, $toArrayDataFunction, $options=array()){
+
+            try {
+                $fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
+
+               $arrayData=$fObjToArrayWithMongoId($obj, $toArrayDataFunction);
+
+                return $this->collection->update($criteria, array($operator => array($attribute => $arrayData)) , $options);
+
+            } catch (\MongoCursorException $e) {
+
+                echo $e->getMessage();
+
+            }catch (\MongoException $e) {
+
+                echo $e->getMessage();
+            }
+
+
+        }
+
 
 
         public function delete($criteria=array(), $options=array()){

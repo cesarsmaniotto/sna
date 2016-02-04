@@ -7,7 +7,7 @@ namespace comunic\social_network_analyzer\model\entity{
 
 		private $id;
 		private $name;
-		private $datasetsIds;
+		private $datasets;
 
 		public function getId(){
 			return $this->id;
@@ -25,20 +25,15 @@ namespace comunic\social_network_analyzer\model\entity{
 			return $this->name = $name;
 		}
 
-		public function getDatasetsIds()
+		public function getDatasets()
 		{
-		    return $this->datasetsIds;
+		    return $this->datasets;
 		}
-
-		public function setDatasetsIds($datasetsIds)
+		 
+		public function setDatasets($datasets)
 		{
-		    return $this->datasetsIds = $datasetsIds;
+		    return $this->datasets = $datasets;
 		}
-
-
-
-
-
 
 	}
 

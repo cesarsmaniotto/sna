@@ -18,10 +18,6 @@ namespace comunic\social_network_analyzer\model\repository\mongo\mappers{
 				$project->setName($arrayData['name']);
 			}
 
-			if(isset($arrayData['datasetsIds'])){
-				$project->setDatasetsIds($arrayData['datasetsIds']);
-			}
-
 
 			return $project;
 		}

@@ -18,10 +18,17 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 				$project->setName($arrayData['name']);
 			}
 
-			if(isset($arrayData['datasetsIds'])){
-				$project->setDatasetsIds($arrayData['datasetsIds']);
-			}
+			if(isset($arrayData['datasets'])){
 
+				$datasets = array();
+
+				foreach ($arrayData['datasets'] as $dataset) {
+					$datasets[] = new ArrayToDataset($dataset);
+				}
+
+				$project->setDatasets($datasets);
+
+			}
 
 			return $project;
 		}
