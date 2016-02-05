@@ -3,6 +3,8 @@
 namespace comunic\social_network_analyzer\model\entity\mappers{
 
 	use comunic\social_network_analyzer\model\entity\Project;
+	use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
+	use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
 
 	class ArrayToProject{
 
@@ -23,19 +25,41 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 				$datasets = array();
 
 				foreach ($arrayData['datasets'] as $dataset) {
-					$datasets[] = new ArrayToDataset($dataset);
+
+					$toDataset = new ArrayToDataset();
+					$datasets[] = $toDataset($dataset);
 				}
 
-				$project->setDatasets($datasets);
 
+
+				$project->setDatasets($datasets);
+			}
+
+			if(isset($arrayData['categories'])){
+
+				$categories = array();
+
+				foreach ($arrayData['categories'] as $category) {
+					$toCategory = new ArrayToCategory();
+					$categories[] = $toCategory($category);
+				}
+
+				$project->setCategories($categories);
 			}
 
 			return $project;
+
 		}
+
 
 	}
 
+
+
+
 }
+
+
 
 
 ?>

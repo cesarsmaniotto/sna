@@ -17,10 +17,14 @@ class DatasetsRepository implements IDatasetsRepository{
 
     public function insert($object,$projectId){
 
+
         return $this->mongoch->update(array('_id' => new \MongoId($projectId)), '$addToSet', "datasets", $object, new DatasetToArray());
     }
 
-    public function update($object,$projectId){
+
+
+    public function update($object, $projectId){
+
 
         return $this->mongoch->save($object, new DatasetToArray());
     }
@@ -33,17 +37,17 @@ class DatasetsRepository implements IDatasetsRepository{
 
     public function findById($id, $projectId){
 
-        if(is_array($id)){
-            $arrayObj = array();
+        // if(is_array($id)){
+        //     $arrayObj = array();
 
-            foreach ($id as $item) {
-                $arrayObj[] = $this->mongoch->findOne(new ArrayToDataset(), array("_id" => new \MongoId($item)));
-            }
+        //     foreach ($id as $item) {
+        //         $arrayObj[] = $this->mongoch->findOne(new ArrayToDataset(), array("_id" => new \MongoId($item)));
+        //     }
 
-            return $arrayObj;
-        }
+        //     return $arrayObj;
+        // }
 
-        return $this->mongoch->findOne(new ArrayToDataset(), array("_id" => new \MongoId($id)));
+        return $this->mongoch->findOne(new ArrayToDataset(), array('datasets._id' => new \MongoId($id)), array("datasets.$" => true, "_id" => false));
 
     }
 

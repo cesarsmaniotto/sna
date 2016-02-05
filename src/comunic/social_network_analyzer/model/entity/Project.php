@@ -8,6 +8,8 @@ namespace comunic\social_network_analyzer\model\entity{
 		private $id;
 		private $name;
 		private $datasets;
+		private $categories;
+
 
 		public function getId(){
 			return $this->id;
@@ -29,10 +31,21 @@ namespace comunic\social_network_analyzer\model\entity{
 		{
 		    return $this->datasets;
 		}
-		 
+
 		public function setDatasets($datasets)
 		{
 		    return $this->datasets = $datasets;
+		}
+
+		public function getCategories()
+		{
+		    return $this->categories;
+		}
+		 
+		public function setCategories($categories)
+		{
+		    return $this->categories = $categories;
+
 		}
 
 	}

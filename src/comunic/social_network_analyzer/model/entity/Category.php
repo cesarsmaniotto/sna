@@ -19,8 +19,6 @@ class Category
   private $id;
   private $name;
   private $keywords;
-  private $included;
-  private $excluded;
 
 /**
 * @return $id
@@ -81,25 +79,7 @@ public function setKeywords($keywords){
   $this->keywords = $keywords;
 }
 
-public function getIncluded()
-{
-    return $this->included;
-}
 
-public function setIncluded($included)
-{
-    return $this->included = $included;
-}
-
-public function getExcluded()
-{
-    return $this->excluded;
-}
-
-public function setExcluded($excluded)
-{
-    return $this->excluded = $excluded;
-}
 
 private function toRegex(){
   $kwAsRegex = array();

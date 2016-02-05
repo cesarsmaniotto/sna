@@ -26,7 +26,7 @@ namespace comunic\social_network_analyzer\model\repository {
          * @return void
          * @access public
          */
-        public function update($category);
+        public function update($category, $projectId);
 
         /**
          *
@@ -35,7 +35,7 @@ namespace comunic\social_network_analyzer\model\repository {
          * @return void
          * @access public
          */
-        public function delete($id);
+        public function delete($id, $projectId);
 
         /**
          *
@@ -44,7 +44,7 @@ namespace comunic\social_network_analyzer\model\repository {
          * @return \comunic\social_network_analyzer\model\entity\Category
          * @access public
          */
-        public function findById($id);
+        public function findById($id, $projectId);
 
         /**
          *
@@ -53,7 +53,7 @@ namespace comunic\social_network_analyzer\model\repository {
          * @see \comunic\social_network_analyzer\model\entity\Category
          * @access public
          */
-        public function listAll();
+        public function listAll($projectId);
 
 
     }

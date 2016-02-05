@@ -32,9 +32,9 @@ namespace comunic\social_network_analyzer\model\facade\mongo {
          * @return void
          * @access public
          */
-        public function insert($category_text, $parser) {
+        public function insert($category_text, $projectId, $parser) {
             $category = $parser->parse($category_text);
-            $this->repository->insert($category);
+            $this->repository->insert($category, $projectId);
         }
 
 // end of member function insert

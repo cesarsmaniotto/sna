@@ -5,6 +5,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 use \comunic\social_network_analyzer\model\entity\Paginator;
 use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayWithMongoIdToObject;
 use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArrayWithMongoId;
+use comunic\social_network_analyzer\model\util\ArrayUtil;
 
     class MongoCollectionHandler{
 
@@ -61,9 +62,18 @@ use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArray
         public function findOne($toObjectFunction,$query = array(), $fields=array()){
             $arrayData=$this->collection->findOne($query,$fields);
 
-            $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
 
-            return $fArrayWithMongoIdToObj($arrayData, $toObjectFunction);
+
+            if(\count($arrayData)==1 && ArrayUtil::is_assoc_array($arrayData)){
+                $arrayData=\array_values($arrayData)[0];
+            }
+
+
+            return $this->cursorToObjectArray($toObjectFunction,$arrayData);
+
+            // $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+
+            // return $fArrayWithMongoIdToObj($arrayData, $toObjectFunction);
 
         }
 
@@ -86,14 +96,19 @@ use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArray
             }
         }
 
+
         public function update($criteria, $operator, $attribute, $obj, $toArrayDataFunction, $options=array()){
+
 
             try {
                 $fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
 
                $arrayData=$fObjToArrayWithMongoId($obj, $toArrayDataFunction);
 
+
                 return $this->collection->update($criteria, array($operator => array($attribute => $arrayData)) , $options);
+
+
 
             } catch (\MongoCursorException $e) {
 
@@ -103,7 +118,6 @@ use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArray
 
                 echo $e->getMessage();
             }
-
 
         }
 

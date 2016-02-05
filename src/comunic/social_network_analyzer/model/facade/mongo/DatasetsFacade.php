@@ -46,8 +46,8 @@ class DatasetsFacade
    * @return void
    * @access public
    */
-  public function findById( $id,  $format) {
-    $dataset = $this->datasetsRepo->findById($id);
+  public function findById( $id,  $idProject, $format) {
+    $dataset = $this->datasetsRepo->findById($id, $idProject);
     return $format->format($dataset);
   } // end of member function findById
 

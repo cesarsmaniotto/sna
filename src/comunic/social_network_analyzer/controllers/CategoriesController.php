@@ -1,32 +1,30 @@
 <?php
-use comunic\social_network_analyzer\model\entity\parse\json\JsonCategoryParser;
-use comunic\social_network_analyzer\model\entity\format\json\JsonCategoryFormatter;
+use comunic\social_network_analyzer\model\entity\parse\json\BasicObjectParser;
+use comunic\social_network_analyzer\model\entity\format\json\BasicObjectFormatter;
+use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
+use comunic\social_network_analyzer\model\entity\mappers\CategoryToArray;
 
 $categoryFacade = $factory->instantiateCategories();
 
 $restapp->get('/categories/json', function() use ($categoryFacade) {
 
-    echo $categoryFacade->listAll(new JsonCategoryFormatter());
+    echo $categoryFacade->listAll(new BasicObjectFormatter(new CategoryToArray()));
 });
 
 $restapp->get('/categories/json/:id', function($id) use ($categoryFacade) {
 
-    echo $categoryFacade->findById($id, new JsonCategoryFormatter());
+    echo $categoryFacade->findById($id, new BasicObjectFormatter(new CategoryToArray()));
 });
 
 $restapp->post('/categories/json/:projectId', function($projectId) use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->insert($restapp->request()->getBody(),$projectId, new JsonCategoryParser());
+    echo $categoryFacade->insert($restapp->request()->getBody(),$projectId, new BasicObjectParser(new ArrayToCategory()));
     
-});
-
-$restapp->get('/categories/json/filter_by_project/:idProject', function($idProject) use ($categoryFacade) {
-    echo $categoryFacade->filterByProject($idProject, new JsonCategoryFormatter());
 });
 
 $restapp->put('/categories/json', function() use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->update($restapp->request()->getBody(), new JsonCategoryParser());
+    echo $categoryFacade->update($restapp->request()->getBody(), new BasicObjectParser(new ArrayToCategory()));
 });
 
 $restapp->delete('/categories/json/:id', function($id) use ($categoryFacade) {
