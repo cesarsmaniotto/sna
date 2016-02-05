@@ -19,7 +19,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function insert( $dataset, $datasetId);
+  public function insert( $dataset, $projectId);
 
   /**
    *
@@ -28,7 +28,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function update( $dataset);
+  public function update( $dataset, $projectId);
 
   /**
    *
@@ -37,7 +37,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function delete( $id);
+  public function delete( $id, $projectId);
 
   /**
    *
@@ -45,7 +45,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function listAll();
+  public function listAll($projectId);
 
   /**
    *
@@ -54,7 +54,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function findById( $id);
+  public function findById( $id, $projectId);
 
 
 }

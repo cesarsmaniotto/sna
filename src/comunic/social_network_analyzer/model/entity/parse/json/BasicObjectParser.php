@@ -2,41 +2,40 @@
 
 namespace comunic\social_network_analyzer\model\entity\parse\json{
 
-use comunic\social_network_analyzer\model\entity\parse\IObjectParser;
-use comunic\social_network_analyzer\model\util\ArrayUtil;
+    use comunic\social_network_analyzer\model\entity\parse\IObjectParser;
+    use comunic\social_network_analyzer\model\util\ArrayUtil;
 
-abstract class BasicObjectParser implements IObjectParser{
+    class BasicObjectParser implements IObjectParser{
 
-    public function parse($jsonText){
+        private $funcToObj;
 
-        $arrayData = \json_decode($jsonText, true);
-
-        if(ArrayUtil::is_assoc_array($arrayData)){
-
-            return $this->createObject($arrayData);
-
+        function __construct($funcToObj){
+            $this->funcToObj = $funcToObj();
         }
 
-        if(\is_array($arrayData)){
+        public function parse($jsonText){
 
-            $listObjects = array();
+            $arrayData = \json_decode($jsonText, true);
 
-            foreach ($arrayData as $item) {
-                $listObjects[] = $this->createObject($item);
+            if(ArrayUtil::is_assoc_array($arrayData)){
+
+                return $this->funcToObj($arrayData);
+
             }
 
-            return $listObjects;
+            if(\is_array($arrayData)){
 
+                $listObjects = array();
+
+                foreach ($arrayData as $item) {
+                    $listObjects[] = $this->funcToObj($item);
+                }
+
+                return $listObjects;
+
+            }
         }
     }
-
-    protected abstract function createObject($arrayData);
-
-
-}
-
-
-
 }
 
 ?>

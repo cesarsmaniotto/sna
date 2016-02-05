@@ -85,10 +85,7 @@ class DatasetsFacade
   public function insert( $datasetText,  $projectId, $parser) {
     $dataset = $parser->parse($datasetText);
 
-    $project = $this->projectsRepo->findById($projectId);
-    $project->setDatasetsId($project->getDatasetsId()[]=$dataset->getId());
-    $projectsRepo->update($project);
-    return $this->datasetsRepo->insert($dataset);
+    return $this->datasetsRepo->insert($dataset, $projectId);
   } // end of member function insert
 
   /**
