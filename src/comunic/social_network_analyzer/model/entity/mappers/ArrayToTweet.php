@@ -12,11 +12,12 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 
             if(isset($arrayData['id'])){
                 $tweet->setId($arrayData['id']);
+            }else if(isset($arrayData['_id'])){
+                $dataset->setId((string) $arrayData['_id']);
             }            
             $tweet->setText($arrayData['text']);
             $tweet->setToUserId($arrayData['toUserId']);
             $tweet->setFromUser($arrayData['fromUser']);
-            // $tweet->setIdTweet($arrayData['idTweet']);
             $tweet->setFromUserId($arrayData['fromUserId']);
             $tweet->setIsoLanguageCode($arrayData['isoLanguageCode']);
             $tweet->setSource($arrayData['source']);
@@ -26,6 +27,14 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
             $tweet->setGeoCoordinates1($arrayData['geoCoordinates1']);
             $tweet->setCreatedAt($arrayData['createdAt']);
             $tweet->setTime($arrayData['time']);
+
+            if(isset($arrayData['idDataset'])){
+                $tweet->setIdDataset($arrayData['idDataset']);
+            }
+
+            if(isset($arrayData['class'])){
+                $tweet->setClass($arrayData['class']);
+            }
 
             return $tweet;
         }

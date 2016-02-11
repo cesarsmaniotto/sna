@@ -21,7 +21,9 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
                 'geoCoordinates0' => $obj->getGeoCoordinates0(),
                 'geoCoordinates1' => $obj->getGeoCoordinates1(),
                 'createdAt' => $obj->getCreatedAt(),
-                'time' => $obj->getTime()
+                'time' => $obj->getTime(),
+                'class' => $obj->getClass(),
+                'idDataset' => $obj->getIdDataset()
 
                 );
 

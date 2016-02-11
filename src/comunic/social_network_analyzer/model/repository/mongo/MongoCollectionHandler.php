@@ -22,7 +22,7 @@ use comunic\social_network_analyzer\model\util\ArrayUtil;
         public function find($toObjectFunction,$query = array(), $fields=array()){
             $cur=$this->collection->find($query,$fields);
             $outputObject=$this->cursorToObjectArray($toObjectFunction,$cur);
-            return  $outputObject;
+            return $outputObject;
 
         }
 
@@ -62,18 +62,14 @@ use comunic\social_network_analyzer\model\util\ArrayUtil;
         public function findOne($toObjectFunction,$query = array(), $fields=array()){
             $arrayData=$this->collection->findOne($query,$fields);
 
-
-
             if(\count($arrayData)==1 && ArrayUtil::is_assoc_array($arrayData)){
-                $arrayData=\array_values($arrayData)[0];
+
+                $arrayData = \array_values($arrayData)[0][0];
             }
 
+            $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
 
-            return $this->cursorToObjectArray($toObjectFunction,$arrayData);
-
-            // $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
-
-            // return $fArrayWithMongoIdToObj($arrayData, $toObjectFunction);
+            return $fArrayWithMongoIdToObj($arrayData, $toObjectFunction);
 
         }
 

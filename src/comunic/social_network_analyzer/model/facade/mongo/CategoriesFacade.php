@@ -56,9 +56,9 @@ namespace comunic\social_network_analyzer\model\facade\mongo {
          * @return void
          * @access public
          */
-        public function update($category_text, $parser) {
+        public function update($category_text, $parser, $projectId) {
             $category = $parser->parse($category_text);
-            $this->repository->update($category);
+            $this->repository->update($category, $projectId);
         }
 
 // end of member function update
@@ -84,8 +84,8 @@ namespace comunic\social_network_analyzer\model\facade\mongo {
          * @return void
          * @access public
          */
-        public function delete($id) {
-           $this->repository->delete($id);
+        public function delete($id, $idProject) {
+           $this->repository->delete($id, $idProject);
         }
 
 // end of member function delete

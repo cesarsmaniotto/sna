@@ -11,7 +11,7 @@ $restapp->get('/categories/json', function() use ($categoryFacade) {
     echo $categoryFacade->listAll(new BasicObjectFormatter(new CategoryToArray()));
 });
 
-$restapp->get('/categories/json/:id', function($id) use ($categoryFacade) {
+$restapp->get('/categories/json/:idProject/:id', function($idProject,$id) use ($categoryFacade) {
 
     echo $categoryFacade->findById($id, new BasicObjectFormatter(new CategoryToArray()));
 });
@@ -22,14 +22,14 @@ $restapp->post('/categories/json/:projectId', function($projectId) use ($categor
     
 });
 
-$restapp->put('/categories/json', function() use ($categoryFacade, $restapp) {
+$restapp->put('/categories/json/:idProject', function($idProject) use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->update($restapp->request()->getBody(), new BasicObjectParser(new ArrayToCategory()));
+    echo $categoryFacade->update($restapp->request()->getBody(), new BasicObjectParser(new ArrayToCategory()),$idProject);
 });
 
-$restapp->delete('/categories/json/:id', function($id) use ($categoryFacade) {
+$restapp->delete('/categories/json/:idProject/:id', function($idProject, $id) use ($categoryFacade) {
 
-    echo $categoryFacade->delete($id);
+    echo $categoryFacade->delete($id,$idProject);
     
 });
 

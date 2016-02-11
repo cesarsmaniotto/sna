@@ -46,8 +46,8 @@ class DatasetsFacade
    * @return void
    * @access public
    */
-  public function findById( $id,  $idProject, $format) {
-    $dataset = $this->datasetsRepo->findById($id, $idProject);
+  public function findById( $id, $format) {
+    $dataset = $this->datasetsRepo->findById($id);
     return $format->format($dataset);
   } // end of member function findById
 
@@ -59,19 +59,9 @@ class DatasetsFacade
    * @access public
    */
   public function delete( $datasetId, $projectId) {
-    $project = $this->projectsRepo->findById($projectId);
-    $datasetsIds = $project->getDatasetsIds();
+ 
 
-    for($i=0 ; $i < \count($datasetsIds); $i++){
-      if($datasetsIds[$i]==$datasetId){
-        unset($datasetsIds[$i]);
-      }
-    }
-
-    $project->setDatasetsIds($datasetsIds);
-    $this->projectsRepo->update($project);
-
-    $this->datasetsRepo->delete($datasetId);
+    $this->datasetsRepo->delete($datasetId, $projectId);
   } // end of member function delete
 
   /**
@@ -96,9 +86,9 @@ class DatasetsFacade
    * @return void
    * @access public
    */
-  public function update($datasetText, $parser) {
-    $datasets = $parser->parse($datasetText);
-    return $this->datasetsRepo->insert($datasets);
+  public function update($datasetText, $parser, $projectId) {
+    $dataset = $parser->parse($datasetText);
+    return $this->datasetsRepo->update($dataset, $projectId);
   } // end of member function update
 
 

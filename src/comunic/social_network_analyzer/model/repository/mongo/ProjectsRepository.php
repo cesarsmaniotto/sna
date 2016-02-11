@@ -2,42 +2,103 @@
 
 namespace comunic\social_network_analyzer\model\repository\mongo{
 
-use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
-use \comunic\social_network_analyzer\model\repository\IProjectsRepository;
-use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
-use comunic\social_network_analyzer\model\entity\mappers\ProjectToArray;
+	use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
+	use \comunic\social_network_analyzer\model\repository\IProjectsRepository;
+	use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
+	use comunic\social_network_analyzer\model\entity\mappers\ProjectToArray;
+	use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArrayWithMongoId;
+	use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayWithMongoIdToObject;
 
-class ProjectsRepository implements IProjectsRepository{
+	class ProjectsRepository implements IProjectsRepository{
 
-	private $mongoch;
+		private $collection;
 
-	public function __construct($connectionType){
-		$this->mongoch = new MongoCollectionHandler('projects',$connectionType);
+		public function __construct($connectionType){
+
+
+			$conn = new ConnectionMongo();
+			$conn = $conn->getConnection($connectionType);
+			$this->collection = $conn->selectCollection("projects");
+		}
+
+		public function insert($project){
+
+			try {
+				$fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
+
+				$arrayData=$fObjToArrayWithMongoId($project, new ProjectToArray());
+
+				return $this->collection->save($arrayData, $options=array());
+
+			} catch (\MongoCursorException $e) {
+
+				echo $e->getMessage();
+
+			}catch (\MongoException $e) {
+
+				echo $e->getMessage();
+			}
+		}
+
+		public function listAll(){
+
+			$cursor=$this->collection->find($query=array(),$fields=array());
+
+			$outputObjects=array();
+
+			$fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+
+			foreach ($cursor as $item) {
+				$outputObjects[]=$fArrayWithMongoIdToObj($item, new ArrayToProject());
+			}
+
+			return $outputObjects;
+
+		}
+
+		public function findById($id){
+			
+			$arrayData=$this->collection->findOne(array('_id' => new \MongoId($id)),$fields=array());
+
+			$fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+
+			return $fArrayWithMongoIdToObj($arrayData, new ArrayToProject());
+
+		}
+
+		public function delete($id){
+
+			try {
+
+				return $this->collection->remove(array('_id' => new \MongoId($id)), $options=array());
+
+			} catch (\MongoCursorException $e) {
+
+				echo $e->getMessage();
+			}
+		}
+
+		public function update($project){
+			try {
+				$fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
+
+				$arrayData=$fObjToArrayWithMongoId($project, new ProjectToArray());
+
+				return $this->collection->save($arrayData, $options=array());
+
+			} catch (\MongoCursorException $e) {
+
+				echo $e->getMessage();
+
+			}catch (\MongoException $e) {
+
+				echo $e->getMessage();
+			}
+		}
+
+
+
 	}
-
-	public function insert($project){
-		return $this->mongoch->save($project, new ProjectToArray());
-	}
-
-	public function listAll(){
-		return $this->mongoch->find(new ArrayToProject());
-	}
-
-	public function findById($id){
-		return $this->mongoch->findOne(new ArrayToProject, array('_id' => new \MongoId($id)));
-	}
-
-	public function delete($id){
-		return $this->mongoch->delete(array('_id' => new \MongoId($id)));
-	}
-
-	public function update($project){
-		return $this->mongoch->save($project, new ProjectToArray());
-	}
-
-
-
-}
 
 }
 

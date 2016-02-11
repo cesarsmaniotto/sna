@@ -5,26 +5,41 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 ini_set('display_errors', true);
 
-// use comunic\social_network_analyzer\model\repository\mongo\DatasetsRepository;
 
-// $dt = new DatasetsRepository("development");
+use comunic\social_network_analyzer\model\entity\Project;
+use comunic\social_network_analyzer\model\entity\Dataset;
+use comunic\social_network_analyzer\model\util\ObjectUtil;
+use comunic\social_network_analyzer\model\repository\mongo\CategoriesRepository;
+use comunic\social_network_analyzer\model\repository\mongo\DatasetsRepository;
+use comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
+use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
+use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
 
-// echo var_dump($dt->findById("56b49d94f173c4c612f16821","aa"));
+// $dt = new CategoriesRepository("development");
+
+// echo var_dump($dt->findById("56bba8353cbd95e9582cca25"));
+
+// $mongoch = new MongoCollectionHandler('projects',"development");
+
+// echo var_dump($mongoch->findOne(new ArrayToDataset(), array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)));
 
 
 try {
 
-   //$conn = new \Mongo($this->getURL());
     $conn = new \Mongo();
-   
+
+    echo "<br><br>";
 
     $collection = $conn->selectCollection("development","projects");
 
- 
+ 	echo var_dump($collection->update(array('_id' => new \MongoId("56bbbede3cbd954d552cca25")),
+ 	 array('$pullAll' => 
+ 	 	array( "datasets" => array("_id" => new \MongoId("56bbbee83cbd954d552cca27"))))));
 
-    foreach ($collection->find(array('datasets._id' => new \MongoId("56b49d94f173c4c612f16821")), array("datasets.$" => true, "_id" => false)) as $item) {
-        echo var_dump(count($item));
-    }
+
+    // foreach ($collection->findOne(array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)) as $item) {
+    //     echo var_dump($item);
+    // }
 
 } catch (\MongoConnectionException $e) {
     echo $e->getMessage();
@@ -158,7 +173,7 @@ try {
 // // Iniciamos o "contador"
 // list($usec, $sec) = explode(' ', microtime());
 // $script_start = (float) $sec + (float) $usec;
- 
+
 // // /* SEU CÓDIGO PHP */
 // //  $options = array(
 // //  'skip' => 0,

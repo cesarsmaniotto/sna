@@ -54,7 +54,7 @@ interface IDatasetsRepository
    * @return void
    * @access public
    */
-  public function findById( $id, $projectId);
+  public function findById( $id);
 
 
 }

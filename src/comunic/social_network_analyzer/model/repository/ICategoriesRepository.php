@@ -44,7 +44,7 @@ namespace comunic\social_network_analyzer\model\repository {
          * @return \comunic\social_network_analyzer\model\entity\Category
          * @access public
          */
-        public function findById($id, $projectId);
+        public function findById($id);
 
         /**
          *
