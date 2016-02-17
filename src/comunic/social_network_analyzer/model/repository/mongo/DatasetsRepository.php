@@ -5,8 +5,7 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
     use comunic\social_network_analyzer\model\repository\IDatasetsRepository;
     use comunic\social_network_analyzer\model\entity\mappers\DatasetToArray;
     use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
-    use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArrayWithMongoId;
-    use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayWithMongoIdToObject;
+    use comunic\social_network_analyzer\model\util\MongoUtil;
 
     class DatasetsRepository implements IDatasetsRepository{
 
@@ -21,9 +20,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
         public function insert($object,$projectId){
 
             try {
-                $fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
 
-                $arrayData=$fObjToArrayWithMongoId($object, new DatasetToArray());
+                $toArray = new DatasetToArray();
+
+                $arrayData = MongoUtil::includeMongoIdObject($toArray($object));
 
                 return $this->collection->update(array('_id' => new \MongoId($projectId)), array('$addToSet' => array("datasets" => $arrayData)), $options=array());
 
@@ -56,12 +56,11 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
         public function findById($id){
 
-
             $arrayData=$this->collection->findOne(array('datasets._id' => new \MongoId($id)), array("datasets.$" => true, "_id" => false), $fields=array());
 
-            $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+            $toDataset = new ArrayToDataset();
 
-            return $fArrayWithMongoIdToObj($arrayData["datasets"][0], new ArrayToDataset());
+            return $toDataset(MongoUtil::removeMongoIdObject($arrayData["datasets"][0]));
         }
 
         public function listAll($projectId){

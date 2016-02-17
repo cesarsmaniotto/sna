@@ -15,7 +15,7 @@ $restapp->get('/datasets/json', function() use ($datasetFacade) {
 });
 
 $restapp->post('/datasets/json/:idProject', function($idProject) use ($datasetFacade, $restapp) {
-    echo $datasetFacade->insert($restapp->request()->getBody(), $idProject, new BasicObjectParser(new ArrayToDataset()));
+    echo $datasetFacade->insert($restapp->request()->getBody(), new BasicObjectParser(new ArrayToDataset()), $idProject);
 });
 
 $restapp->put('/datasets/json/:idProject', function($idProject) use ($datasetFacade, $restapp) {

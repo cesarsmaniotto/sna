@@ -2,12 +2,10 @@
 
 namespace comunic\social_network_analyzer\model\repository\mongo{
 
-	use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
 	use \comunic\social_network_analyzer\model\repository\IProjectsRepository;
 	use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
 	use comunic\social_network_analyzer\model\entity\mappers\ProjectToArray;
-	use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArrayWithMongoId;
-	use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayWithMongoIdToObject;
+	use comunic\social_network_analyzer\model\util\MongoUtil;
 
 	class ProjectsRepository implements IProjectsRepository{
 
@@ -24,9 +22,9 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 		public function insert($project){
 
 			try {
-				$fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
+				$toArray = new ProjectToArray();
 
-				$arrayData=$fObjToArrayWithMongoId($project, new ProjectToArray());
+				$arrayData = MongoUtil::includeMongoIdObject($toArray($project));
 
 				return $this->collection->save($arrayData, $options=array());
 
@@ -46,10 +44,11 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
 			$outputObjects=array();
 
-			$fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+			$toProject = new ArrayToProject();
 
 			foreach ($cursor as $item) {
-				$outputObjects[]=$fArrayWithMongoIdToObj($item, new ArrayToProject());
+
+				$outputObjects[]=$toProject(MongoUtil::removeMongoIdObject($item));
 			}
 
 			return $outputObjects;
@@ -60,9 +59,9 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 			
 			$arrayData=$this->collection->findOne(array('_id' => new \MongoId($id)),$fields=array());
 
-			$fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+			$toProject = new ArrayToProject();
 
-			return $fArrayWithMongoIdToObj($arrayData, new ArrayToProject());
+			return $toProject(MongoUtil::removeMongoIdObject($arrayData));
 
 		}
 
@@ -80,9 +79,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
 		public function update($project){
 			try {
-				$fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
 
-				$arrayData=$fObjToArrayWithMongoId($project, new ProjectToArray());
+				$toArray = new ProjectToArray();
+
+				$arrayData = MongoUtil::includeMongoIdObject($toArray($project));
 
 				return $this->collection->save($arrayData, $options=array());
 

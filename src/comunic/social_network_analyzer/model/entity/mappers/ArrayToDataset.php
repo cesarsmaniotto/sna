@@ -12,8 +12,6 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 
 			if(isset($arrayData['id'])){
 				$dataset->setId($arrayData['id']);
-			}else if(isset($arrayData['_id'])){
-				$dataset->setId((string) $arrayData['_id']);
 			}
 
 			if(isset($arrayData['name'])){

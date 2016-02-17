@@ -56,11 +56,11 @@ namespace comunic\social_network_analyzer\model\facade\mongo {
 
 
         public function instantiateProjects() {
-            return new ProjectsFacade($this->repositoryFactory->instantiateProject(), $this->repositoryFactory->instantiateDataset());
+            return new ProjectsFacade($this->repositoryFactory->instantiateProject());
         }
 
         public function instantiateDatasets() {
-            return new DatasetsFacade($this->repositoryFactory->instantiateDataset(), $this->repositoryFactory->instantiateDataset());
+            return new DatasetsFacade($this->repositoryFactory->instantiateDataset());
         }
 
 

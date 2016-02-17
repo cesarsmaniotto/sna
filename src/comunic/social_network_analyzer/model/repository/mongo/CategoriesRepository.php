@@ -2,12 +2,10 @@
 
 namespace comunic\social_network_analyzer\model\repository\mongo{
 
-    use \comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
     use \comunic\social_network_analyzer\model\repository\ICategoriesRepository;
     use comunic\social_network_analyzer\model\entity\mappers\ArrayToCategory;
     use comunic\social_network_analyzer\model\entity\mappers\CategoryToArray;
-    use comunic\social_network_analyzer\model\repository\mongo\mappers\ObjectToArrayWithMongoId;
-    use comunic\social_network_analyzer\model\repository\mongo\mappers\ArrayWithMongoIdToObject;
+    use comunic\social_network_analyzer\model\util\MongoUtil;
 
 
     class CategoriesRepository implements ICategoriesRepository{
@@ -23,9 +21,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
         public function insert($category, $projectId){
 
             try {
-                $fObjToArrayWithMongoId = new ObjectToArrayWithMongoId();
 
-                $arrayData=$fObjToArrayWithMongoId($category, new CategoryToArray());
+                $toArray = new CategoryToArray();
+
+                $arrayData = MongoUtil::includeMongoIdObject($toArray($category));
 
                 return $this->collection->update(array('_id' => new \MongoId($projectId)), array('$addToSet' => array("categories" => $arrayData)), $options=array());
 
@@ -57,9 +56,9 @@ namespace comunic\social_network_analyzer\model\repository\mongo{
 
          $arrayData=$this->collection->findOne(array('categories._id' => new \MongoId($id)), array("categories.$" => true, "_id" => false), $fields=array());
 
-         $fArrayWithMongoIdToObj = new ArrayWithMongoIdToObject();
+         $toCategory = new ArrayToCategory();
 
-         return $fArrayWithMongoIdToObj($arrayData["categories"][0], new ArrayToCategory());
+         return $toCategory(MongoUtil::removeMongoIdObject($arrayData["categories"][0]));
 
      }
 

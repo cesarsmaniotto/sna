@@ -14,6 +14,22 @@ use comunic\social_network_analyzer\model\repository\mongo\DatasetsRepository;
 use comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandler;
 use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
 use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
+use comunic\social_network_analyzer\model\util\MongoUtil;
+
+
+
+$proj = array("id" => "56bbbede3cbd954d552cca30", "name" => "lelele", "keywords" => array("uma", "duas", "três"));
+
+
+
+echo var_dump(MongoUtil::includeMongoIdObject($proj));
+
+
+
+
+
+
+
 
 // $dt = new CategoriesRepository("development");
 
@@ -24,26 +40,26 @@ use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
 // echo var_dump($mongoch->findOne(new ArrayToDataset(), array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)));
 
 
-try {
+// try {
 
-    $conn = new \Mongo();
+//     $conn = new \Mongo();
 
-    echo "<br><br>";
+//     echo "<br><br>";
 
-    $collection = $conn->selectCollection("development","projects");
+//     $collection = $conn->selectCollection("development","projects");
 
- 	echo var_dump($collection->update(array('_id' => new \MongoId("56bbbede3cbd954d552cca25")),
- 	 array('$pullAll' => 
- 	 	array( "datasets" => array("_id" => new \MongoId("56bbbee83cbd954d552cca27"))))));
+//  	echo var_dump($collection->update(array('_id' => new \MongoId("56bbbede3cbd954d552cca25")),
+//  	 array('$pullAll' => 
+//  	 	array( "datasets" => array("_id" => new \MongoId("56bbbee83cbd954d552cca27"))))));
 
 
-    // foreach ($collection->findOne(array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)) as $item) {
-    //     echo var_dump($item);
-    // }
+//     // foreach ($collection->findOne(array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)) as $item) {
+//     //     echo var_dump($item);
+//     // }
 
-} catch (\MongoConnectionException $e) {
-    echo $e->getMessage();
-}
+// } catch (\MongoConnectionException $e) {
+//     echo $e->getMessage();
+// }
 
 
 

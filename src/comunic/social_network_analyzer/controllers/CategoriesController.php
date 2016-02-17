@@ -18,7 +18,7 @@ $restapp->get('/categories/json/:idProject/:id', function($idProject,$id) use ($
 
 $restapp->post('/categories/json/:projectId', function($projectId) use ($categoryFacade, $restapp) {
 
-    echo $categoryFacade->insert($restapp->request()->getBody(),$projectId, new BasicObjectParser(new ArrayToCategory()));
+    echo $categoryFacade->insert($restapp->request()->getBody(), new BasicObjectParser(new ArrayToCategory()), $projectId);
     
 });
 
