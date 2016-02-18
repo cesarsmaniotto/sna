@@ -38,9 +38,10 @@ function __construct($repository, $categoryRep){
    * @return void
    * @access public
    */
-  public function insertAll( $text,  $parser) {
+  public function insert( $text,  $parser, $idDataset) {
     $tweets = $parser->parse($text);
     foreach ($tweets as $tweet) {
+      $tweet->setIdDataset($idDataset);
       $this->repositoryTweet->insert($tweet);
     }
   } // end of member function insertAll
@@ -57,6 +58,14 @@ function __construct($repository, $categoryRep){
     return $fmt->format($this->repositoryTweet->findById($id));
   } // end of member function findById
 
+  public function listByDataset($idDataset, $fmt, $options){
+    return $fmt->format($this->repositoryTweet->listByDatasetInAnInterval($idDataset, $options));
+  }
+
+  public function listByDatasetInAnInterval($idDataset, $fmt, $options){
+    return $fmt->format($this->repositoryTweet->listByDatasetInAnInterval($idDataset, $options));
+  }
+
   /**
    *
    *
@@ -66,35 +75,31 @@ function __construct($repository, $categoryRep){
    * @return string
    * @access public
    */
-  public function findByCategory($id_cat, $fmt) {
-    $category = $this->categoryRep->findById($id_cat);
-    $tweets=$this->repositoryTweet->findByCategory($category);
-    return $fmt->format($tweets);
+  public function findByCategory($idDataset, $idCategory, $fmt, $options) {
+   $category = $this->categoryRep->findById($idCategory);
+
+      $kwAsRegex = $category->toRegex();
+
+      $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($idDataset, $kwAsRegex, $options);
+      return $fmt->format($tweets);
   } // end of member function listByCategory
 
-  /**
-   *
-   *
-   * @param \comunic\social_network_analyzer\model\entity\format\IObjectFormatter $fmt
-   * @return string
-   * @access public
-   */
-  public function listAll( $fmt) {
-    return $fmt->format($this->repositoryTweet->listAll());
-  } // end of member function listAll
+  public function findbyCategoryInAnInterval($idDataset, $idCategory, $fmt, $options){
+    $category = $this->categoryRep->findById($idCategory);
 
+    $kwAsRegex = $category->toRegex();
 
-  public function listInAnInterval($fmt, $page, $amount){
-      $page=  \intval($page);
-      $amount=  \intval($amount);
-    return $fmt->format($this->repositoryTweet->listInAnInterval($page, $amount));
+    $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($idDataset, $kwAsRegex, $options);
+    return $fmt->format($tweets);
   }
 
-public function findbyCategoryInAnInterval($id_cat, $fmt, $initial, $final){
-    $category = $this->categoryRep->findById($id_cat);
-    $tweets=$this->repositoryTweet->findbyCategoryInAnInterval($category, $initial, $final);
-    return $fmt->format($tweets);
-}
+  public function searchInTheText($term, $fmt, $options){
+    return $fmt->format($this->repositoryTweet->searchInTheText($term, $options));
+  }
+
+  public function searchInTheTextInAnInterval($term, $fmt, $options){
+    return $fmt->format($this->repositoryTweet->searchInTheTextInAnInterval($term, $options));
+  }
 
 }
 

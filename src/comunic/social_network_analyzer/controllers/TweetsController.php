@@ -4,18 +4,17 @@ use comunic\social_network_analyzer\model\entity\parse\json\JsonTweetParser;
 use comunic\social_network_analyzer\model\entity\format\json\JsonTweetFormatter;
 use comunic\social_network_analyzer\model\entity\format\json\JsonPaginator;
 use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
+use comunic\social_network_analyzer\model\entity\mappers\ArrayToTweet;
+use comunic\social_network_analyzer\model\entity\parse\json\BasicObjectParser;
+use comunic\social_network_analyzer\model\entity\format\json\BasicObjectFormatter;
 use comunic\social_network_analyzer\model\entity\format\csv\CSVTweetFormatter;
 
 
 $tweetsFacade = $factory->instantiateTweets();
 
 $restapp->post('/tweets/csv_to_json/:idDataset', function($idDataset) use($restapp, $tweetsFacade) {
-    $parserCSV = new CSVTweetParser();
-    $formatter = new JsonTweetFormatter();
 
-    $tweets = $parserCSV->parse(json_decode($restapp->request()->getBody(),true)["values"]);
-
-    $tweetsFacade->import($tweets, $idDataset);
+    echo $tweetsFacade->insert($restapp->request()->getBody(), new BasicObjectParser(new ArrayToTweet()), $idDataset);
 
 });
 
@@ -29,7 +28,7 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
             'skip' => intval($params['skip']),
             'amount' => intval($params['amount']),
             'sortBy' => isset($params['sortBy']) ? $params['sortBy'] : 'time',
-            'direction' => isset($params['direction']) ? $params['direction'] : 'ASC'
+            'direction' => isset($params['direction']) ? $params['direction'] : 1
         );
             switch ($params['filter']) {
                 case 'byCategory':
@@ -42,7 +41,7 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
                 break;
 
                 case 'search':
-                    echo $tweetsFacade->searchInTheTextInAnInterval($params['searchBy'],$options,new JsonPaginator(new TweetToArray()));
+                    echo $tweetsFacade->searchInTheTextInAnInterval($params['searchBy'],new JsonPaginator(new TweetToArray()),$options);
                 break;
                 
                 default:
@@ -77,7 +76,7 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
                  break;
 
                  case 'search':
-                    $jsonResponse = ['values' => $tweetsFacade->searchInTheText($params['searchBy'],$options,new CSVTweetFormatter())];
+                    $jsonResponse = ['values' => $tweetsFacade->searchInTheText($params['searchBy'],new CSVTweetFormatter(),$options)];
                     echo \json_encode($jsonResponse);
 
                 break;

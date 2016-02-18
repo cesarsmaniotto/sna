@@ -34,6 +34,7 @@ private $createdAt;
 private $time;
 private $idDataset;
 private $class;
+private $idTweet;
 
 public static function getHeaderCSV(){
     return "text|to_user_id|from_user|id|from_user_id|iso_language_code|source|profile_image_url|geo_type|geo_coordinates_0|geo_coordinates_1|created_at|time";
@@ -188,6 +189,16 @@ public function getClass()
 public function setClass($class)
 {
     return $this->class = $class;
+}
+
+public function getIdTweet()
+{
+    return $this->idTweet;
+}
+ 
+public function setIdTweet($idTweet)
+{
+    return $this->idTweet = $idTweet;
 }
 
 }

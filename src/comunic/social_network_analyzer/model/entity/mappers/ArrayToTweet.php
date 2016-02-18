@@ -12,10 +12,9 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
 
             if(isset($arrayData['id'])){
                 $tweet->setId($arrayData['id']);
-            }else if(isset($arrayData['_id'])){
-                $dataset->setId((string) $arrayData['_id']);
-            }            
-            $tweet->setText($arrayData['text']);
+            }         
+            $tweet->setText(\trim($arrayData['text']));
+            $tweet->setIdTweet($arrayData['idTweet']);
             $tweet->setToUserId($arrayData['toUserId']);
             $tweet->setFromUser($arrayData['fromUser']);
             $tweet->setFromUserId($arrayData['fromUserId']);

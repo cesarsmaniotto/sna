@@ -23,7 +23,8 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
                 'createdAt' => $obj->getCreatedAt(),
                 'time' => $obj->getTime(),
                 'class' => $obj->getClass(),
-                'idDataset' => $obj->getIdDataset()
+                'idDataset' => $obj->getIdDataset(),
+                'idTweet'=>$obj->getIdTweet()
 
                 );
 

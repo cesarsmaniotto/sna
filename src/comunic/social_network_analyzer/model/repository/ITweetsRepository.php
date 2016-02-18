@@ -19,7 +19,7 @@ interface ITweetsRepository
    * @return void
    * @access public
    */
-  public function import( $tweets,$datasetId);
+  public function insert( $tweets);
 
   /**
    *
