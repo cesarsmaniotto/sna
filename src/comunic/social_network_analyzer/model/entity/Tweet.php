@@ -1,6 +1,8 @@
 <?php
 
 namespace comunic\social_network_analyzer\model\entity{
+
+    use comunic\social_network_analyzer\model\util\StringUtil;
 /**
  * class Tweet
  *
@@ -35,6 +37,7 @@ private $time;
 private $idDataset;
 private $class;
 private $idTweet;
+private $textNormalized;
 
 public static function getHeaderCSV(){
     return "text|to_user_id|from_user|id|from_user_id|iso_language_code|source|profile_image_url|geo_type|geo_coordinates_0|geo_coordinates_1|created_at|time";
@@ -199,6 +202,16 @@ public function getIdTweet()
 public function setIdTweet($idTweet)
 {
     return $this->idTweet = $idTweet;
+}
+
+public function getTextNormalized()
+{
+    return $this->textNormalized;
+}
+ 
+public function setTextNormalized($textNormalized)
+{
+    return $this->textNormalized = StringUtil::removeAccents($textNormalized);
 }
 
 }

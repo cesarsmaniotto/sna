@@ -24,7 +24,8 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
                 'time' => $obj->getTime(),
                 'class' => $obj->getClass(),
                 'idDataset' => $obj->getIdDataset(),
-                'idTweet'=>$obj->getIdTweet()
+                'idTweet'=>$obj->getIdTweet(),
+                'textNormalized' => $obj->getTextNormalized()
 
                 );
 

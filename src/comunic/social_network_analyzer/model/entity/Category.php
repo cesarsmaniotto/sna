@@ -19,6 +19,7 @@ class Category
   private $id;
   private $name;
   private $keywords;
+  private $color;
 
 /**
 * @return $id
@@ -79,16 +80,24 @@ public function setKeywords($keywords){
   $this->keywords = $keywords;
 }
 
+public function getColor()
+{
+    return $this->color;
+}
+ 
+public function setColor($color)
+{
+    return $this->color = $color;
+}
 
-
-private function toRegex(){
+public function toRegex(){
   $kwAsRegex = array();
 
   foreach ($this->keywords as $kw) {
-    // $kw = str_replace('?', '', $kw);
-    $wordAsRegex = StringUtil::accentToRegex($kw);
-    // $wordAsRegex = str_replace('.', '.?', $wordAsRegex);
-    $kwAsRegex[] = "/\b$wordAsRegex\b/iu";
+    // // $kw = str_replace('?', '', $kw);
+    // $wordAsRegex = StringUtil::accentToRegex($kw);
+    // // $wordAsRegex = str_replace('.', '.?', $wordAsRegex);
+    $kwAsRegex[] = "/$kw/iu";
   }
 
   return $kwAsRegex;

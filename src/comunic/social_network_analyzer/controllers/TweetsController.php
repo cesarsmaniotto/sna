@@ -18,6 +18,12 @@ $restapp->post('/tweets/csv_to_json/:idDataset', function($idDataset) use($resta
 
 });
 
+$restapp->get('/tweet/json/:idTweet', function($idTweet) use($tweetsFacade) {
+
+    echo $tweetsFacade->findById($idTweet, new BasicObjectFormatter(new TweetToArray()));
+
+});
+
 $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $tweetsFacade) {
 
     $params = $restapp->request()->params();
@@ -41,7 +47,7 @@ $restapp->get('/tweets/json/:idDataset', function($idDataset) use($restapp, $twe
                 break;
 
                 case 'search':
-                    echo $tweetsFacade->searchInTheTextInAnInterval($params['searchBy'],new JsonPaginator(new TweetToArray()),$options);
+                    echo $tweetsFacade->searchInTheTextInAnInterval($idDataset,$params['searchBy'],new JsonPaginator(new TweetToArray()),$options);
                 break;
                 
                 default:

@@ -15,29 +15,31 @@ use comunic\social_network_analyzer\model\repository\mongo\MongoCollectionHandle
 use comunic\social_network_analyzer\model\entity\mappers\ArrayToProject;
 use comunic\social_network_analyzer\model\entity\mappers\ArrayToDataset;
 use comunic\social_network_analyzer\model\util\MongoUtil;
+use comunic\social_network_analyzer\model\util\StringUtil;
+use comunic\social_network_analyzer\model\repository\mongo\TweetsRepository;
+use comunic\social_network_analyzer\model\entity\format\json\JsonPaginator;
+use comunic\social_network_analyzer\model\entity\mappers\TweetToArray;
+use comunic\social_network_analyzer\model\entity\mappers\ArrayToTweet;
+use comunic\social_network_analyzer\model\facade\mongo\TweetsFacade;
+use comunic\social_network_analyzer\model\entity\format\json\BasicObjectFormatter;
+
+
+$facade = new TweetsFacade(new TweetsRepository("development"), new CategoriesRepository("development"));
+
+$options = array(
+            'skip' => 0,
+            'amount' => 10,
+            'sortBy' =>  'time',
+            'direction' =>  1
+        );
+
+echo var_dump($facade->findById("56c6414f3cbd954a1e8b4567" , new BasicObjectFormatter(new TweetToArray())));
+
+// $tt = new TweetsRepository("development");
 
 
 
-$proj = array("id" => "56bbbede3cbd954d552cca30", "name" => "lelele", "keywords" => array("uma", "duas", "três"));
-
-
-
-echo var_dump(MongoUtil::includeMongoIdObject($proj));
-
-
-
-
-
-
-
-
-// $dt = new CategoriesRepository("development");
-
-// echo var_dump($dt->findById("56bba8353cbd95e9582cca25"));
-
-// $mongoch = new MongoCollectionHandler('projects',"development");
-
-// echo var_dump($mongoch->findOne(new ArrayToDataset(), array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)));
+// echo var_dump($tt->findbyCategoryInAnInterval("abc", ["/grand.?/iu"], $options));
 
 
 // try {
@@ -46,16 +48,14 @@ echo var_dump(MongoUtil::includeMongoIdObject($proj));
 
 //     echo "<br><br>";
 
-//     $collection = $conn->selectCollection("development","projects");
+//     $collection = $conn->selectCollection("development","tweets");
 
-//  	echo var_dump($collection->update(array('_id' => new \MongoId("56bbbede3cbd954d552cca25")),
-//  	 array('$pullAll' => 
-//  	 	array( "datasets" => array("_id" => new \MongoId("56bbbee83cbd954d552cca27"))))));
+//  	$docs = $collection->find(['text' => ['$in' =>[new \MongoRegex("/\bgran.?\b/i")]]]);
 
-
-//     // foreach ($collection->findOne(array('datasets._id' => new \MongoId("56bb552d3cbd95151b2cca25")), array("datasets.$" => true, "_id" => false)) as $item) {
-//     //     echo var_dump($item);
-//     // }
+//  	foreach ($docs as $doc) {
+//  		echo var_dump($doc);
+//  		echo "<br><br>";
+//  	}
 
 // } catch (\MongoConnectionException $e) {
 //     echo $e->getMessage();

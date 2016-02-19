@@ -35,6 +35,10 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
                 $tweet->setClass($arrayData['class']);
             }
 
+            if(isset($arrayData['text'])){
+                $tweet->setTextNormalized($arrayData['text']);
+            }
+
             return $tweet;
         }
 

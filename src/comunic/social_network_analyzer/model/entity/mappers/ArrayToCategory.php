@@ -22,6 +22,10 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
        $category->setKeywords($arrayData['keywords']);
      }
 
+     if (isset($arrayData['color'])) {
+       $category->setColor($arrayData['color']);
+     }
+
      return $category;
 
    }

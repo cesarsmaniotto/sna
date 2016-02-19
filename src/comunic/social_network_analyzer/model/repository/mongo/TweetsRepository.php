@@ -96,10 +96,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
 
             $mongoRegex = array();
             foreach ($kwAsRegex as $kw) {
-                $mongoRegex[]= new \MongoRegex($kw);
+                $mongoRegex[]= new \MongoRegex(StringUtil::removeAccents($kw));
             }
 
-            $cursor = $this->collection->find(array('text' => array('$in' => $this->filterByCategory($mongoRegex))),$fields=array());
+            $cursor = $this->collection->find(array('$and' => array(array('idDataset' => $idDataset),array('textNormalized' => array('$in' => $mongoRegex)))),  $fields=array());
             $cursor->sort(array($sortBy => $direction));
             $outputObjects=array();
             $toTweet = new ArrayToTweet();
@@ -159,10 +159,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
 
             $mongoRegex = array();
             foreach ($kwAsRegex as $kw) {
-                $mongoRegex[]= new \MongoRegex($kw);
+                $mongoRegex[]= new \MongoRegex(StringUtil::removeAccents($kw));
             }
 
-            $cursor = $this->collection->find(array('text' => array('$in' => $this->filterByCategory($mongoRegex))),$fields=array());
+            $cursor = $this->collection->find(array('$and' => array(array('idDataset' => $idDataset),array('textNormalized' => array('$in' => $mongoRegex)))),  $fields=array());
             $count = $cursor->count();
             $cursor->sort(array($sortBy => $direction));
             $cursor->skip($skip);
@@ -190,10 +190,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             }
         }
 
-        public function searchInTheTextInAnInterval($term, $options){
+        public function searchInTheTextInAnInterval($idDataset,$term, $options){
             \extract($options);
 
-            $cursor = $this->collection->find(array('text' => array('$regex' => new \MongoRegex("/$term/i"))));
+            $cursor = $this->collection->find(['$and' => [array('idDataset' => $idDataset),array('textNormalized' => array('$regex' => new \MongoRegex("/$term/i")))]]);
             $count = $cursor->count();
             $cursor->sort(array($sortBy => $direction));
             $cursor->skip($skip);
@@ -208,10 +208,10 @@ namespace comunic\social_network_analyzer\model\repository\mongo {
             return new Paginator($outputObjects, $count, $skip, $amount);
         }
 
-        public function searchInTheText($term, $options){
+        public function searchInTheText($idDataset,$term, $options){
             \extract($options);
 
-            $cursor = $this->collection->find(array('text' => array('$regex' => new \MongoRegex("/$term/i"))));
+            $cursor = $this->collection->find(['$and' => [array('idDataset' => $idDataset),array('textNormalized' => array('$regex' => new \MongoRegex("/$term/i")))]]);
             
             $outputObjects=array();
             $toTweet = new ArrayToTweet();

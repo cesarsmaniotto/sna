@@ -9,7 +9,8 @@ namespace comunic\social_network_analyzer\model\entity\mappers{
             return array(
                 'id' => $obj->getId(),
                 'name' => $obj->getName(),
-                'keywords' => $obj->getKeywords()
+                'keywords' => $obj->getKeywords(),
+                'color' => $obj->getColor()
 
                 );
         }

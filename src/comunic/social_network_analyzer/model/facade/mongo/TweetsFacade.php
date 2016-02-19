@@ -4,6 +4,8 @@
 
 namespace comunic\social_network_analyzer\model\facade\mongo{
 
+  use comunic\social_network_analyzer\model\util\StringUtil;
+
 /**
  * class TweetsFacade
  *
@@ -93,12 +95,12 @@ function __construct($repository, $categoryRep){
     return $fmt->format($tweets);
   }
 
-  public function searchInTheText($term, $fmt, $options){
-    return $fmt->format($this->repositoryTweet->searchInTheText($term, $options));
+  public function searchInTheText($idDataset,$term, $fmt, $options){
+    return $fmt->format($this->repositoryTweet->searchInTheText($idDataset,StringUtil::removeAccents($term), $options));
   }
 
-  public function searchInTheTextInAnInterval($term, $fmt, $options){
-    return $fmt->format($this->repositoryTweet->searchInTheTextInAnInterval($term, $options));
+  public function searchInTheTextInAnInterval($idDataset,$term, $fmt, $options){
+    return $fmt->format($this->repositoryTweet->searchInTheTextInAnInterval($idDataset,StringUtil::removeAccents($term), $options));
   }
 
 }
